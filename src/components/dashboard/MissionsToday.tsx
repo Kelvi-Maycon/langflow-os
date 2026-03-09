@@ -1,70 +1,22 @@
-import { useState, useMemo } from 'react'
+import { useStore } from '@/store/main'
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { Check, Mic, LibrarySquare } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast'
+import { Check, Mic, LibrarySquare, Zap, Star, Flame, Brain } from 'lucide-react'
 
-const initialMissions = [
-  {
-    id: 1,
-    title: 'Leitura Matinal',
-    subtitle: 'Artigo: The Future of AI Design • 15 min',
-    xp: '+50 XP',
-    icon: Check,
-    iconBg: 'bg-success/15',
-    iconColor: 'text-success',
-    completed: true,
-  },
-  {
-    id: 2,
-    title: 'Revisão SRS Diária',
-    subtitle: '45 flashcards aguardando sua atenção',
-    xp: '+120 XP',
-    icon: LibrarySquare,
-    iconBg: 'bg-pink-500/15',
-    iconColor: 'text-pink-600',
-    completed: false,
-    progress: 60,
-  },
-  {
-    id: 3,
-    title: 'Podcast Imersivo',
-    subtitle: 'Episódio #42 do Daily English Podcast',
-    xp: '+80 XP',
-    icon: Mic,
-    iconBg: 'bg-warning/15',
-    iconColor: 'text-warning-foreground',
-    completed: false,
-  },
-]
+const iconMap: Record<string, any> = {
+  check: Check,
+  brain: Brain,
+  zap: Zap,
+  star: Star,
+  flame: Flame,
+  mic: Mic,
+  library: LibrarySquare,
+}
 
 export function MissionsToday() {
-  const [missions, setMissions] = useState(initialMissions)
-  const { toast } = useToast()
-
-  const completedCount = useMemo(() => missions.filter((m) => m.completed).length, [missions])
-
-  const handleMissionClick = (id: number) => {
-    setMissions((prev) =>
-      prev.map((m) => {
-        if (m.id === id && !m.completed) {
-          toast({
-            title: '🎉 Missão Concluída!',
-            description: `Você finalizou "${m.title}" e ganhou ${m.xp}.`,
-          })
-          return {
-            ...m,
-            completed: true,
-            progress: 100,
-            icon: Check,
-            iconBg: 'bg-success/15',
-            iconColor: 'text-success',
-          }
-        }
-        return m
-      }),
-    )
-  }
+  const { stats } = useStore()
+  const missions = stats.dailyMissions || []
+  const completedCount = missions.filter((m) => m.completed).length
 
   return (
     <section className="space-y-6">
@@ -82,29 +34,35 @@ export function MissionsToday() {
 
       <div className="space-y-3">
         {missions.map((mission) => {
-          const Icon = mission.icon
+          const Icon = iconMap[mission.icon] || Check
+          const progressPct = Math.min((mission.progress / mission.target) * 100, 100)
+
           return (
             <Card
               key={mission.id}
-              onClick={() => handleMissionClick(mission.id)}
-              className={`p-5 flex items-center gap-5 bg-card hover:bg-secondary/40 border-border shadow-sm transition-all duration-250 ease-out hover:scale-[1.02] hover:shadow-md cursor-pointer active:scale-[0.98] rounded-[24px] ${mission.completed ? 'opacity-80' : ''}`}
+              className={`p-5 flex items-center gap-5 bg-card hover:bg-secondary/40 border-border shadow-sm transition-all duration-250 ease-out rounded-[24px] ${mission.completed ? 'opacity-80' : ''}`}
             >
               <div
-                className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 transition-colors duration-500 ${mission.iconBg}`}
+                className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 transition-colors duration-500 ${mission.completed ? 'bg-success/15 text-success' : 'bg-pink-500/15 text-pink-600'}`}
               >
-                <Icon className={`w-6 h-6 transition-colors duration-500 ${mission.iconColor}`} />
+                <Icon className="w-6 h-6" />
               </div>
 
               <div className="flex-1 min-w-0">
-                <h4 className="font-bold text-foreground text-lg truncate">{mission.title}</h4>
-                <p className="text-sm text-muted-foreground truncate">{mission.subtitle}</p>
-                {mission.progress !== undefined && (
-                  <Progress value={mission.progress} className="h-1.5 mt-3 w-1/2" />
-                )}
+                <div className="flex justify-between items-end mb-2">
+                  <div>
+                    <h4 className="font-bold text-foreground text-lg truncate">{mission.title}</h4>
+                    <p className="text-sm text-muted-foreground truncate">{mission.subtitle}</p>
+                  </div>
+                  <span className="text-xs font-bold text-muted-foreground bg-secondary px-2.5 py-1 rounded-full border border-border/50">
+                    {Math.floor(mission.progress)} / {mission.target}
+                  </span>
+                </div>
+                <Progress value={progressPct} className="h-1.5 w-full" />
               </div>
 
               <div className="font-bold text-sm text-muted-foreground bg-secondary px-3 py-1.5 rounded-full whitespace-nowrap border border-border/60">
-                {mission.xp}
+                +{mission.xpReward} XP
               </div>
             </Card>
           )

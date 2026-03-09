@@ -19453,6 +19453,10 @@ var Settings2 = createLucideIcon("settings-2", [
 		key: "dfmy0x"
 	}]
 ]);
+var Shield = createLucideIcon("shield", [["path", {
+	d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+	key: "oel41y"
+}]]);
 var Smile = createLucideIcon("smile", [
 	["circle", {
 		cx: "12",
@@ -25734,7 +25738,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$18({ inst: {
+			cachedValue = useState$17({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -25748,7 +25752,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$11(function() {
+			useEffect$12(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -25771,7 +25775,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$34 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$18 = React$34.useState, useEffect$11 = React$34.useEffect, useLayoutEffect$1 = React$34.useLayoutEffect, useDebugValue = React$34.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$34 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$17 = React$34.useState, useEffect$12 = React$34.useEffect, useLayoutEffect$1 = React$34.useLayoutEffect, useDebugValue = React$34.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$34.useSyncExternalStore ? React$34.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -26115,6 +26119,79 @@ var getMockActivityHistory = () => Array.from({ length: 90 }, (_$1, i) => {
 		count: Math.random() > .3 ? Math.floor(Math.random() * 20) + 5 : 0
 	};
 }).reverse();
+var defaultAchievements = [
+	{
+		id: "a1",
+		title: "Primeiros Passos",
+		description: "Ganhe seus primeiros 50 XP",
+		icon: "zap",
+		unlocked: false,
+		requirement: 50,
+		type: "xp"
+	},
+	{
+		id: "a2",
+		title: "Consistência",
+		description: "Alcance uma ofensiva de 3 dias",
+		icon: "flame",
+		unlocked: false,
+		requirement: 3,
+		type: "streak"
+	},
+	{
+		id: "a3",
+		title: "Mestre da Revisão",
+		description: "Acerte 20 flashcards",
+		icon: "brain",
+		unlocked: false,
+		requirement: 20,
+		type: "flashcards"
+	},
+	{
+		id: "a4",
+		title: "Vocabulário Ativo",
+		description: "Adicione 10 palavras ao sistema",
+		icon: "book",
+		unlocked: false,
+		requirement: 10,
+		type: "words"
+	}
+];
+var generateMissions = () => [
+	{
+		id: "m1",
+		title: "Prática Diária",
+		subtitle: "Acerte 5 exercícios",
+		type: "practice",
+		target: 5,
+		progress: 0,
+		xpReward: 50,
+		completed: false,
+		icon: "check"
+	},
+	{
+		id: "m2",
+		title: "Revisão Constante",
+		subtitle: "Acerte 10 flashcards",
+		type: "flashcard",
+		target: 10,
+		progress: 0,
+		xpReward: 80,
+		completed: false,
+		icon: "brain"
+	},
+	{
+		id: "m3",
+		title: "Caçador de XP",
+		subtitle: "Ganhe 100 XP hoje",
+		type: "xp",
+		target: 100,
+		progress: 0,
+		xpReward: 120,
+		completed: false,
+		icon: "zap"
+	}
+];
 var defaultStats = {
 	practiceAttempts: 0,
 	practiceCorrect: 0,
@@ -26123,7 +26200,10 @@ var defaultStats = {
 	xp: 0,
 	streak: 5,
 	lastActiveDate: Date.now(),
-	activityHistory: getMockActivityHistory()
+	activityHistory: getMockActivityHistory(),
+	dailyMissions: [],
+	missionsDate: "",
+	achievements: defaultAchievements
 };
 var mockWords = [{
 	id: "1",
@@ -26149,6 +26229,51 @@ var mockWords = [{
 	createdAt: Date.now() - 1e5
 }];
 var StoreContext = (0, import_react.createContext)(null);
+var checkGamification = (stats, totalWords) => {
+	let extraXp = 0;
+	const updatedMissions = (stats.dailyMissions || []).map((m) => {
+		if (m.completed) return m;
+		if (m.progress >= m.target) {
+			extraXp += m.xpReward;
+			return {
+				...m,
+				completed: true,
+				progress: m.target
+			};
+		}
+		return m;
+	});
+	stats.xp += extraXp;
+	const updatedAchievements = (stats.achievements || []).map((a$1) => {
+		if (a$1.unlocked) return a$1;
+		let meetsReq = false;
+		switch (a$1.type) {
+			case "xp":
+				meetsReq = stats.xp >= a$1.requirement;
+				break;
+			case "streak":
+				meetsReq = stats.streak >= a$1.requirement;
+				break;
+			case "flashcards":
+				meetsReq = stats.flashcardCorrect >= a$1.requirement;
+				break;
+			case "words":
+				meetsReq = totalWords >= a$1.requirement;
+				break;
+		}
+		if (meetsReq) return {
+			...a$1,
+			unlocked: true,
+			unlockedAt: Date.now()
+		};
+		return a$1;
+	});
+	return {
+		...stats,
+		dailyMissions: updatedMissions,
+		achievements: updatedAchievements
+	};
+};
 function StoreProvider({ children }) {
 	const [words, setWords] = (0, import_react.useState)(() => {
 		const saved = localStorage.getItem("langflow_words");
@@ -26169,18 +26294,27 @@ function StoreProvider({ children }) {
 	});
 	const [stats, setStats] = (0, import_react.useState)(() => {
 		const saved = localStorage.getItem("langflow_stats");
-		if (saved) {
-			const parsed = {
-				...defaultStats,
-				...JSON.parse(saved)
-			};
-			const now$2 = /* @__PURE__ */ new Date();
-			const last$2 = new Date(parsed.lastActiveDate);
-			if (Math.floor((now$2.getTime() - last$2.getTime()) / (1e3 * 3600 * 24)) > 1) parsed.streak = 0;
-			if (!parsed.activityHistory || !parsed.activityHistory.length) parsed.activityHistory = defaultStats.activityHistory;
-			return parsed;
+		let parsed = saved ? {
+			...defaultStats,
+			...JSON.parse(saved)
+		} : defaultStats;
+		const now$2 = /* @__PURE__ */ new Date();
+		const last$2 = new Date(parsed.lastActiveDate);
+		if (Math.floor((now$2.getTime() - last$2.getTime()) / (1e3 * 3600 * 24)) > 1) parsed.streak = 0;
+		if (!parsed.activityHistory || !parsed.activityHistory.length) parsed.activityHistory = defaultStats.activityHistory;
+		const todayStr = now$2.toISOString().split("T")[0];
+		if (parsed.missionsDate !== todayStr) {
+			parsed.dailyMissions = generateMissions();
+			parsed.missionsDate = todayStr;
 		}
-		return defaultStats;
+		if (!parsed.achievements || parsed.achievements.length === 0) parsed.achievements = defaultAchievements;
+		else {
+			const achIds = parsed.achievements.map((a$1) => a$1.id);
+			defaultAchievements.forEach((da) => {
+				if (!achIds.includes(da.id)) parsed.achievements.push(da);
+			});
+		}
+		return parsed;
 	});
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem("langflow_words", JSON.stringify(words));
@@ -26201,7 +26335,11 @@ function StoreProvider({ children }) {
 			easeFactor: 2.5,
 			repetitions: 0
 		};
-		setWords((prev) => [newWord, ...prev]);
+		setWords((prev) => {
+			const next = [newWord, ...prev];
+			setStats((s$1) => checkGamification(s$1, next.length));
+			return next;
+		});
 	};
 	const updateWordStatus = (id, status) => {
 		setWords((prev) => prev.map((w) => w.id === id ? {
@@ -26241,20 +26379,34 @@ function StoreProvider({ children }) {
 				date: todayStr,
 				count: 1
 			});
-			return {
+			const baseXp = type === "practice" ? isCorrect ? 10 : 2 : isCorrect ? 15 : 5;
+			const newXp = (prev.xp || 0) + baseXp;
+			const flashcardAttempts = (prev.flashcardAttempts || 0) + (type === "flashcard" ? 1 : 0);
+			const flashcardCorrect = (prev.flashcardCorrect || 0) + (type === "flashcard" && isCorrect ? 1 : 0);
+			const practiceAttempts = (prev.practiceAttempts || 0) + (type === "practice" ? 1 : 0);
+			const practiceCorrect = (prev.practiceCorrect || 0) + (type === "practice" && isCorrect ? 1 : 0);
+			const newMissions = (prev.dailyMissions || []).map((m) => {
+				if (m.completed) return m;
+				let p = m.progress;
+				if (m.type === type && isCorrect) p += 1;
+				if (m.type === "xp") p += baseXp;
+				return {
+					...m,
+					progress: p
+				};
+			});
+			return checkGamification({
 				...prev,
 				streak,
 				lastActiveDate: now$2,
 				activityHistory: hist,
-				xp: (prev.xp || 0) + (type === "practice" ? isCorrect ? 10 : 2 : isCorrect ? 15 : 5),
-				...type === "practice" ? {
-					practiceAttempts: (prev.practiceAttempts || 0) + 1,
-					practiceCorrect: (prev.practiceCorrect || 0) + (isCorrect ? 1 : 0)
-				} : {
-					flashcardAttempts: (prev.flashcardAttempts || 0) + 1,
-					flashcardCorrect: (prev.flashcardCorrect || 0) + (isCorrect ? 1 : 0)
-				}
-			};
+				xp: newXp,
+				flashcardAttempts,
+				flashcardCorrect,
+				practiceAttempts,
+				practiceCorrect,
+				dailyMissions: newMissions
+			}, words.length);
 		});
 	};
 	return import_react.createElement(StoreContext.Provider, { value: {
@@ -26275,11 +26427,50 @@ const useStore = () => {
 	if (!ctx) throw new Error("useStore must be used within StoreProvider");
 	return ctx;
 };
+const LEVEL_TIERS = [
+	{
+		name: "Iniciante",
+		threshold: 0
+	},
+	{
+		name: "Básico",
+		threshold: 150
+	},
+	{
+		name: "Intermediário",
+		threshold: 500
+	},
+	{
+		name: "Avançado",
+		threshold: 1200
+	},
+	{
+		name: "Fluente",
+		threshold: 3e3
+	},
+	{
+		name: "Mestre",
+		threshold: 6e3
+	}
+];
+function getLevelTier(xp) {
+	let current = LEVEL_TIERS[0];
+	let next = LEVEL_TIERS[1];
+	for (let i = LEVEL_TIERS.length - 1; i >= 0; i--) if (xp >= LEVEL_TIERS[i].threshold) {
+		current = LEVEL_TIERS[i];
+		next = LEVEL_TIERS[i + 1];
+		break;
+	}
+	return {
+		current,
+		next
+	};
+}
 function HeroWelcome() {
 	const navigate = useNavigate();
 	const { toast: toast$2 } = useToast();
 	const { stats } = useStore();
-	const levelName = stats.xp < 150 ? "Iniciante" : stats.xp < 600 ? "Intermediário" : "Avançado Fluente";
+	const { current } = getLevelTier(stats.xp);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "relative overflow-hidden rounded-[32px] bg-card border border-border p-8 md:p-12 shadow-sm hover:shadow-md transition-all duration-300 ease-out flex flex-col md:flex-row items-center justify-between gap-8 group",
 		children: [
@@ -26293,7 +26484,7 @@ function HeroWelcome() {
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "w-2 h-2 rounded-full bg-warning animate-pulse" }),
 							"NÍVEL: ",
-							levelName.toUpperCase(),
+							current.name.toUpperCase(),
 							" • ",
 							stats.xp,
 							" XP"
@@ -26486,62 +26677,19 @@ var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => 
 	});
 });
 Progress.displayName = Root$2.displayName;
-var initialMissions = [
-	{
-		id: 1,
-		title: "Leitura Matinal",
-		subtitle: "Artigo: The Future of AI Design • 15 min",
-		xp: "+50 XP",
-		icon: Check$1,
-		iconBg: "bg-success/15",
-		iconColor: "text-success",
-		completed: true
-	},
-	{
-		id: 2,
-		title: "Revisão SRS Diária",
-		subtitle: "45 flashcards aguardando sua atenção",
-		xp: "+120 XP",
-		icon: SquareLibrary,
-		iconBg: "bg-pink-500/15",
-		iconColor: "text-pink-600",
-		completed: false,
-		progress: 60
-	},
-	{
-		id: 3,
-		title: "Podcast Imersivo",
-		subtitle: "Episódio #42 do Daily English Podcast",
-		xp: "+80 XP",
-		icon: Mic,
-		iconBg: "bg-warning/15",
-		iconColor: "text-warning-foreground",
-		completed: false
-	}
-];
+var iconMap$1 = {
+	check: Check$1,
+	brain: Brain,
+	zap: Zap,
+	star: Star,
+	flame: Flame,
+	mic: Mic,
+	library: SquareLibrary
+};
 function MissionsToday() {
-	const [missions, setMissions] = (0, import_react.useState)(initialMissions);
-	const { toast: toast$2 } = useToast();
-	const completedCount = (0, import_react.useMemo)(() => missions.filter((m) => m.completed).length, [missions]);
-	const handleMissionClick = (id) => {
-		setMissions((prev) => prev.map((m) => {
-			if (m.id === id && !m.completed) {
-				toast$2({
-					title: "🎉 Missão Concluída!",
-					description: `Você finalizou "${m.title}" e ganhou ${m.xp}.`
-				});
-				return {
-					...m,
-					completed: true,
-					progress: 100,
-					icon: Check$1,
-					iconBg: "bg-success/15",
-					iconColor: "text-success"
-				};
-			}
-			return m;
-		}));
-	};
+	const { stats } = useStore();
+	const missions = stats.dailyMissions || [];
+	const completedCount = missions.filter((m) => m.completed).length;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 		className: "space-y-6",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
@@ -26564,35 +26712,45 @@ function MissionsToday() {
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "space-y-3",
 			children: missions.map((mission) => {
-				const Icon$2 = mission.icon;
+				const Icon$2 = iconMap$1[mission.icon] || Check$1;
+				const progressPct = Math.min(mission.progress / mission.target * 100, 100);
 				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-					onClick: () => handleMissionClick(mission.id),
-					className: `p-5 flex items-center gap-5 bg-card hover:bg-secondary/40 border-border shadow-sm transition-all duration-250 ease-out hover:scale-[1.02] hover:shadow-md cursor-pointer active:scale-[0.98] rounded-[24px] ${mission.completed ? "opacity-80" : ""}`,
+					className: `p-5 flex items-center gap-5 bg-card hover:bg-secondary/40 border-border shadow-sm transition-all duration-250 ease-out rounded-[24px] ${mission.completed ? "opacity-80" : ""}`,
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: `w-14 h-14 rounded-full flex items-center justify-center shrink-0 transition-colors duration-500 ${mission.iconBg}`,
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: `w-6 h-6 transition-colors duration-500 ${mission.iconColor}` })
+							className: `w-14 h-14 rounded-full flex items-center justify-center shrink-0 transition-colors duration-500 ${mission.completed ? "bg-success/15 text-success" : "bg-pink-500/15 text-pink-600"}`,
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: "w-6 h-6" })
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "flex-1 min-w-0",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between items-end mb-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
 									className: "font-bold text-foreground text-lg truncate",
 									children: mission.title
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 									className: "text-sm text-muted-foreground truncate",
 									children: mission.subtitle
-								}),
-								mission.progress !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
-									value: mission.progress,
-									className: "h-1.5 mt-3 w-1/2"
-								})
-							]
+								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "text-xs font-bold text-muted-foreground bg-secondary px-2.5 py-1 rounded-full border border-border/50",
+									children: [
+										Math.floor(mission.progress),
+										" / ",
+										mission.target
+									]
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
+								value: progressPct,
+								className: "h-1.5 w-full"
+							})]
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "font-bold text-sm text-muted-foreground bg-secondary px-3 py-1.5 rounded-full whitespace-nowrap border border-border/60",
-							children: mission.xp
+							children: [
+								"+",
+								mission.xpReward,
+								" XP"
+							]
 						})
 					]
 				}, mission.id);
@@ -48237,6 +48395,135 @@ function ActivityChart() {
 		})]
 	});
 }
+function LevelProgressWidget() {
+	const { stats } = useStore();
+	const { current, next } = getLevelTier(stats.xp);
+	const progress = next ? (stats.xp - current.threshold) / (next.threshold - current.threshold) * 100 : 100;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "p-6 md:p-8 bg-gradient-to-br from-card to-primary/5 border-border shadow-sm rounded-[32px] hover:shadow-md transition-all duration-300 group",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center shadow-inner border border-primary/20 group-hover:scale-110 transition-transform duration-500",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Shield, { className: "w-8 h-8 text-primary" })
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+					className: "text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1",
+					children: "Nível Atual"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-3xl font-extrabold text-foreground tracking-tight",
+					children: current.name
+				})] })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "md:text-right flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-primary to-pink-500 flex items-center gap-1.5 tracking-tighter",
+					children: [
+						stats.xp,
+						" ",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-6 h-6 text-pink-500 fill-current" })
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-xs text-muted-foreground font-bold uppercase tracking-widest mt-1",
+					children: "XP Total"
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "space-y-3",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
+				value: progress,
+				className: "h-4 [&>div]:bg-gradient-to-r [&>div]:from-primary [&>div]:to-pink-500 shadow-inner"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex justify-between text-sm font-bold text-muted-foreground",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Progresso de Nível" }), next ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+					next.threshold - stats.xp,
+					" XP para ",
+					next.name
+				] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Nível Máximo!" })]
+			})]
+		})]
+	});
+}
+var iconMap = {
+	star: Star,
+	flame: Flame,
+	brain: Brain,
+	book: BookOpen,
+	zap: Zap,
+	trophy: Trophy
+};
+function AchievementsList() {
+	const { stats } = useStore();
+	const achievements = stats.achievements || [];
+	const unlockedCount = achievements.filter((a$1) => a$1.unlocked).length;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+		className: "space-y-6",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+			className: "flex items-center justify-between",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+				className: "text-2xl font-bold text-foreground tracking-tight",
+				children: "Conquistas & Emblemas"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+				className: "bg-secondary text-foreground font-bold text-sm px-4 py-1.5 rounded-full border border-border/60 shadow-sm",
+				children: [
+					unlockedCount,
+					" / ",
+					achievements.length,
+					" Desbloqueados"
+				]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "grid grid-cols-2 md:grid-cols-4 gap-4",
+			children: achievements.map((ach) => {
+				const Icon$2 = iconMap[ach.icon] || Trophy;
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: cn("p-5 flex flex-col items-center text-center gap-4 transition-all duration-300 rounded-[24px]", ach.unlocked ? "bg-card border-primary/30 shadow-sm hover:-translate-y-1 hover:shadow-md cursor-pointer" : "bg-secondary/30 border-dashed opacity-60 grayscale"),
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: cn("w-16 h-16 rounded-full flex items-center justify-center transition-colors duration-500 shadow-sm", ach.unlocked ? "bg-primary/20 border border-primary/20" : "bg-muted border border-border"),
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: cn("w-8 h-8", ach.unlocked ? "text-primary" : "text-muted-foreground") })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+						className: "font-bold text-[15px] leading-tight text-foreground",
+						children: ach.title
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xs text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed",
+						children: ach.description
+					})] })]
+				}, ach.id);
+			})
+		})]
+	});
+}
+function GamificationWatcher() {
+	const { stats } = useStore();
+	const { toast: toast$2 } = useToast();
+	const prevMissions = (0, import_react.useRef)(stats.dailyMissions);
+	const prevAchievements = (0, import_react.useRef)(stats.achievements);
+	(0, import_react.useEffect)(() => {
+		if (!stats.dailyMissions || !stats.achievements) return;
+		stats.dailyMissions.forEach((mission) => {
+			const prev = prevMissions.current?.find((m) => m.id === mission.id);
+			if (prev && !prev.completed && mission.completed) toast$2({
+				title: "🎉 Missão Concluída!",
+				description: `Você completou "${mission.title}" e ganhou ${mission.xpReward} XP.`
+			});
+		});
+		prevMissions.current = stats.dailyMissions;
+		stats.achievements.forEach((ach) => {
+			const prev = prevAchievements.current?.find((a$1) => a$1.id === ach.id);
+			if (prev && !prev.unlocked && ach.unlocked) toast$2({
+				title: "🏆 Nova Conquista!",
+				description: `Você desbloqueou o emblema: ${ach.title}`
+			});
+		});
+		prevAchievements.current = stats.achievements;
+	}, [
+		stats.dailyMissions,
+		stats.achievements,
+		toast$2
+	]);
+	return null;
+}
 function Index() {
 	const { toast: toast$2 } = useToast();
 	const { stats } = useStore();
@@ -48258,6 +48545,7 @@ function Index() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-8 animate-fade-in pb-12",
 		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(GamificationWatcher, {}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 				className: "flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
@@ -48303,6 +48591,10 @@ function Index() {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HeroWelcome, {}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "pt-2",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LevelProgressWidget, {})
+			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2",
 				children: [
@@ -48318,6 +48610,7 @@ function Index() {
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ActivityChart, {}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MissionsToday, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AchievementsList, {}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ProgressionRoadmap, {}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CollectionsSection, {})
 					]
@@ -52088,4 +52381,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-B67h4ELi.js.map
+//# sourceMappingURL=index-Bn3J4Yqa.js.map

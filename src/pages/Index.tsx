@@ -9,6 +9,9 @@ import { RetentionOverview } from '@/components/dashboard/RetentionOverview'
 import { MemoryStrength } from '@/components/dashboard/MemoryStrength'
 import { StreakWidget } from '@/components/dashboard/StreakWidget'
 import { ActivityChart } from '@/components/dashboard/ActivityChart'
+import { LevelProgressWidget } from '@/components/gamification/LevelProgressWidget'
+import { AchievementsList } from '@/components/gamification/AchievementsList'
+import { GamificationWatcher } from '@/components/gamification/GamificationWatcher'
 import { useToast } from '@/hooks/use-toast'
 import { useStore } from '@/store/main'
 import { useState } from 'react'
@@ -36,6 +39,8 @@ export default function Index() {
 
   return (
     <div className="space-y-8 animate-fade-in pb-12">
+      <GamificationWatcher />
+
       {/* Top Bar Area */}
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
@@ -88,6 +93,11 @@ export default function Index() {
       {/* Hero Section */}
       <HeroWelcome />
 
+      {/* Gamified Dashboard Widget */}
+      <div className="pt-2">
+        <LevelProgressWidget />
+      </div>
+
       {/* Dashboard Overview Widgets */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
         <RetentionOverview />
@@ -101,6 +111,7 @@ export default function Index() {
         <div className="xl:col-span-2 space-y-12">
           <ActivityChart />
           <MissionsToday />
+          <AchievementsList />
           <ProgressionRoadmap />
           <CollectionsSection />
         </div>

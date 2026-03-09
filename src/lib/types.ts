@@ -28,6 +28,29 @@ export interface ActivityEntry {
   count: number
 }
 
+export interface DailyMission {
+  id: string
+  title: string
+  subtitle: string
+  type: 'practice' | 'flashcard' | 'xp'
+  target: number
+  progress: number
+  xpReward: number
+  completed: boolean
+  icon: string
+}
+
+export interface Achievement {
+  id: string
+  title: string
+  description: string
+  icon: string
+  unlocked: boolean
+  unlockedAt?: number
+  requirement: number
+  type: 'streak' | 'words' | 'xp' | 'flashcards'
+}
+
 export interface UserStats {
   practiceAttempts: number
   practiceCorrect: number
@@ -37,6 +60,9 @@ export interface UserStats {
   streak: number
   lastActiveDate: number
   activityHistory?: ActivityEntry[]
+  dailyMissions: DailyMission[]
+  missionsDate: string
+  achievements: Achievement[]
 }
 
 export interface AppState {
