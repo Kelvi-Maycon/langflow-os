@@ -2003,6 +2003,11 @@ body::selection{
   border-color: hsl(var(--input));
 }
 
+.border-orange-500{
+  --tw-border-opacity: 1;
+  border-color: rgb(249 115 22 / var(--tw-border-opacity, 1));
+}
+
 .border-orange-500\/20{
   border-color: rgb(249 115 22 / 0.2);
 }
@@ -3339,6 +3344,11 @@ body::selection{
   background-color: hsl(var(--muted) / 0.5);
 }
 
+.hover\:bg-orange-500:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:bg-pink-500\/10:hover{
   background-color: rgb(236 72 153 / 0.1);
 }
@@ -3393,16 +3403,16 @@ body::selection{
   background-color: hsl(var(--success));
 }
 
-.hover\:bg-success\/90:hover{
-  background-color: hsl(var(--success) / 0.9);
-}
-
 .hover\:bg-warning:hover{
   background-color: hsl(var(--warning));
 }
 
 .hover\:text-accent-foreground:hover{
   color: hsl(var(--accent-foreground));
+}
+
+.hover\:text-destructive-foreground:hover{
+  color: hsl(var(--destructive-foreground));
 }
 
 .hover\:text-foreground:hover{
@@ -3422,12 +3432,20 @@ body::selection{
   color: hsl(var(--primary));
 }
 
+.hover\:text-primary-foreground:hover{
+  color: hsl(var(--primary-foreground));
+}
+
 .hover\:text-sidebar-accent-foreground:hover{
   color: hsl(var(--sidebar-accent-foreground));
 }
 
 .hover\:text-sidebar-foreground:hover{
   color: hsl(var(--sidebar-foreground));
+}
+
+.hover\:text-success-foreground:hover{
+  color: hsl(var(--success-foreground));
 }
 
 .hover\:text-white:hover{

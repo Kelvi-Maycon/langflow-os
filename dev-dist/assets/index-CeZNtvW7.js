@@ -49406,11 +49406,25 @@ function PracticeEmpty() {
 	});
 }
 function Practice() {
-	const { words, updateWordStatus, settings, recordPracticeAttempt } = useStore();
+	const { words, reviewWord, settings, recordPracticeAttempt } = useStore();
 	const { toast: toast$2 } = useToast();
-	const builderWords = (0, import_react.useMemo)(() => words.filter((w) => w.status === "builder"), [words]);
-	const [currentIndex, setCurrentIndex] = (0, import_react.useState)(0);
-	const currentWord = builderWords[currentIndex];
+	const [reviewedIds, setReviewedIds] = (0, import_react.useState)(/* @__PURE__ */ new Set());
+	const queue = (0, import_react.useMemo)(() => {
+		const now$2 = Date.now();
+		const reviews = words.filter((w) => w.status === "srs" && w.nextReviewDate <= now$2 && !reviewedIds.has(w.id));
+		const builders = words.filter((w) => w.status === "builder" && !reviewedIds.has(w.id));
+		return [...reviews.sort((a$1, b$1) => a$1.nextReviewDate - b$1.nextReviewDate), ...builders];
+	}, [words, reviewedIds]);
+	const currentWord = queue[0];
+	const [initialQueueSize, setInitialQueueSize] = (0, import_react.useState)(0);
+	(0, import_react.useEffect)(() => {
+		const currentTotal = queue.length + reviewedIds.size;
+		if (currentTotal > initialQueueSize) setInitialQueueSize(currentTotal);
+	}, [
+		queue.length,
+		reviewedIds.size,
+		initialQueueSize
+	]);
 	const { practiceData, isLoading, shuffledBlocks } = usePracticeEngine(currentWord, settings);
 	const [selectedIndices, setSelectedIndices] = (0, import_react.useState)([]);
 	const [attempts, setAttempts] = (0, import_react.useState)(0);
@@ -49419,13 +49433,15 @@ function Practice() {
 	const [draggedId, setDraggedId] = (0, import_react.useState)(null);
 	const [dragTarget, setDragTarget] = (0, import_react.useState)(null);
 	(0, import_react.useEffect)(() => {
-		setSelectedIndices([]);
-		setAttempts(0);
-		setStatus("idle");
-		setFeedback([]);
-		setDraggedId(null);
-		setDragTarget(null);
-	}, [currentWord]);
+		if (currentWord) {
+			setSelectedIndices([]);
+			setAttempts(0);
+			setStatus("idle");
+			setFeedback([]);
+			setDraggedId(null);
+			setDragTarget(null);
+		}
+	}, [currentWord?.id]);
 	const handleBlockClick = (id) => {
 		if (status !== "idle" && status !== "checking") return;
 		if (selectedIndices.includes(id)) setSelectedIndices((prev) => prev.filter((x$2) => x$2 !== id));
@@ -49467,12 +49483,31 @@ function Practice() {
 			}
 		}
 	};
-	const handleNext = () => {
-		if (status === "correct" || status === "incorrect") updateWordStatus(currentWord.id, "srs");
-		if (currentIndex >= builderWords.length - 1) setCurrentIndex(0);
+	const handleRate = (quality) => {
+		if (!currentWord) return;
+		reviewWord(currentWord.id, quality);
+		setReviewedIds((prev) => {
+			const next = new Set(prev);
+			next.add(currentWord.id);
+			return next;
+		});
+	};
+	const getPredictedInterval = (quality) => {
+		if (!currentWord) return 0;
+		const { interval } = calculateSM2(quality, currentWord.repetitions, currentWord.interval, currentWord.easeFactor, settings.srsMultiplier);
+		return interval;
+	};
+	const formatInterval = (days) => {
+		if (days === 0) return "<1d";
+		if (days < 30) return `${days}d`;
+		if (days < 365) return `${Math.round(days / 30)}m`;
+		return `${Math.round(days / 365)}a`;
 	};
 	const onDragStart = (e, id) => {
-		if (status === "correct" || status === "incorrect") return e.preventDefault();
+		if (status === "correct" || status === "incorrect") {
+			e.preventDefault();
+			return;
+		}
 		setDraggedId(id);
 		e.dataTransfer.setData("text/plain", id.toString());
 	};
@@ -49503,23 +49538,29 @@ function Practice() {
 		else base = cn(base, "bg-card border-border hover:bg-secondary text-foreground hover:-translate-y-1 shadow-sm hover:shadow-md");
 		return cn(base, draggedId === id && "opacity-50");
 	};
-	if (!builderWords.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeEmpty, {});
+	if (!queue.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeEmpty, {});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in max-w-3xl mx-auto h-full flex flex-col pt-4",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 			className: "flex justify-between items-end mb-4",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 				className: "text-3xl font-bold tracking-tight text-foreground flex items-center gap-3",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-8 h-8 text-primary" }), " Sentence Builder"]
+				children: currentWord.status === "srs" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "w-8 h-8 text-orange-500" }), " Revisão Espaçada"] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-8 h-8 text-primary" }), " Sentence Builder"] })
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-2 text-lg",
-				children: "Arraste os blocos para montar a frase."
+				className: "text-muted-foreground mt-2 text-lg flex items-center gap-2",
+				children: currentWord.status === "srs" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "bg-orange-500/10 text-orange-500 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider border border-orange-500/20",
+					children: "Revisão"
+				}), "Relembre como formar esta frase."] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider border border-primary/20",
+					children: "Novo"
+				}), "Arraste os blocos para montar a frase."] })
 			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "text-sm font-medium bg-card px-4 py-2 rounded-full border border-border shadow-sm text-foreground",
 				children: [
-					currentIndex + 1,
+					reviewedIds.size + 1,
 					" de ",
-					builderWords.length
+					Math.max(initialQueueSize, 1)
 				]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
@@ -49535,8 +49576,8 @@ function Practice() {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "mb-8 text-center",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "bg-primary/10 text-primary px-4 py-1.5 rounded-full font-bold text-sm border border-primary/20 uppercase tracking-wider inline-block mb-6",
-						children: "Construa a frase"
+						className: cn("px-4 py-1.5 rounded-full font-bold text-sm border uppercase tracking-wider inline-block mb-6", currentWord.status === "srs" ? "bg-orange-500/10 text-orange-500 border-orange-500/20" : "bg-primary/10 text-primary border-primary/20"),
+						children: currentWord.status === "srs" ? "Revisão da Frase" : "Construa a frase"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 						className: "text-3xl md:text-4xl font-medium text-foreground leading-tight",
 						children: practiceData.pt
@@ -49614,15 +49655,69 @@ function Practice() {
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "pt-4 border-t border-border mt-auto",
-							children: status === "correct" || status === "incorrect" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-								onClick: handleNext,
+							children: status === "correct" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-col gap-3 w-full animate-fade-in pt-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-center text-sm text-muted-foreground font-medium mb-1",
+									children: "Avalie sua facilidade de lembrar:"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "grid grid-cols-2 md:grid-cols-4 gap-3 w-full",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+											onClick: () => handleRate(1),
+											variant: "outline",
+											className: "h-16 flex-col gap-1 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "font-bold text-base",
+												children: "Errei"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-xs opacity-80 font-medium",
+												children: formatInterval(getPredictedInterval(1))
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+											onClick: () => handleRate(3),
+											variant: "outline",
+											className: "h-16 flex-col gap-1 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition-all",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "font-bold text-base",
+												children: "Difícil"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-xs opacity-80 font-medium",
+												children: formatInterval(getPredictedInterval(3))
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+											onClick: () => handleRate(4),
+											variant: "outline",
+											className: "h-16 flex-col gap-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "font-bold text-base",
+												children: "Bom"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-xs opacity-80 font-medium",
+												children: formatInterval(getPredictedInterval(4))
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+											onClick: () => handleRate(5),
+											variant: "outline",
+											className: "h-16 flex-col gap-1 border-success text-success hover:bg-success hover:text-success-foreground transition-all",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "font-bold text-base",
+												children: "Fácil"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-xs opacity-80 font-medium",
+												children: formatInterval(getPredictedInterval(5))
+											})]
+										})
+									]
+								})]
+							}) : status === "incorrect" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								onClick: () => handleRate(1),
 								size: "lg",
-								className: cn("w-full h-16 text-lg rounded-2xl group shadow-md animate-fade-in", status === "correct" ? "bg-success hover:bg-success/90 text-success-foreground" : "bg-primary hover:bg-primary/90 text-primary-foreground"),
-								children: [
-									currentIndex < builderWords.length - 1 ? "Próxima Palavra" : "Concluir Sessão",
-									" ",
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" })
-								]
+								className: "w-full h-16 text-lg rounded-2xl shadow-md bg-primary hover:bg-primary/90 text-primary-foreground animate-fade-in",
+								children: ["Continuar ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-6 h-6 ml-2" })]
 							}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 								onClick: checkAnswer,
 								size: "lg",
@@ -50327,4 +50422,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Dkd_6g2C.js.map
+//# sourceMappingURL=index-CeZNtvW7.js.map

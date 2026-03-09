@@ -2,19 +2,38 @@ import { useState, useMemo, useEffect } from 'react'
 import { useStore } from '@/store/main'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Zap, ArrowRight, CheckCircle2, XCircle, Loader2 } from 'lucide-react'
+import { Zap, ArrowRight, CheckCircle2, XCircle, Loader2, BrainCircuit } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useToast } from '@/hooks/use-toast'
 import { usePracticeEngine } from '@/hooks/use-practice-engine'
 import { PracticeEmpty } from '@/components/practice-empty'
+import { calculateSM2 } from '@/lib/sm2'
 
 export default function Practice() {
-  const { words, updateWordStatus, settings, recordPracticeAttempt } = useStore()
+  const { words, reviewWord, settings, recordPracticeAttempt } = useStore()
   const { toast } = useToast()
 
-  const builderWords = useMemo(() => words.filter((w) => w.status === 'builder'), [words])
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const currentWord = builderWords[currentIndex]
+  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set())
+
+  const queue = useMemo(() => {
+    const now = Date.now()
+    const reviews = words.filter(
+      (w) => w.status === 'srs' && w.nextReviewDate <= now && !reviewedIds.has(w.id),
+    )
+    const builders = words.filter((w) => w.status === 'builder' && !reviewedIds.has(w.id))
+
+    return [...reviews.sort((a, b) => a.nextReviewDate - b.nextReviewDate), ...builders]
+  }, [words, reviewedIds])
+
+  const currentWord = queue[0]
+
+  const [initialQueueSize, setInitialQueueSize] = useState(0)
+  useEffect(() => {
+    const currentTotal = queue.length + reviewedIds.size
+    if (currentTotal > initialQueueSize) {
+      setInitialQueueSize(currentTotal)
+    }
+  }, [queue.length, reviewedIds.size, initialQueueSize])
 
   const { practiceData, isLoading, shuffledBlocks } = usePracticeEngine(currentWord, settings)
 
@@ -26,13 +45,15 @@ export default function Practice() {
   const [dragTarget, setDragTarget] = useState<number | null>(null)
 
   useEffect(() => {
-    setSelectedIndices([])
-    setAttempts(0)
-    setStatus('idle')
-    setFeedback([])
-    setDraggedId(null)
-    setDragTarget(null)
-  }, [currentWord])
+    if (currentWord) {
+      setSelectedIndices([])
+      setAttempts(0)
+      setStatus('idle')
+      setFeedback([])
+      setDraggedId(null)
+      setDragTarget(null)
+    }
+  }, [currentWord?.id])
 
   const handleBlockClick = (id: number) => {
     if (status !== 'idle' && status !== 'checking') return
@@ -83,13 +104,40 @@ export default function Practice() {
     }
   }
 
-  const handleNext = () => {
-    if (status === 'correct' || status === 'incorrect') updateWordStatus(currentWord.id, 'srs')
-    if (currentIndex >= builderWords.length - 1) setCurrentIndex(0)
+  const handleRate = (quality: number) => {
+    if (!currentWord) return
+    reviewWord(currentWord.id, quality)
+    setReviewedIds((prev) => {
+      const next = new Set(prev)
+      next.add(currentWord.id)
+      return next
+    })
+  }
+
+  const getPredictedInterval = (quality: number) => {
+    if (!currentWord) return 0
+    const { interval } = calculateSM2(
+      quality,
+      currentWord.repetitions,
+      currentWord.interval,
+      currentWord.easeFactor,
+      settings.srsMultiplier,
+    )
+    return interval
+  }
+
+  const formatInterval = (days: number) => {
+    if (days === 0) return '<1d'
+    if (days < 30) return `${days}d`
+    if (days < 365) return `${Math.round(days / 30)}m`
+    return `${Math.round(days / 365)}a`
   }
 
   const onDragStart = (e: React.DragEvent, id: number) => {
-    if (status === 'correct' || status === 'incorrect') return e.preventDefault()
+    if (status === 'correct' || status === 'incorrect') {
+      e.preventDefault()
+      return
+    }
     setDraggedId(id)
     e.dataTransfer.setData('text/plain', id.toString())
   }
@@ -145,21 +193,43 @@ export default function Practice() {
     return cn(base, draggedId === id && 'opacity-50')
   }
 
-  if (!builderWords.length) return <PracticeEmpty />
+  if (!queue.length) return <PracticeEmpty />
 
   return (
     <div className="space-y-6 animate-fade-in max-w-3xl mx-auto h-full flex flex-col pt-4">
       <header className="flex justify-between items-end mb-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-3">
-            <Zap className="w-8 h-8 text-primary" /> Sentence Builder
+            {currentWord.status === 'srs' ? (
+              <>
+                <BrainCircuit className="w-8 h-8 text-orange-500" /> Revisão Espaçada
+              </>
+            ) : (
+              <>
+                <Zap className="w-8 h-8 text-primary" /> Sentence Builder
+              </>
+            )}
           </h1>
-          <p className="text-muted-foreground mt-2 text-lg">
-            Arraste os blocos para montar a frase.
+          <p className="text-muted-foreground mt-2 text-lg flex items-center gap-2">
+            {currentWord.status === 'srs' ? (
+              <>
+                <span className="bg-orange-500/10 text-orange-500 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider border border-orange-500/20">
+                  Revisão
+                </span>
+                Relembre como formar esta frase.
+              </>
+            ) : (
+              <>
+                <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider border border-primary/20">
+                  Novo
+                </span>
+                Arraste os blocos para montar a frase.
+              </>
+            )}
           </p>
         </div>
         <div className="text-sm font-medium bg-card px-4 py-2 rounded-full border border-border shadow-sm text-foreground">
-          {currentIndex + 1} de {builderWords.length}
+          {reviewedIds.size + 1} de {Math.max(initialQueueSize, 1)}
         </div>
       </header>
 
@@ -174,8 +244,15 @@ export default function Practice() {
         ) : (
           <div className="flex-1 flex flex-col h-full z-10">
             <div className="mb-8 text-center">
-              <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full font-bold text-sm border border-primary/20 uppercase tracking-wider inline-block mb-6">
-                Construa a frase
+              <span
+                className={cn(
+                  'px-4 py-1.5 rounded-full font-bold text-sm border uppercase tracking-wider inline-block mb-6',
+                  currentWord.status === 'srs'
+                    ? 'bg-orange-500/10 text-orange-500 border-orange-500/20'
+                    : 'bg-primary/10 text-primary border-primary/20',
+                )}
+              >
+                {currentWord.status === 'srs' ? 'Revisão da Frase' : 'Construa a frase'}
               </span>
               <p className="text-3xl md:text-4xl font-medium text-foreground leading-tight">
                 {practiceData.pt}
@@ -274,19 +351,61 @@ export default function Practice() {
               </div>
 
               <div className="pt-4 border-t border-border mt-auto">
-                {status === 'correct' || status === 'incorrect' ? (
+                {status === 'correct' ? (
+                  <div className="flex flex-col gap-3 w-full animate-fade-in pt-2">
+                    <p className="text-center text-sm text-muted-foreground font-medium mb-1">
+                      Avalie sua facilidade de lembrar:
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full">
+                      <Button
+                        onClick={() => handleRate(1)}
+                        variant="outline"
+                        className="h-16 flex-col gap-1 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all"
+                      >
+                        <span className="font-bold text-base">Errei</span>
+                        <span className="text-xs opacity-80 font-medium">
+                          {formatInterval(getPredictedInterval(1))}
+                        </span>
+                      </Button>
+                      <Button
+                        onClick={() => handleRate(3)}
+                        variant="outline"
+                        className="h-16 flex-col gap-1 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition-all"
+                      >
+                        <span className="font-bold text-base">Difícil</span>
+                        <span className="text-xs opacity-80 font-medium">
+                          {formatInterval(getPredictedInterval(3))}
+                        </span>
+                      </Button>
+                      <Button
+                        onClick={() => handleRate(4)}
+                        variant="outline"
+                        className="h-16 flex-col gap-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+                      >
+                        <span className="font-bold text-base">Bom</span>
+                        <span className="text-xs opacity-80 font-medium">
+                          {formatInterval(getPredictedInterval(4))}
+                        </span>
+                      </Button>
+                      <Button
+                        onClick={() => handleRate(5)}
+                        variant="outline"
+                        className="h-16 flex-col gap-1 border-success text-success hover:bg-success hover:text-success-foreground transition-all"
+                      >
+                        <span className="font-bold text-base">Fácil</span>
+                        <span className="text-xs opacity-80 font-medium">
+                          {formatInterval(getPredictedInterval(5))}
+                        </span>
+                      </Button>
+                    </div>
+                  </div>
+                ) : status === 'incorrect' ? (
                   <Button
-                    onClick={handleNext}
+                    onClick={() => handleRate(1)}
                     size="lg"
-                    className={cn(
-                      'w-full h-16 text-lg rounded-2xl group shadow-md animate-fade-in',
-                      status === 'correct'
-                        ? 'bg-success hover:bg-success/90 text-success-foreground'
-                        : 'bg-primary hover:bg-primary/90 text-primary-foreground',
-                    )}
+                    className="w-full h-16 text-lg rounded-2xl shadow-md bg-primary hover:bg-primary/90 text-primary-foreground animate-fade-in"
                   >
-                    {currentIndex < builderWords.length - 1 ? 'Próxima Palavra' : 'Concluir Sessão'}{' '}
-                    <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" />
+                    Continuar <ArrowRight className="w-6 h-6 ml-2" />
                   </Button>
                 ) : (
                   <Button
