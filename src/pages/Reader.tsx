@@ -7,6 +7,8 @@ import { useStore } from '@/store/main'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from '@/hooks/use-toast'
 import { StatsSidebar } from '@/components/dashboard/StatsSidebar'
+import { RecentVideos } from '@/components/reader/RecentVideos'
+import { RecentVideo } from '@/lib/types'
 
 const defaultText = `The quick brown fox jumps over the lazy dog. 
 This is a serendipity moment where you can learn new words.
@@ -35,7 +37,13 @@ export default function Reader() {
   const [isPlayingTTS, setIsPlayingTTS] = useState(false)
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null)
 
-  const { settings, updateSettings, words: globalWords, updateWordStatus } = useStore()
+  const {
+    settings,
+    updateSettings,
+    words: globalWords,
+    updateWordStatus,
+    addRecentVideo,
+  } = useStore()
   const navigate = useNavigate()
   const { toast } = useToast()
 
@@ -69,13 +77,31 @@ export default function Reader() {
 
     setIsProcessingYt(true)
     setTimeout(() => {
-      setProcessedText(
-        'This is a simulated transcript from the YouTube video you pasted. The quick brown fox jumps over the lazy dog. Here we can find serendipity and ephemeral moments. Exploring ubiquitous features is genuinely fun and helps you learn new things easily.',
-      )
+      const text =
+        'This is a simulated transcript from the YouTube video you pasted. The quick brown fox jumps over the lazy dog. Here we can find serendipity and ephemeral moments. Exploring ubiquitous features is genuinely fun and helps you learn new things easily.'
+      setProcessedText(text)
       setActiveVideoId(videoId)
       setIsReadingMode(true)
       setIsProcessingYt(false)
+
+      addRecentVideo({
+        videoId,
+        url,
+        title: `Prática com Vídeo (${videoId.substring(0, 6)})`,
+        text,
+      })
     }, 1500)
+  }
+
+  const handleLoadRecentVideo = (video: RecentVideo) => {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel()
+    setIsPlayingTTS(false)
+
+    setYtUrl(video.url)
+    setProcessedText(video.text)
+    setActiveVideoId(video.videoId)
+    setIsReadingMode(true)
+    setCapturedWords([])
   }
 
   const handleTTS = () => {
@@ -159,8 +185,11 @@ export default function Reader() {
             </div>
           )}
         </div>
-        <div className="xl:col-span-1 hidden xl:block">
-          <StatsSidebar />
+        <div className="xl:col-span-1 flex flex-col gap-6">
+          <RecentVideos onLoadVideo={handleLoadRecentVideo} />
+          <div className="hidden xl:block">
+            <StatsSidebar />
+          </div>
         </div>
       </div>
     </div>

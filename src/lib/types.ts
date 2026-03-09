@@ -86,9 +86,19 @@ export interface AppNotification {
   read: boolean
 }
 
+export interface RecentVideo {
+  id: string
+  videoId: string
+  url: string
+  title: string
+  text: string
+  timestamp: number
+}
+
 export interface AppState {
   words: WordEntry[]
   settings: UserSettings
   stats: UserStats
   notifications: AppNotification[]
+  recentVideos: RecentVideo[]
 }

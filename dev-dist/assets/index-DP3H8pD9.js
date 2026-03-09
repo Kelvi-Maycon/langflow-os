@@ -19108,6 +19108,15 @@ var CircleCheck = createLucideIcon("circle-check", [["circle", {
 	d: "m9 12 2 2 4-4",
 	key: "dzmm74"
 }]]);
+var CirclePlay = createLucideIcon("circle-play", [["path", {
+	d: "M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z",
+	key: "kmsa83"
+}], ["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
+}]]);
 var CircleStop = createLucideIcon("circle-stop", [["circle", {
 	cx: "12",
 	cy: "12",
@@ -26286,6 +26295,10 @@ function StoreProvider({ children }) {
 			read: false
 		}];
 	});
+	const [recentVideos, setRecentVideos] = (0, import_react.useState)(() => {
+		const saved = localStorage.getItem("langflow_recent_videos");
+		return saved ? JSON.parse(saved) : [];
+	});
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem("langflow_words", JSON.stringify(words));
 	}, [words]);
@@ -26298,6 +26311,9 @@ function StoreProvider({ children }) {
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem("langflow_notifications", JSON.stringify(notifications));
 	}, [notifications]);
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem("langflow_recent_videos", JSON.stringify(recentVideos));
+	}, [recentVideos]);
 	const addNotification = import_react.useCallback((title, body) => {
 		setNotifications((prev) => [{
 			id: crypto.randomUUID(),
@@ -26321,6 +26337,16 @@ function StoreProvider({ children }) {
 	};
 	const clearNotifications = () => {
 		setNotifications([]);
+	};
+	const addRecentVideo = (data) => {
+		setRecentVideos((prev) => {
+			const filtered = prev.filter((v) => v.videoId !== data.videoId);
+			return [{
+				...data,
+				id: crypto.randomUUID(),
+				timestamp: Date.now()
+			}, ...filtered].slice(0, 10);
+		});
 	};
 	useNotificationEngine(settings, stats, words, addNotification);
 	(0, import_react.useEffect)(() => {
@@ -26481,7 +26507,6 @@ function StoreProvider({ children }) {
 				activityHistory: hist,
 				xp: newXp,
 				flashcardAttempts,
-				flashcardAttempts,
 				flashcardCorrect,
 				practiceAttempts,
 				practiceCorrect,
@@ -26496,6 +26521,7 @@ function StoreProvider({ children }) {
 		settings,
 		stats,
 		notifications,
+		recentVideos,
 		addWord,
 		updateWordStatus,
 		reviewWord,
@@ -26507,7 +26533,8 @@ function StoreProvider({ children }) {
 		addNotification,
 		markNotificationAsRead,
 		markAllNotificationsAsRead,
-		clearNotifications
+		clearNotifications,
+		addRecentVideo
 	} }, children);
 }
 const useStore = () => {
@@ -52581,6 +52608,47 @@ function ReaderHeader({ isReadingMode, isPlayingTTS, aiModel, onToggleTTS, onMod
 		})]
 	});
 }
+function RecentVideos({ onLoadVideo }) {
+	const { recentVideos } = useStore();
+	if (!recentVideos || recentVideos.length === 0) return null;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "p-6 bg-card border-border shadow-sm rounded-[32px] flex flex-col gap-4 animate-fade-in",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-center gap-3 mb-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "w-5 h-5 text-primary" })
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+				className: "text-xl font-bold text-foreground",
+				children: "Vídeos Recentes"
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "space-y-3",
+			children: recentVideos.map((video) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+				onClick: () => onLoadVideo(video),
+				className: "w-full text-left flex items-start gap-3 p-3 rounded-[20px] bg-secondary/30 hover:bg-secondary/80 transition-all duration-200 group border border-transparent hover:border-border hover:shadow-sm",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center shrink-0 group-hover:bg-red-500 group-hover:shadow-md group-hover:scale-105 transition-all duration-300",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CirclePlay, { className: "w-6 h-6 text-red-500 group-hover:text-white transition-colors" })
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "overflow-hidden flex-1 py-1",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "font-semibold text-[15px] leading-tight text-foreground truncate group-hover:text-primary transition-colors",
+						children: video.title
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-xs text-muted-foreground truncate mt-1",
+						children: new Date(video.timestamp).toLocaleDateString("pt-BR", {
+							day: "2-digit",
+							month: "short",
+							hour: "2-digit",
+							minute: "2-digit"
+						})
+					})]
+				})]
+			}, video.id))
+		})]
+	});
+}
 var defaultText = `The quick brown fox jumps over the lazy dog. 
 This is a serendipity moment where you can learn new words.
 Reading ephemeral texts ubiquitous on the internet helps improve your active vocabulary.`;
@@ -52597,7 +52665,7 @@ function Reader() {
 	const [capturedWords, setCapturedWords] = (0, import_react.useState)([]);
 	const [isPlayingTTS, setIsPlayingTTS] = (0, import_react.useState)(false);
 	const [activeVideoId, setActiveVideoId] = (0, import_react.useState)(null);
-	const { settings, updateSettings, words: globalWords, updateWordStatus } = useStore();
+	const { settings, updateSettings, words: globalWords, updateWordStatus, addRecentVideo } = useStore();
 	const navigate = useNavigate();
 	const { toast: toast$2 } = useToast();
 	(0, import_react.useEffect)(() => {
@@ -52626,11 +52694,27 @@ function Reader() {
 		}
 		setIsProcessingYt(true);
 		setTimeout(() => {
-			setProcessedText("This is a simulated transcript from the YouTube video you pasted. The quick brown fox jumps over the lazy dog. Here we can find serendipity and ephemeral moments. Exploring ubiquitous features is genuinely fun and helps you learn new things easily.");
+			const text = "This is a simulated transcript from the YouTube video you pasted. The quick brown fox jumps over the lazy dog. Here we can find serendipity and ephemeral moments. Exploring ubiquitous features is genuinely fun and helps you learn new things easily.";
+			setProcessedText(text);
 			setActiveVideoId(videoId);
 			setIsReadingMode(true);
 			setIsProcessingYt(false);
+			addRecentVideo({
+				videoId,
+				url,
+				title: `Prática com Vídeo (${videoId.substring(0, 6)})`,
+				text
+			});
 		}, 1500);
+	};
+	const handleLoadRecentVideo = (video) => {
+		if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+		setIsPlayingTTS(false);
+		setYtUrl(video.url);
+		setProcessedText(video.text);
+		setActiveVideoId(video.videoId);
+		setIsReadingMode(true);
+		setCapturedWords([]);
 	};
 	const handleTTS = () => {
 		if ("speechSynthesis" in window) if (window.speechSynthesis.speaking) {
@@ -52706,9 +52790,12 @@ function Reader() {
 						onNextPhase: handleNextPhase
 					})]
 				})
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "xl:col-span-1 hidden xl:block",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StatsSidebar, {})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "xl:col-span-1 flex flex-col gap-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RecentVideos, { onLoadVideo: handleLoadRecentVideo }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "hidden xl:block",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StatsSidebar, {})
+				})]
 			})]
 		})]
 	});
@@ -55047,4 +55134,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DiWq4pjx.js.map
+//# sourceMappingURL=index-DP3H8pD9.js.map

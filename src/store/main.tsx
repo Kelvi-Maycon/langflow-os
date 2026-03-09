@@ -8,6 +8,7 @@ import {
   DailyMission,
   Achievement,
   AppNotification,
+  RecentVideo,
 } from '@/lib/types'
 import { calculateSM2, getNextReviewDate } from '@/lib/sm2'
 import { useNotificationEngine } from '@/hooks/use-notifications'
@@ -30,6 +31,7 @@ interface StoreContextType extends AppState {
   markNotificationAsRead: (id: string) => void
   markAllNotificationsAsRead: () => void
   clearNotifications: () => void
+  addRecentVideo: (video: Omit<RecentVideo, 'id' | 'timestamp'>) => void
 }
 
 const defaultSettings: UserSettings = {
@@ -277,6 +279,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         ]
   })
 
+  const [recentVideos, setRecentVideos] = useState<RecentVideo[]>(() => {
+    const saved = localStorage.getItem('langflow_recent_videos')
+    return saved ? JSON.parse(saved) : []
+  })
+
   useEffect(() => {
     localStorage.setItem('langflow_words', JSON.stringify(words))
   }, [words])
@@ -292,6 +299,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem('langflow_notifications', JSON.stringify(notifications))
   }, [notifications])
+
+  useEffect(() => {
+    localStorage.setItem('langflow_recent_videos', JSON.stringify(recentVideos))
+  }, [recentVideos])
 
   const addNotification = React.useCallback((title: string, body: string) => {
     setNotifications((prev) =>
@@ -312,6 +323,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const clearNotifications = () => {
     setNotifications([])
+  }
+
+  const addRecentVideo = (data: Omit<RecentVideo, 'id' | 'timestamp'>) => {
+    setRecentVideos((prev) => {
+      const filtered = prev.filter((v) => v.videoId !== data.videoId)
+      const newVideo: RecentVideo = { ...data, id: crypto.randomUUID(), timestamp: Date.now() }
+      return [newVideo, ...filtered].slice(0, 10)
+    })
   }
 
   useNotificationEngine(settings, stats, words, addNotification)
@@ -475,7 +494,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         activityHistory: hist,
         xp: newXp,
         flashcardAttempts,
-        flashcardAttempts,
         flashcardCorrect,
         practiceAttempts,
         practiceCorrect,
@@ -496,6 +514,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         settings,
         stats,
         notifications,
+        recentVideos,
         addWord,
         updateWordStatus,
         reviewWord,
@@ -508,6 +527,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         markNotificationAsRead,
         markAllNotificationsAsRead,
         clearNotifications,
+        addRecentVideo,
       },
     },
     children,

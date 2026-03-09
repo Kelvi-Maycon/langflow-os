@@ -2406,6 +2406,10 @@ body::selection{
   background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
 }
 
+.bg-red-500\/10{
+  background-color: rgb(239 68 68 / 0.1);
+}
+
 .bg-secondary{
   background-color: hsl(var(--secondary));
 }
@@ -3107,6 +3111,11 @@ body::selection{
   color: rgb(168 85 247 / var(--tw-text-opacity, 1));
 }
 
+.text-red-500{
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity, 1));
+}
+
 .text-red-500\/40{
   color: rgb(239 68 68 / 0.4);
 }
@@ -3689,6 +3698,10 @@ body::selection{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.hover\:border-border:hover{
+  border-color: hsl(var(--border));
+}
+
 .hover\:border-border\/80:hover{
   border-color: hsl(var(--border) / 0.8);
 }
@@ -4065,6 +4078,12 @@ body::selection{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.group:hover .group-hover\:scale-105{
+  --tw-scale-x: 1.05;
+  --tw-scale-y: 1.05;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 .group:hover .group-hover\:scale-110{
   --tw-scale-x: 1.1;
   --tw-scale-y: 1.1;
@@ -4103,6 +4122,11 @@ body::selection{
   background-color: hsl(var(--primary) / 0.15);
 }
 
+.group:hover .group-hover\:bg-red-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+
 .group:hover .group-hover\:bg-warning\/30{
   background-color: hsl(var(--warning) / 0.3);
 }
@@ -4116,12 +4140,27 @@ body::selection{
   color: hsl(var(--foreground));
 }
 
+.group:hover .group-hover\:text-primary{
+  color: hsl(var(--primary));
+}
+
+.group:hover .group-hover\:text-white{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
 .group\/menu-item:hover .group-hover\/menu-item\:opacity-100{
   opacity: 1;
 }
 
 .group:hover .group-hover\:opacity-100{
   opacity: 1;
+}
+
+.group:hover .group-hover\:shadow-md{
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .group.destructive .group-\[\.destructive\]\:border-muted\/40{
