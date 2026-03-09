@@ -15,6 +15,7 @@ export interface WordEntry {
 
 export interface UserSettings {
   level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+  aiProvider: 'openai' | 'gemini'
   apiKey: string
   dailyGoal: number
   srsMultiplier: number
@@ -27,6 +28,9 @@ export interface UserStats {
   practiceCorrect: number
   flashcardAttempts: number
   flashcardCorrect: number
+  xp: number
+  streak: number
+  lastActiveDate: number
 }
 
 export interface AppState {

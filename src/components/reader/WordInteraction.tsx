@@ -74,7 +74,9 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
             setWordData(
               mockDictionary[cleanWord] || {
                 translation: `tradução de "${cleanWord}"`,
-                explanation: `(Modo Offline) Análise simulada. Configure sua API Key para usar o modelo ${settings.aiModel || 'gpt-4o-mini'} em tempo real.`,
+                explanation: `(Modo Offline) Análise simulada. Configure sua API Key do ${
+                  settings.aiProvider === 'gemini' ? 'Gemini' : 'OpenAI'
+                } para explicações em tempo real.`,
               },
             )
             setIsLoading(false)
@@ -83,33 +85,61 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
         }
 
         try {
-          const res = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${settings.apiKey}`,
-            },
-            body: JSON.stringify({
-              model: settings.aiModel || 'gpt-4o-mini',
-              messages: [
-                {
-                  role: 'system',
-                  content:
-                    'Você é um dicionário inteligente de inglês. Analise a palavra alvo dentro do contexto da frase fornecida. Retorne a tradução mais adequada para este contexto específico e uma breve explicação em português do papel e significado da palavra na frase. Responda apenas com JSON válido: {"translation": "...", "explanation": "..."}',
-                },
-                {
-                  role: 'user',
-                  content: `Palavra: "${cleanWord}"\nFrase de contexto: "${sentence}"`,
-                },
-              ],
-              response_format: { type: 'json_object' },
-            }),
-          })
+          let result: any = null
 
-          const data = await res.json()
-          if (data.error) throw new Error(data.error.message)
+          if (settings.aiProvider === 'gemini') {
+            const res = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/${
+                settings.aiModel || 'gemini-1.5-flash'
+              }:generateContent?key=${settings.apiKey}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  contents: [
+                    {
+                      parts: [
+                        {
+                          text: `Você é um dicionário inteligente de inglês. Analise a palavra alvo dentro do contexto da frase fornecida. Retorne a tradução mais adequada para este contexto específico e uma breve explicação em português do papel e significado da palavra na frase. Responda apenas com JSON válido: {"translation": "...", "explanation": "..."}\n\nPalavra: "${cleanWord}"\nFrase: "${sentence}"`,
+                        },
+                      ],
+                    },
+                  ],
+                  generationConfig: { responseMimeType: 'application/json' },
+                }),
+              },
+            )
+            const data = await res.json()
+            if (data.error) throw new Error(data.error.message)
+            result = JSON.parse(data.candidates[0].content.parts[0].text)
+          } else {
+            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${settings.apiKey}`,
+              },
+              body: JSON.stringify({
+                model: settings.aiModel || 'gpt-4o-mini',
+                messages: [
+                  {
+                    role: 'system',
+                    content:
+                      'Você é um dicionário inteligente de inglês. Analise a palavra alvo dentro do contexto da frase fornecida. Retorne a tradução mais adequada para este contexto específico e uma breve explicação em português do papel e significado da palavra na frase. Responda apenas com JSON válido: {"translation": "...", "explanation": "..."}',
+                  },
+                  {
+                    role: 'user',
+                    content: `Palavra: "${cleanWord}"\nFrase de contexto: "${sentence}"`,
+                  },
+                ],
+                response_format: { type: 'json_object' },
+              }),
+            })
+            const data = await res.json()
+            if (data.error) throw new Error(data.error.message)
+            result = JSON.parse(data.choices[0].message.content)
+          }
 
-          const result = JSON.parse(data.choices[0].message.content)
           setWordData({
             translation: result.translation || cleanWord,
             explanation: result.explanation || 'Sem explicação disponível.',
@@ -128,7 +158,7 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
 
       fetchDefinition()
     }
-  }, [open, cleanWord, sentence, settings.apiKey, settings.aiModel, wordData])
+  }, [open, cleanWord, sentence, settings.apiKey, settings.aiModel, settings.aiProvider, wordData])
 
   if (!cleanWord) return <span>{word}</span>
 

@@ -2,10 +2,15 @@ import { Button } from '@/components/ui/button'
 import { Play, Map } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from '@/hooks/use-toast'
+import { useStore } from '@/store/main'
 
 export function HeroWelcome() {
   const navigate = useNavigate()
   const { toast } = useToast()
+  const { stats } = useStore()
+
+  const levelName =
+    stats.xp < 150 ? 'Iniciante' : stats.xp < 600 ? 'Intermediário' : 'Avançado Fluente'
 
   return (
     <div className="relative overflow-hidden rounded-[32px] bg-card border border-border p-8 md:p-12 shadow-sm hover:shadow-md transition-all duration-300 ease-out flex flex-col md:flex-row items-center justify-between gap-8 group">
@@ -16,7 +21,7 @@ export function HeroWelcome() {
       <div className="relative z-10 flex-1 max-w-xl">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border/60 text-xs font-bold tracking-wider text-muted-foreground mb-6 shadow-sm">
           <span className="w-2 h-2 rounded-full bg-warning animate-pulse" />
-          SESSÃO RECOMENDADA
+          NÍVEL: {levelName.toUpperCase()} • {stats.xp} XP
         </div>
 
         <h2 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight leading-tight mb-4">
@@ -27,8 +32,8 @@ export function HeroWelcome() {
         </h2>
 
         <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-          Você está a 85% do seu objetivo semanal. Mantenha o foco para desbloquear o Certificado
-          B2.
+          Sua jornada está incrível! Complete os exercícios diários e mantenha a consistência para
+          alcançar novos níveis de fluência.
         </p>
 
         <div className="flex flex-wrap gap-4">

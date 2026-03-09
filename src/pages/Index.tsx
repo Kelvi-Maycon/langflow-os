@@ -6,10 +6,12 @@ import { ProgressionRoadmap } from '@/components/dashboard/ProgressionRoadmap'
 import { StatsSidebar } from '@/components/dashboard/StatsSidebar'
 import { CollectionsSection } from '@/components/dashboard/CollectionsSection'
 import { useToast } from '@/hooks/use-toast'
+import { useStore } from '@/store/main'
 import { useState } from 'react'
 
 export default function Index() {
   const { toast } = useToast()
+  const { stats } = useStore()
   const [searchValue, setSearchValue] = useState('')
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -22,6 +24,12 @@ export default function Index() {
     }
   }
 
+  const currentDate = new Date().toLocaleDateString('pt-BR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'short',
+  })
+
   return (
     <div className="space-y-8 animate-fade-in pb-12">
       {/* Top Bar Area */}
@@ -29,7 +37,7 @@ export default function Index() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Olá, Bruno!</h1>
           <p className="text-xs font-bold tracking-widest text-muted-foreground mt-1 uppercase">
-            Bom dia • Quinta-feira, 24 Out
+            {currentDate}
           </p>
         </div>
 
@@ -49,14 +57,13 @@ export default function Index() {
             onClick={() =>
               toast({
                 title: '🔥 Ofensiva Ativa!',
-                description:
-                  'Você está há 12 dias consecutivos estudando. Continue assim para bater seu recorde!',
+                description: `Você está há ${stats.streak} dias consecutivos estudando. Continue assim para ganhar bônus de XP!`,
               })
             }
             className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-4 py-2 rounded-full text-orange-600 font-bold text-sm shadow-sm hover:scale-[1.02] active:scale-95 transition-all duration-300"
           >
             <Flame className="w-4 h-4 fill-current text-orange-500" />
-            12 Dias
+            {stats.streak} Dias
           </button>
 
           <button

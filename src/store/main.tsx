@@ -19,6 +19,7 @@ interface StoreContextType extends AppState {
 
 const defaultSettings: UserSettings = {
   level: 'B1',
+  aiProvider: 'openai',
   apiKey: '',
   dailyGoal: 20,
   srsMultiplier: 1.2,
@@ -31,6 +32,9 @@ const defaultStats: UserStats = {
   practiceCorrect: 0,
   flashcardAttempts: 0,
   flashcardCorrect: 0,
+  xp: 0,
+  streak: 0,
+  lastActiveDate: Date.now(),
 }
 
 const mockWords: WordEntry[] = [
@@ -58,18 +62,6 @@ const mockWords: WordEntry[] = [
     repetitions: 1,
     createdAt: Date.now() - 100000,
   },
-  {
-    id: '3',
-    word: 'ubiquitous',
-    translation: 'onipresente',
-    contextSentence: 'Smartphones have become ubiquitous in modern society.',
-    status: 'srs',
-    nextReviewDate: Date.now() - 10000,
-    interval: 6,
-    easeFactor: 2.6,
-    repetitions: 2,
-    createdAt: Date.now() - 200000,
-  },
 ]
 
 const StoreContext = createContext<StoreContextType | null>(null)
@@ -90,7 +82,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const [stats, setStats] = useState<UserStats>(() => {
     const saved = localStorage.getItem('langflow_stats')
-    if (saved) return { ...defaultStats, ...JSON.parse(saved) }
+    if (saved) {
+      const parsed = { ...defaultStats, ...JSON.parse(saved) }
+      const now = new Date()
+      const last = new Date(parsed.lastActiveDate)
+      const diffDays = Math.floor((now.getTime() - last.getTime()) / (1000 * 3600 * 24))
+      if (diffDays > 1) {
+        parsed.streak = 0
+      }
+      return parsed
+    }
     return defaultStats
   })
 
@@ -146,19 +147,45 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const updateSettings = (newSettings: Partial<UserSettings>) =>
     setSettings((prev) => ({ ...prev, ...newSettings }))
 
+  const updateEngagement = () => {
+    setStats((prev) => {
+      const now = Date.now()
+      const lastDate = new Date(prev.lastActiveDate)
+      const currDate = new Date(now)
+      const isSameDay = lastDate.toDateString() === currDate.toDateString()
+      const isNextDay =
+        new Date(lastDate.getTime() + 86400000).toDateString() === currDate.toDateString()
+
+      let newStreak = prev.streak
+      if (isNextDay) newStreak += 1
+      else if (!isSameDay && !isNextDay) newStreak = 1
+      else if (newStreak === 0) newStreak = 1
+
+      return {
+        ...prev,
+        streak: newStreak,
+        lastActiveDate: now,
+      }
+    })
+  }
+
   const recordPracticeAttempt = (correct: boolean) => {
+    updateEngagement()
     setStats((prev) => ({
       ...prev,
       practiceAttempts: (prev.practiceAttempts || 0) + 1,
       practiceCorrect: (prev.practiceCorrect || 0) + (correct ? 1 : 0),
+      xp: (prev.xp || 0) + (correct ? 10 : 2),
     }))
   }
 
   const recordFlashcardAttempt = (correct: boolean) => {
+    updateEngagement()
     setStats((prev) => ({
       ...prev,
       flashcardAttempts: (prev.flashcardAttempts || 0) + 1,
       flashcardCorrect: (prev.flashcardCorrect || 0) + (correct ? 1 : 0),
+      xp: (prev.xp || 0) + (correct ? 15 : 5),
     }))
   }
 

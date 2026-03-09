@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { Trophy, BookOpen, Zap, BrainCircuit } from 'lucide-react'
+import { Trophy, BookOpen, BrainCircuit, Star } from 'lucide-react'
 import { WeeklyChart } from './WeeklyChart'
 import { useToast } from '@/hooks/use-toast'
 import { useStore } from '@/store/main'
@@ -12,11 +12,6 @@ export function StatsSidebar() {
   const totalWords = words.length
   const goal = 3000
   const progress = Math.min((totalWords / goal) * 100, 100)
-
-  const practiceAccuracy =
-    stats.practiceAttempts > 0
-      ? Math.round((stats.practiceCorrect / stats.practiceAttempts) * 100)
-      : 0
 
   const flashcardAccuracy =
     stats.flashcardAttempts > 0
@@ -92,19 +87,19 @@ export function StatsSidebar() {
         <Card
           onClick={() =>
             toast({
-              title: 'Prática Rápida',
-              description: `Você acertou ${stats.practiceCorrect} de ${stats.practiceAttempts} tentativas na prática.`,
+              title: 'Experiência Total',
+              description: `Continue praticando e revisando para subir de nível e ganhar mais XP.`,
             })
           }
           className="p-5 bg-card border-border shadow-sm flex flex-col items-center text-center justify-center gap-3 transition-all duration-300 ease-out hover:scale-[1.04] hover:shadow-md active:scale-[0.98] cursor-pointer rounded-[24px]"
         >
-          <div className="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center">
-            <Zap className="w-5 h-5 text-pink-500" />
+          <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center">
+            <Star className="w-5 h-5 text-orange-500" />
           </div>
           <div>
-            <div className="text-xl font-bold text-foreground">{practiceAccuracy}%</div>
+            <div className="text-xl font-bold text-foreground">{stats.xp}</div>
             <div className="text-[10px] font-bold tracking-wider text-muted-foreground mt-0.5">
-              PRECISÃO PRÁTICA
+              XP TOTAL
             </div>
           </div>
         </Card>

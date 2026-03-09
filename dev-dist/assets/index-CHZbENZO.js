@@ -19049,7 +19049,7 @@ var BrainCircuit = createLucideIcon("brain-circuit", [
 		key: "1e43v0"
 	}]
 ]);
-var Check = createLucideIcon("check", [["path", {
+var Check$1 = createLucideIcon("check", [["path", {
 	d: "M20 6 9 17l-5-5",
 	key: "1gmf2c"
 }]]);
@@ -19430,6 +19430,10 @@ var SquareLibrary = createLucideIcon("square-library", [
 		key: "1m7qm5"
 	}]
 ]);
+var Star = createLucideIcon("star", [["path", {
+	d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
+	key: "r04s7s"
+}]]);
 var Trash2 = createLucideIcon("trash-2", [
 	["path", {
 		d: "M10 11v6",
@@ -19476,6 +19480,20 @@ var Trophy = createLucideIcon("trophy", [
 	["path", {
 		d: "M6 9H4.5a1 1 0 0 1 0-5H6",
 		key: "tex48p"
+	}]
+]);
+var Upload = createLucideIcon("upload", [
+	["path", {
+		d: "M12 3v12",
+		key: "1x0j5s"
+	}],
+	["path", {
+		d: "m17 8-5-5-5 5",
+		key: "7q97r8"
+	}],
+	["path", {
+		d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4",
+		key: "ih7n3h"
 	}]
 ]);
 var X = createLucideIcon("x", [["path", {
@@ -25964,9 +25982,209 @@ var Button = import_react.forwardRef(({ className, variant, size: size$3, asChil
 	});
 });
 Button.displayName = "Button";
+function calculateSM2(quality, repetitions, previousInterval, previousEaseFactor, multiplier = 1) {
+	let interval = 0;
+	let easeFactor = previousEaseFactor + (.1 - (5 - quality) * (.08 + (5 - quality) * .02));
+	if (easeFactor < 1.3) easeFactor = 1.3;
+	if (quality < 3) {
+		repetitions = 0;
+		interval = 1;
+	} else {
+		if (repetitions === 0) interval = 1;
+		else if (repetitions === 1) interval = 6;
+		else interval = Math.round(previousInterval * easeFactor * multiplier);
+		repetitions++;
+	}
+	return {
+		interval,
+		easeFactor,
+		repetitions
+	};
+}
+function getNextReviewDate(intervalDays) {
+	const date$1 = /* @__PURE__ */ new Date();
+	date$1.setDate(date$1.getDate() + intervalDays);
+	return date$1.getTime();
+}
+var defaultSettings = {
+	level: "B1",
+	aiProvider: "openai",
+	apiKey: "",
+	dailyGoal: 20,
+	srsMultiplier: 1.2,
+	complexity: "intermediate",
+	aiModel: "gpt-4o-mini"
+};
+var defaultStats = {
+	practiceAttempts: 0,
+	practiceCorrect: 0,
+	flashcardAttempts: 0,
+	flashcardCorrect: 0,
+	xp: 0,
+	streak: 0,
+	lastActiveDate: Date.now()
+};
+var mockWords = [{
+	id: "1",
+	word: "serendipity",
+	translation: "serendipidade",
+	contextSentence: "Finding that old photograph was a moment of pure serendipity.",
+	status: "builder",
+	nextReviewDate: Date.now() - 1e4,
+	interval: 1,
+	easeFactor: 2.5,
+	repetitions: 0,
+	createdAt: Date.now()
+}, {
+	id: "2",
+	word: "ephemeral",
+	translation: "efêmero",
+	contextSentence: "The beauty of a sunset is ephemeral.",
+	status: "srs",
+	nextReviewDate: Date.now() - 864e5,
+	interval: 1,
+	easeFactor: 2.5,
+	repetitions: 1,
+	createdAt: Date.now() - 1e5
+}];
+var StoreContext = (0, import_react.createContext)(null);
+function StoreProvider({ children }) {
+	const [words, setWords] = (0, import_react.useState)(() => {
+		const saved = localStorage.getItem("langflow_words");
+		return saved ? JSON.parse(saved) : mockWords;
+	});
+	const [settings, setSettings] = (0, import_react.useState)(() => {
+		const savedConfig = localStorage.getItem("langflow_config");
+		if (savedConfig) return {
+			...defaultSettings,
+			...JSON.parse(savedConfig)
+		};
+		const savedSettings = localStorage.getItem("langflow_settings");
+		if (savedSettings) return {
+			...defaultSettings,
+			...JSON.parse(savedSettings)
+		};
+		return defaultSettings;
+	});
+	const [stats, setStats] = (0, import_react.useState)(() => {
+		const saved = localStorage.getItem("langflow_stats");
+		if (saved) {
+			const parsed = {
+				...defaultStats,
+				...JSON.parse(saved)
+			};
+			const now$2 = /* @__PURE__ */ new Date();
+			const last$2 = new Date(parsed.lastActiveDate);
+			if (Math.floor((now$2.getTime() - last$2.getTime()) / (1e3 * 3600 * 24)) > 1) parsed.streak = 0;
+			return parsed;
+		}
+		return defaultStats;
+	});
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem("langflow_words", JSON.stringify(words));
+	}, [words]);
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem("langflow_config", JSON.stringify(settings));
+	}, [settings]);
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem("langflow_stats", JSON.stringify(stats));
+	}, [stats]);
+	const addWord = (data$1) => {
+		const newWord = {
+			...data$1,
+			id: crypto.randomUUID(),
+			createdAt: Date.now(),
+			nextReviewDate: Date.now(),
+			interval: 0,
+			easeFactor: 2.5,
+			repetitions: 0
+		};
+		setWords((prev) => [newWord, ...prev]);
+	};
+	const updateWordStatus = (id, status) => {
+		setWords((prev) => prev.map((w) => w.id === id ? {
+			...w,
+			status
+		} : w));
+	};
+	const reviewWord = (id, quality) => {
+		setWords((prev) => prev.map((w) => {
+			if (w.id !== id) return w;
+			const sm2 = calculateSM2(quality, w.repetitions, w.interval, w.easeFactor, settings.srsMultiplier);
+			const nextReviewDate = getNextReviewDate(sm2.interval);
+			const status = sm2.interval > 21 ? "mastered" : "srs";
+			return {
+				...w,
+				...sm2,
+				nextReviewDate,
+				status
+			};
+		}));
+	};
+	const removeWord = (id) => setWords((prev) => prev.filter((w) => w.id !== id));
+	const updateSettings = (newSettings) => setSettings((prev) => ({
+		...prev,
+		...newSettings
+	}));
+	const updateEngagement = () => {
+		setStats((prev) => {
+			const now$2 = Date.now();
+			const lastDate = new Date(prev.lastActiveDate);
+			const currDate = new Date(now$2);
+			const isSameDay = lastDate.toDateString() === currDate.toDateString();
+			const isNextDay = new Date(lastDate.getTime() + 864e5).toDateString() === currDate.toDateString();
+			let newStreak = prev.streak;
+			if (isNextDay) newStreak += 1;
+			else if (!isSameDay && !isNextDay) newStreak = 1;
+			else if (newStreak === 0) newStreak = 1;
+			return {
+				...prev,
+				streak: newStreak,
+				lastActiveDate: now$2
+			};
+		});
+	};
+	const recordPracticeAttempt = (correct) => {
+		updateEngagement();
+		setStats((prev) => ({
+			...prev,
+			practiceAttempts: (prev.practiceAttempts || 0) + 1,
+			practiceCorrect: (prev.practiceCorrect || 0) + (correct ? 1 : 0),
+			xp: (prev.xp || 0) + (correct ? 10 : 2)
+		}));
+	};
+	const recordFlashcardAttempt = (correct) => {
+		updateEngagement();
+		setStats((prev) => ({
+			...prev,
+			flashcardAttempts: (prev.flashcardAttempts || 0) + 1,
+			flashcardCorrect: (prev.flashcardCorrect || 0) + (correct ? 1 : 0),
+			xp: (prev.xp || 0) + (correct ? 15 : 5)
+		}));
+	};
+	return import_react.createElement(StoreContext.Provider, { value: {
+		words,
+		settings,
+		stats,
+		addWord,
+		updateWordStatus,
+		reviewWord,
+		updateSettings,
+		removeWord,
+		recordPracticeAttempt,
+		recordFlashcardAttempt
+	} }, children);
+}
+const useStore = () => {
+	const ctx = (0, import_react.useContext)(StoreContext);
+	if (!ctx) throw new Error("useStore must be used within StoreProvider");
+	return ctx;
+};
 function HeroWelcome() {
 	const navigate = useNavigate();
 	const { toast: toast$2 } = useToast();
+	const { stats } = useStore();
+	const levelName = stats.xp < 150 ? "Iniciante" : stats.xp < 600 ? "Intermediário" : "Avançado Fluente";
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "relative overflow-hidden rounded-[32px] bg-card border border-border p-8 md:p-12 shadow-sm hover:shadow-md transition-all duration-300 ease-out flex flex-col md:flex-row items-center justify-between gap-8 group",
 		children: [
@@ -25977,7 +26195,14 @@ function HeroWelcome() {
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border/60 text-xs font-bold tracking-wider text-muted-foreground mb-6 shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "w-2 h-2 rounded-full bg-warning animate-pulse" }), "SESSÃO RECOMENDADA"]
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "w-2 h-2 rounded-full bg-warning animate-pulse" }),
+							"NÍVEL: ",
+							levelName.toUpperCase(),
+							" • ",
+							stats.xp,
+							" XP"
+						]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
 						className: "text-4xl md:text-5xl font-extrabold text-foreground tracking-tight leading-tight mb-4",
@@ -25992,7 +26217,7 @@ function HeroWelcome() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 						className: "text-lg text-muted-foreground mb-8 leading-relaxed",
-						children: "Você está a 85% do seu objetivo semanal. Mantenha o foco para desbloquear o Certificado B2."
+						children: "Sua jornada está incrível! Complete os exercícios diários e mantenha a consistência para alcançar novos níveis de fluência."
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex flex-wrap gap-4",
@@ -26172,7 +26397,7 @@ var initialMissions = [
 		title: "Leitura Matinal",
 		subtitle: "Artigo: The Future of AI Design • 15 min",
 		xp: "+50 XP",
-		icon: Check,
+		icon: Check$1,
 		iconBg: "bg-success/15",
 		iconColor: "text-success",
 		completed: true
@@ -26214,7 +26439,7 @@ function MissionsToday() {
 					...m,
 					completed: true,
 					progress: 100,
-					icon: Check,
+					icon: Check$1,
 					iconBg: "bg-success/15",
 					iconColor: "text-success"
 				};
@@ -26342,7 +26567,7 @@ function ProgressionRoadmap() {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: `w-10 h-10 rounded-full flex items-center justify-center border-[3px] transition-transform duration-300 ease-out group-hover:scale-110 ${step.status === "completed" ? "bg-foreground border-foreground text-background shadow-md" : step.status === "current" ? "bg-pink-500 border-pink-500/30 text-white shadow-[0_0_20px_rgba(236,72,153,0.3)] scale-125 group-hover:scale-[1.35]" : "bg-card border-border text-muted-foreground/60 shadow-sm"}`,
 							children: [
-								step.status === "completed" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "w-5 h-5" }),
+								step.status === "completed" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check$1, { className: "w-5 h-5" }),
 								step.status === "current" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "w-3 h-3 bg-white rounded-full animate-pulse" }),
 								step.status === "locked" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Lock, { className: "w-4 h-4" })
 							]
@@ -46575,194 +46800,12 @@ function WeeklyChart() {
 		]
 	});
 }
-function calculateSM2(quality, repetitions, previousInterval, previousEaseFactor, multiplier = 1) {
-	let interval = 0;
-	let easeFactor = previousEaseFactor + (.1 - (5 - quality) * (.08 + (5 - quality) * .02));
-	if (easeFactor < 1.3) easeFactor = 1.3;
-	if (quality < 3) {
-		repetitions = 0;
-		interval = 1;
-	} else {
-		if (repetitions === 0) interval = 1;
-		else if (repetitions === 1) interval = 6;
-		else interval = Math.round(previousInterval * easeFactor * multiplier);
-		repetitions++;
-	}
-	return {
-		interval,
-		easeFactor,
-		repetitions
-	};
-}
-function getNextReviewDate(intervalDays) {
-	const date$1 = /* @__PURE__ */ new Date();
-	date$1.setDate(date$1.getDate() + intervalDays);
-	return date$1.getTime();
-}
-var defaultSettings = {
-	level: "B1",
-	apiKey: "",
-	dailyGoal: 20,
-	srsMultiplier: 1.2,
-	complexity: "intermediate",
-	aiModel: "gpt-4o-mini"
-};
-var defaultStats = {
-	practiceAttempts: 0,
-	practiceCorrect: 0,
-	flashcardAttempts: 0,
-	flashcardCorrect: 0
-};
-var mockWords = [
-	{
-		id: "1",
-		word: "serendipity",
-		translation: "serendipidade",
-		contextSentence: "Finding that old photograph was a moment of pure serendipity.",
-		status: "builder",
-		nextReviewDate: Date.now() - 1e4,
-		interval: 1,
-		easeFactor: 2.5,
-		repetitions: 0,
-		createdAt: Date.now()
-	},
-	{
-		id: "2",
-		word: "ephemeral",
-		translation: "efêmero",
-		contextSentence: "The beauty of a sunset is ephemeral.",
-		status: "srs",
-		nextReviewDate: Date.now() - 864e5,
-		interval: 1,
-		easeFactor: 2.5,
-		repetitions: 1,
-		createdAt: Date.now() - 1e5
-	},
-	{
-		id: "3",
-		word: "ubiquitous",
-		translation: "onipresente",
-		contextSentence: "Smartphones have become ubiquitous in modern society.",
-		status: "srs",
-		nextReviewDate: Date.now() - 1e4,
-		interval: 6,
-		easeFactor: 2.6,
-		repetitions: 2,
-		createdAt: Date.now() - 2e5
-	}
-];
-var StoreContext = (0, import_react.createContext)(null);
-function StoreProvider({ children }) {
-	const [words, setWords] = (0, import_react.useState)(() => {
-		const saved = localStorage.getItem("langflow_words");
-		return saved ? JSON.parse(saved) : mockWords;
-	});
-	const [settings, setSettings] = (0, import_react.useState)(() => {
-		const savedConfig = localStorage.getItem("langflow_config");
-		if (savedConfig) return {
-			...defaultSettings,
-			...JSON.parse(savedConfig)
-		};
-		const savedSettings = localStorage.getItem("langflow_settings");
-		if (savedSettings) return {
-			...defaultSettings,
-			...JSON.parse(savedSettings)
-		};
-		return defaultSettings;
-	});
-	const [stats, setStats] = (0, import_react.useState)(() => {
-		const saved = localStorage.getItem("langflow_stats");
-		if (saved) return {
-			...defaultStats,
-			...JSON.parse(saved)
-		};
-		return defaultStats;
-	});
-	(0, import_react.useEffect)(() => {
-		localStorage.setItem("langflow_words", JSON.stringify(words));
-	}, [words]);
-	(0, import_react.useEffect)(() => {
-		localStorage.setItem("langflow_config", JSON.stringify(settings));
-	}, [settings]);
-	(0, import_react.useEffect)(() => {
-		localStorage.setItem("langflow_stats", JSON.stringify(stats));
-	}, [stats]);
-	const addWord = (data$1) => {
-		const newWord = {
-			...data$1,
-			id: crypto.randomUUID(),
-			createdAt: Date.now(),
-			nextReviewDate: Date.now(),
-			interval: 0,
-			easeFactor: 2.5,
-			repetitions: 0
-		};
-		setWords((prev) => [newWord, ...prev]);
-	};
-	const updateWordStatus = (id, status) => {
-		setWords((prev) => prev.map((w) => w.id === id ? {
-			...w,
-			status
-		} : w));
-	};
-	const reviewWord = (id, quality) => {
-		setWords((prev) => prev.map((w) => {
-			if (w.id !== id) return w;
-			const sm2 = calculateSM2(quality, w.repetitions, w.interval, w.easeFactor, settings.srsMultiplier);
-			const nextReviewDate = getNextReviewDate(sm2.interval);
-			const status = sm2.interval > 21 ? "mastered" : "srs";
-			return {
-				...w,
-				...sm2,
-				nextReviewDate,
-				status
-			};
-		}));
-	};
-	const removeWord = (id) => setWords((prev) => prev.filter((w) => w.id !== id));
-	const updateSettings = (newSettings) => setSettings((prev) => ({
-		...prev,
-		...newSettings
-	}));
-	const recordPracticeAttempt = (correct) => {
-		setStats((prev) => ({
-			...prev,
-			practiceAttempts: (prev.practiceAttempts || 0) + 1,
-			practiceCorrect: (prev.practiceCorrect || 0) + (correct ? 1 : 0)
-		}));
-	};
-	const recordFlashcardAttempt = (correct) => {
-		setStats((prev) => ({
-			...prev,
-			flashcardAttempts: (prev.flashcardAttempts || 0) + 1,
-			flashcardCorrect: (prev.flashcardCorrect || 0) + (correct ? 1 : 0)
-		}));
-	};
-	return import_react.createElement(StoreContext.Provider, { value: {
-		words,
-		settings,
-		stats,
-		addWord,
-		updateWordStatus,
-		reviewWord,
-		updateSettings,
-		removeWord,
-		recordPracticeAttempt,
-		recordFlashcardAttempt
-	} }, children);
-}
-const useStore = () => {
-	const ctx = (0, import_react.useContext)(StoreContext);
-	if (!ctx) throw new Error("useStore must be used within StoreProvider");
-	return ctx;
-};
 function StatsSidebar() {
 	const { toast: toast$2 } = useToast();
 	const { words, stats } = useStore();
 	const totalWords = words.length;
 	const goal = 3e3;
 	const progress = Math.min(totalWords / goal * 100, 100);
-	const practiceAccuracy = stats.practiceAttempts > 0 ? Math.round(stats.practiceCorrect / stats.practiceAttempts * 100) : 0;
 	const flashcardAccuracy = stats.flashcardAttempts > 0 ? Math.round(stats.flashcardCorrect / stats.flashcardAttempts * 100) : 0;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6",
@@ -46841,19 +46884,19 @@ function StatsSidebar() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 						onClick: () => toast$2({
-							title: "Prática Rápida",
-							description: `Você acertou ${stats.practiceCorrect} de ${stats.practiceAttempts} tentativas na prática.`
+							title: "Experiência Total",
+							description: `Continue praticando e revisando para subir de nível e ganhar mais XP.`
 						}),
 						className: "p-5 bg-card border-border shadow-sm flex flex-col items-center text-center justify-center gap-3 transition-all duration-300 ease-out hover:scale-[1.04] hover:shadow-md active:scale-[0.98] cursor-pointer rounded-[24px]",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-5 h-5 text-pink-500" })
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Star, { className: "w-5 h-5 text-orange-500" })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "text-xl font-bold text-foreground",
-							children: [practiceAccuracy, "%"]
+							children: stats.xp
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "text-[10px] font-bold tracking-wider text-muted-foreground mt-0.5",
-							children: "PRECISÃO PRÁTICA"
+							children: "XP TOTAL"
 						})] })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
@@ -46958,6 +47001,7 @@ function CollectionsSection() {
 }
 function Index() {
 	const { toast: toast$2 } = useToast();
+	const { stats } = useStore();
 	const [searchValue, setSearchValue] = (0, import_react.useState)("");
 	const handleSearch = (e) => {
 		if (e.key === "Enter" && searchValue.trim()) {
@@ -46968,6 +47012,11 @@ function Index() {
 			setSearchValue("");
 		}
 	};
+	const currentDate = (/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR", {
+		weekday: "long",
+		day: "numeric",
+		month: "short"
+	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-8 animate-fade-in pb-12",
 		children: [
@@ -46978,7 +47027,7 @@ function Index() {
 					children: "Olá, Bruno!"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-xs font-bold tracking-widest text-muted-foreground mt-1 uppercase",
-					children: "Bom dia • Quinta-feira, 24 Out"
+					children: currentDate
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center gap-3",
 					children: [
@@ -46995,10 +47044,14 @@ function Index() {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 							onClick: () => toast$2({
 								title: "🔥 Ofensiva Ativa!",
-								description: "Você está há 12 dias consecutivos estudando. Continue assim para bater seu recorde!"
+								description: `Você está há ${stats.streak} dias consecutivos estudando. Continue assim para ganhar bônus de XP!`
 							}),
 							className: "flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-4 py-2 rounded-full text-orange-600 font-bold text-sm shadow-sm hover:scale-[1.02] active:scale-95 transition-all duration-300",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Flame, { className: "w-4 h-4 fill-current text-orange-500" }), "12 Dias"]
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Flame, { className: "w-4 h-4 fill-current text-orange-500" }),
+								stats.streak,
+								" Dias"
+							]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 							onClick: () => toast$2({
@@ -47352,33 +47405,47 @@ function WordInteraction({ word, sentence, onCapture }) {
 					setTimeout(() => {
 						setWordData(mockDictionary[cleanWord] || {
 							translation: `tradução de "${cleanWord}"`,
-							explanation: `(Modo Offline) Análise simulada. Configure sua API Key para usar o modelo ${settings.aiModel || "gpt-4o-mini"} em tempo real.`
+							explanation: `(Modo Offline) Análise simulada. Configure sua API Key do ${settings.aiProvider === "gemini" ? "Gemini" : "OpenAI"} para explicações em tempo real.`
 						});
 						setIsLoading(false);
 					}, 600);
 					return;
 				}
 				try {
-					const data$1 = await (await fetch("https://api.openai.com/v1/chat/completions", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${settings.apiKey}`
-						},
-						body: JSON.stringify({
-							model: settings.aiModel || "gpt-4o-mini",
-							messages: [{
-								role: "system",
-								content: "Você é um dicionário inteligente de inglês. Analise a palavra alvo dentro do contexto da frase fornecida. Retorne a tradução mais adequada para este contexto específico e uma breve explicação em português do papel e significado da palavra na frase. Responda apenas com JSON válido: {\"translation\": \"...\", \"explanation\": \"...\"}"
-							}, {
-								role: "user",
-								content: `Palavra: "${cleanWord}"\nFrase de contexto: "${sentence}"`
-							}],
-							response_format: { type: "json_object" }
-						})
-					})).json();
-					if (data$1.error) throw new Error(data$1.error.message);
-					const result = JSON.parse(data$1.choices[0].message.content);
+					let result = null;
+					if (settings.aiProvider === "gemini") {
+						const data$1 = await (await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${settings.aiModel || "gemini-1.5-flash"}:generateContent?key=${settings.apiKey}`, {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({
+								contents: [{ parts: [{ text: `Você é um dicionário inteligente de inglês. Analise a palavra alvo dentro do contexto da frase fornecida. Retorne a tradução mais adequada para este contexto específico e uma breve explicação em português do papel e significado da palavra na frase. Responda apenas com JSON válido: {"translation": "...", "explanation": "..."}\n\nPalavra: "${cleanWord}"\nFrase: "${sentence}"` }] }],
+								generationConfig: { responseMimeType: "application/json" }
+							})
+						})).json();
+						if (data$1.error) throw new Error(data$1.error.message);
+						result = JSON.parse(data$1.candidates[0].content.parts[0].text);
+					} else {
+						const data$1 = await (await fetch("https://api.openai.com/v1/chat/completions", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+								Authorization: `Bearer ${settings.apiKey}`
+							},
+							body: JSON.stringify({
+								model: settings.aiModel || "gpt-4o-mini",
+								messages: [{
+									role: "system",
+									content: "Você é um dicionário inteligente de inglês. Analise a palavra alvo dentro do contexto da frase fornecida. Retorne a tradução mais adequada para este contexto específico e uma breve explicação em português do papel e significado da palavra na frase. Responda apenas com JSON válido: {\"translation\": \"...\", \"explanation\": \"...\"}"
+								}, {
+									role: "user",
+									content: `Palavra: "${cleanWord}"\nFrase de contexto: "${sentence}"`
+								}],
+								response_format: { type: "json_object" }
+							})
+						})).json();
+						if (data$1.error) throw new Error(data$1.error.message);
+						result = JSON.parse(data$1.choices[0].message.content);
+					}
 					setWordData({
 						translation: result.translation || cleanWord,
 						explanation: result.explanation || "Sem explicação disponível."
@@ -47401,6 +47468,7 @@ function WordInteraction({ word, sentence, onCapture }) {
 		sentence,
 		settings.apiKey,
 		settings.aiModel,
+		settings.aiProvider,
 		wordData
 	]);
 	if (!cleanWord) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: word });
@@ -48492,7 +48560,7 @@ var SelectItem = import_react.forwardRef(({ className, children, ...props }, ref
 	...props,
 	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 		className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemIndicator, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4" }) })
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemIndicator, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check$1, { className: "h-4 w-4" }) })
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ItemText, { children })]
 }));
 SelectItem.displayName = Item.displayName;
@@ -48684,42 +48752,6 @@ function Reader() {
 	});
 }
 var practiceMocks = {
-	the: {
-		pt: "O carro é azul.",
-		en: "The car is blue."
-	},
-	is: {
-		pt: "Ele é alto.",
-		en: "He is tall."
-	},
-	quick: {
-		pt: "A raposa rápida corre.",
-		en: "The quick fox runs."
-	},
-	brown: {
-		pt: "A raposa é marrom.",
-		en: "The fox is brown."
-	},
-	fox: {
-		pt: "A raposa pulou.",
-		en: "The fox jumped."
-	},
-	jumps: {
-		pt: "O gato pula alto.",
-		en: "The cat jumps high."
-	},
-	over: {
-		pt: "O avião voa sobre a cidade.",
-		en: "The plane flies over the city."
-	},
-	lazy: {
-		pt: "O cachorro preguiçoso dorme.",
-		en: "The lazy dog sleeps."
-	},
-	dog: {
-		pt: "O cachorro late.",
-		en: "The dog barks."
-	},
 	serendipity: {
 		pt: "Foi um momento de serendipidade.",
 		en: "It was a moment of serendipity."
@@ -48727,90 +48759,145 @@ var practiceMocks = {
 	ephemeral: {
 		pt: "A beleza é efêmera.",
 		en: "Beauty is ephemeral."
-	},
-	ubiquitous: {
-		pt: "A tecnologia é onipresente hoje.",
-		en: "Technology is ubiquitous today."
 	}
 };
 function Practice() {
 	const { words, updateWordStatus, settings, recordPracticeAttempt } = useStore();
 	const navigate = useNavigate();
+	const { toast: toast$2 } = useToast();
 	const builderWords = (0, import_react.useMemo)(() => words.filter((w) => w.status === "builder"), [words]);
 	const [currentIndex, setCurrentIndex] = (0, import_react.useState)(0);
 	const currentWord = builderWords[currentIndex];
-	const [answer, setAnswer] = (0, import_react.useState)("");
-	const [status, setStatus] = (0, import_react.useState)("idle");
 	const [practiceData, setPracticeData] = (0, import_react.useState)(null);
 	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
+	const [shuffledBlocks, setShuffledBlocks] = (0, import_react.useState)([]);
+	const [selectedIndices, setSelectedIndices] = (0, import_react.useState)([]);
+	const [attempts, setAttempts] = (0, import_react.useState)(0);
+	const [status, setStatus] = (0, import_react.useState)("idle");
+	const [feedback, setFeedback] = (0, import_react.useState)([]);
 	const fetchedId = (0, import_react.useRef)(null);
 	(0, import_react.useEffect)(() => {
 		if (!currentWord || fetchedId.current === currentWord.id) return;
 		fetchedId.current = currentWord.id;
 		setIsLoading(true);
-		setAnswer("");
 		setStatus("idle");
+		setAttempts(0);
+		setSelectedIndices([]);
+		setFeedback([]);
 		const fetchPractice = async () => {
+			let result = null;
 			if (!settings.apiKey) {
 				setTimeout(() => {
-					setPracticeData(practiceMocks[currentWord.word.toLowerCase()] || {
+					result = practiceMocks[currentWord.word.toLowerCase()] || {
 						pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
 						en: `I saw a ${currentWord.word} today.`
-					});
-					setIsLoading(false);
-				}, 500);
+					};
+					setupBlocks(result);
+				}, 800);
 				return;
 			}
 			try {
-				const data$1 = await (await fetch("https://api.openai.com/v1/chat/completions", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${settings.apiKey}`
-					},
-					body: JSON.stringify({
-						model: settings.aiModel || "gpt-4o-mini",
-						messages: [{
-							role: "system",
-							content: "Você é um professor de inglês. Usando a frase de contexto original como base, crie uma frase simples em inglês (máx 8 palavras) focada na palavra alvo. A frase deve ser idêntica ou muito parecida com o contexto, mas simplificada se necessário. Forneça também a tradução natural e exata em português. Retorne apenas JSON: {\"pt\": \"frase em português\", \"en\": \"frase em inglês\"}"
-						}, {
-							role: "user",
-							content: `Palavra alvo: "${currentWord.word}"\nTradução: "${currentWord.translation}"\nContexto original: "${currentWord.contextSentence}"`
-						}],
-						response_format: { type: "json_object" }
-					})
-				})).json();
-				if (data$1.error) throw new Error(data$1.error.message);
-				setPracticeData(JSON.parse(data$1.choices[0].message.content));
+				if (settings.aiProvider === "gemini") {
+					const data$1 = await (await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${settings.aiModel || "gemini-1.5-flash"}:generateContent?key=${settings.apiKey}`, {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							contents: [{ parts: [{ text: `Você é um professor de inglês. Usando a frase de contexto original, crie uma frase simples em inglês focada na palavra alvo. Forneça também a tradução em português. Retorne apenas JSON: {"pt": "frase em português", "en": "frase em inglês"}\nPalavra alvo: "${currentWord.word}"\nContexto: "${currentWord.contextSentence}"` }] }],
+							generationConfig: { responseMimeType: "application/json" }
+						})
+					})).json();
+					if (data$1.error) throw new Error(data$1.error.message);
+					result = JSON.parse(data$1.candidates[0].content.parts[0].text);
+				} else {
+					const data$1 = await (await fetch("https://api.openai.com/v1/chat/completions", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${settings.apiKey}`
+						},
+						body: JSON.stringify({
+							model: settings.aiModel || "gpt-4o-mini",
+							messages: [{
+								role: "system",
+								content: "Você é um professor de inglês. Usando a frase de contexto original, crie uma frase simples em inglês focada na palavra alvo. Forneça também a tradução natural e exata em português. Retorne apenas JSON: {\"pt\": \"frase em português\", \"en\": \"frase em inglês\"}"
+							}, {
+								role: "user",
+								content: `Palavra: "${currentWord.word}"\nTradução: "${currentWord.translation}"\nContexto: "${currentWord.contextSentence}"`
+							}],
+							response_format: { type: "json_object" }
+						})
+					})).json();
+					if (data$1.error) throw new Error(data$1.error.message);
+					result = JSON.parse(data$1.choices[0].message.content);
+				}
 			} catch (err) {
 				console.error(err);
-				setPracticeData(practiceMocks[currentWord.word.toLowerCase()] || {
+				result = practiceMocks[currentWord.word.toLowerCase()] || {
 					pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
 					en: `I saw a ${currentWord.word} today.`
-				});
-			} finally {
-				setIsLoading(false);
+				};
 			}
+			setupBlocks(result);
+		};
+		const setupBlocks = (data$1) => {
+			setPracticeData(data$1);
+			setShuffledBlocks([...data$1.en.split(" ").filter(Boolean).map((text, i) => ({
+				id: i,
+				text
+			}))].sort(() => Math.random() - .5));
+			setIsLoading(false);
 		};
 		fetchPractice();
 	}, [
 		currentWord,
 		settings.apiKey,
-		settings.aiModel
+		settings.aiModel,
+		settings.aiProvider
 	]);
+	const toggleSelect = (id) => {
+		if (status !== "idle" && status !== "checking") return;
+		if (selectedIndices.includes(id)) setSelectedIndices(selectedIndices.filter((x$2) => x$2 !== id));
+		else setSelectedIndices([...selectedIndices, id]);
+		if (status === "checking") setStatus("idle");
+	};
 	const checkAnswer = () => {
 		if (!practiceData) return;
-		const normalize$1 = (str) => str.trim().toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, " ");
-		if (normalize$1(answer) === normalize$1(practiceData.en)) {
+		const targetWords = practiceData.en.split(" ").filter(Boolean);
+		if (selectedIndices.length !== targetWords.length) {
+			toast$2({
+				title: "Faltam blocos",
+				description: "Utilize todas as palavras para montar a frase.",
+				variant: "destructive"
+			});
+			return;
+		}
+		let isCorrect = true;
+		setFeedback(selectedIndices.map((id, i) => {
+			const correct = shuffledBlocks.find((b$1) => b$1.id === id).text.toLowerCase().replace(/[.,!?]/g, "") === targetWords[i].toLowerCase().replace(/[.,!?]/g, "");
+			if (!correct) isCorrect = false;
+			return correct;
+		}));
+		if (isCorrect) {
 			setStatus("correct");
 			recordPracticeAttempt(true);
 		} else {
-			setStatus("incorrect");
-			recordPracticeAttempt(false);
+			const newAttempts = attempts + 1;
+			setAttempts(newAttempts);
+			if (newAttempts >= 3) {
+				setStatus("incorrect");
+				recordPracticeAttempt(false);
+			} else {
+				setStatus("checking");
+				setTimeout(() => {
+					setStatus("idle");
+					setFeedback([]);
+					setSelectedIndices([]);
+				}, 1500);
+			}
 		}
 	};
 	const handleNext = () => {
-		if (status === "correct") updateWordStatus(currentWord.id, "srs");
+		if (status === "correct" || status === "incorrect") updateWordStatus(currentWord.id, "srs");
 		if (currentIndex >= builderWords.length - 1) setCurrentIndex(0);
 	};
 	if (builderWords.length === 0) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -48842,10 +48929,10 @@ function Practice() {
 			className: "flex justify-between items-end mb-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
 				className: "text-3xl font-bold tracking-tight text-foreground flex items-center gap-3",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-8 h-8 text-primary" }), "Prática Rápida"]
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-8 h-8 text-primary" }), "Sentence Builder"]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground mt-2 text-lg",
-				children: "Traduza as frases para interiorizar a estrutura."
+				children: "Monte a frase correta ordenando os blocos."
 			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "text-sm font-medium bg-card px-4 py-2 rounded-full border border-border shadow-sm text-foreground",
 				children: [
@@ -48860,84 +48947,85 @@ function Practice() {
 				className: "flex-1 flex flex-col items-center justify-center gap-4",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "w-10 h-10 animate-spin text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-muted-foreground font-medium text-lg animate-pulse",
-					children: "Gerando exercício ideal..."
+					children: "Gerando exercício ideal com IA..."
 				})]
 			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex-1 flex flex-col h-full z-10",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mb-8",
+					className: "mb-8 text-center",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "bg-primary/10 text-primary px-4 py-1.5 rounded-full font-bold text-sm border border-primary/20 uppercase tracking-wider inline-block mb-6",
-						children: "Traduza para o inglês"
+						children: "Construa a frase em inglês"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 						className: "text-3xl md:text-4xl font-medium text-foreground leading-tight",
 						children: practiceData.pt
 					})]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "space-y-6 mt-auto",
+					className: "flex-1 flex flex-col justify-end space-y-6",
 					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-							value: answer,
-							onChange: (e) => {
-								setAnswer(e.target.value);
-								if (status !== "idle") setStatus("idle");
-							},
-							placeholder: "Digite a tradução exata em inglês...",
-							className: cn("h-16 text-xl px-6 transition-all duration-300 rounded-2xl border-2", status === "incorrect" ? "border-destructive focus-visible:ring-destructive focus-visible:border-destructive text-foreground bg-destructive/5" : status === "correct" ? "border-success focus-visible:ring-success focus-visible:border-success bg-success/5 text-success-foreground font-medium" : "bg-background/80 border-border/60 focus-visible:border-primary"),
-							onKeyDown: (e) => {
-								if (e.key === "Enter") {
-									if (status === "correct") handleNext();
-									else if (answer.trim()) checkAnswer();
-								}
-							},
-							autoFocus: true
-						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "min-h-[80px]",
-							children: [status === "incorrect" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "text-destructive flex items-start gap-4 bg-destructive/10 border border-destructive/20 p-5 rounded-2xl animate-fade-in-up",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleX, { className: "w-6 h-6 shrink-0 mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "space-y-1.5",
+							className: cn("min-h-[100px] p-6 rounded-3xl border-2 flex flex-wrap gap-3 items-center transition-colors", selectedIndices.length === 0 ? "border-dashed border-border/80 bg-secondary/20" : "border-solid border-primary/30 bg-primary/5"),
+							children: [selectedIndices.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-muted-foreground/60 italic px-2 font-medium w-full text-center",
+								children: "Clique nos blocos abaixo para inseri-los aqui..."
+							}), selectedIndices.map((id, i) => {
+								const block = shuffledBlocks.find((b$1) => b$1.id === id);
+								let stateClass = "bg-background border-border shadow-sm text-foreground";
+								if (status === "checking") stateClass = feedback[i] ? "bg-success text-success-foreground border-success shadow-[0_0_15px_rgba(22,163,74,0.3)]" : "bg-destructive text-destructive-foreground border-destructive shadow-[0_0_15px_rgba(239,68,68,0.3)]";
+								else if (status === "correct") stateClass = "bg-success text-success-foreground border-success shadow-[0_0_15px_rgba(22,163,74,0.3)]";
+								else if (status === "incorrect") stateClass = "bg-destructive/10 text-destructive border-destructive/30";
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									onClick: () => toggleSelect(id),
+									className: cn("px-5 py-3 rounded-xl font-bold text-lg border-2 transition-all active:scale-95 cursor-pointer", stateClass),
+									children: block.text
+								}, id);
+							})]
+						}),
+						status === "incorrect" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-destructive flex items-start gap-4 bg-destructive/10 border border-destructive/20 p-5 rounded-2xl animate-fade-in-up",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleX, { className: "w-6 h-6 shrink-0 mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-1.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "font-bold text-lg",
+									children: "Tentativas esgotadas"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "text-base opacity-90",
 									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "font-bold text-lg",
-											children: "Tradução incorreta"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-											className: "text-base opacity-90",
-											children: [
-												"A frase exata esperada era:",
-												" ",
-												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", {
-													className: "font-semibold bg-background px-2 py-0.5 rounded-md",
-													children: [
-														"\"",
-														practiceData.en,
-														"\""
-													]
-												})
-											]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-sm opacity-75 mt-2 font-medium",
-											children: "Verifique a estrutura e tente novamente."
+										"A frase correta era:",
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+											className: "font-semibold bg-background px-3 py-1 rounded-md ml-1 shadow-sm border border-border/50",
+											children: practiceData.en
 										})
 									]
 								})]
-							}), status === "correct" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "text-success-foreground flex items-center gap-4 bg-success/10 border border-success/20 p-5 rounded-2xl animate-fade-in-up",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-7 h-7 shrink-0 text-success" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "font-bold text-lg text-success",
-									children: "Excelente! Tradução validada com sucesso."
-								})]
+							})]
+						}),
+						status === "correct" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-success-foreground flex items-center gap-4 bg-success/10 border border-success/20 p-5 rounded-2xl animate-fade-in-up",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-7 h-7 shrink-0 text-success" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-bold text-lg text-success",
+								children: "Excelente! Construção perfeita."
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "pt-4 border-t border-border",
-							children: status === "correct" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							className: "flex flex-wrap justify-center gap-3 py-6",
+							children: shuffledBlocks.map((block) => {
+								const isSelected = selectedIndices.includes(block.id);
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									onClick: () => toggleSelect(block.id),
+									disabled: isSelected || status === "correct" || status === "incorrect",
+									className: cn("px-6 py-3 rounded-xl font-bold text-lg transition-all border-2 active:scale-95", isSelected ? "bg-secondary/50 text-transparent border-transparent shadow-none scale-95 pointer-events-none" : "bg-card border-border shadow-sm hover:bg-secondary text-foreground hover:-translate-y-1 hover:shadow-md cursor-pointer"),
+									children: block.text
+								}, block.id);
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "pt-4 border-t border-border mt-auto",
+							children: status === "correct" || status === "incorrect" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 								onClick: handleNext,
 								size: "lg",
-								className: "w-full h-16 text-lg rounded-2xl group bg-success hover:bg-success/90 text-success-foreground shadow-[0_0_20px_rgba(22,163,74,0.3)] animate-fade-in",
+								className: cn("w-full h-16 text-lg rounded-2xl group shadow-md animate-fade-in", status === "correct" ? "bg-success hover:bg-success/90 text-success-foreground shadow-[0_0_20px_rgba(22,163,74,0.3)]" : "bg-primary hover:bg-primary/90 text-primary-foreground"),
 								children: [
 									currentIndex < builderWords.length - 1 ? "Próxima Palavra" : "Concluir Sessão",
 									" ",
@@ -48947,7 +49035,7 @@ function Practice() {
 								onClick: checkAnswer,
 								size: "lg",
 								className: "w-full h-16 text-lg rounded-2xl shadow-md",
-								disabled: !answer.trim(),
+								disabled: selectedIndices.length === 0,
 								children: "Verificar Resposta"
 							})
 						})
@@ -49088,7 +49176,7 @@ function Flashcards() {
 										e.stopPropagation();
 										handleReview(4);
 									},
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "w-5 h-5 mr-1 group-hover:scale-110 transition-transform" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check$1, { className: "w-5 h-5 mr-1 group-hover:scale-110 transition-transform" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 										className: "font-bold",
 										children: "Bom"
 									})]
@@ -49212,7 +49300,7 @@ function Settings() {
 		try {
 			await new Promise((r$1) => setTimeout(r$1, 1500));
 			if (!localSettings?.apiKey) throw new Error("A Chave de API é obrigatória.");
-			if (!localSettings.apiKey.startsWith("sk-") || localSettings.apiKey.length < 20) throw new Error("Formato inválido. A chave deve começar com \"sk-\" e ter mais de 20 caracteres.");
+			if (localSettings.aiProvider === "openai" && !localSettings.apiKey.startsWith("sk-")) throw new Error("Formato de chave OpenAI inválido. Deve começar com \"sk-\".");
 			toast$2({
 				title: "Conexão bem-sucedida",
 				description: "API Key validada com sucesso.",
@@ -49234,8 +49322,6 @@ function Settings() {
 				"langflow_words",
 				"langflow_config",
 				"langflow_settings",
-				"langflow_sentences",
-				"langflow_flashcards",
 				"langflow_stats"
 			].forEach((k$1) => localStorage.removeItem(k$1));
 			window.location.reload();
@@ -49245,8 +49331,6 @@ function Settings() {
 		const data$1 = {
 			langflow_words: JSON.parse(localStorage.getItem("langflow_words") || "[]"),
 			langflow_config: JSON.parse(localStorage.getItem("langflow_config") || "{}"),
-			langflow_sentences: JSON.parse(localStorage.getItem("langflow_sentences") || "[]"),
-			langflow_flashcards: JSON.parse(localStorage.getItem("langflow_flashcards") || "[]"),
 			langflow_stats: JSON.parse(localStorage.getItem("langflow_stats") || "{}")
 		};
 		const blob = new Blob([JSON.stringify(data$1, null, 2)], { type: "application/json" });
@@ -49258,6 +49342,32 @@ function Settings() {
 		a$1.click();
 		document.body.removeChild(a$1);
 		URL.revokeObjectURL(url);
+	};
+	const handleImport = (e) => {
+		const file = e.target.files?.[0];
+		if (!file) return;
+		const reader = new FileReader();
+		reader.onload = (event) => {
+			try {
+				const data$1 = JSON.parse(event.target?.result);
+				if (data$1.langflow_words) localStorage.setItem("langflow_words", JSON.stringify(data$1.langflow_words));
+				if (data$1.langflow_config) localStorage.setItem("langflow_config", JSON.stringify(data$1.langflow_config));
+				if (data$1.langflow_stats) localStorage.setItem("langflow_stats", JSON.stringify(data$1.langflow_stats));
+				toast$2({
+					title: "Importação Concluída",
+					description: "Recarregando a aplicação com os novos dados...",
+					className: "bg-success text-success-foreground"
+				});
+				setTimeout(() => window.location.reload(), 1500);
+			} catch (err) {
+				toast$2({
+					title: "Erro",
+					description: "Arquivo inválido para importação.",
+					variant: "destructive"
+				});
+			}
+		};
+		reader.readAsText(file);
 	};
 	const formatBytes = (bytes) => {
 		if (!bytes || bytes === 0) return "0 B";
@@ -49272,7 +49382,7 @@ function Settings() {
 		return parseFloat((bytes / Math.pow(k$1, i)).toFixed(2)) + " " + sizes[i];
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-8 animate-fade-in-up max-w-2xl mx-auto pb-12",
+		className: "space-y-8 animate-fade-in-up max-w-3xl mx-auto pb-12 pt-4",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 				className: "text-4xl font-bold tracking-tight text-foreground",
@@ -49281,14 +49391,14 @@ function Settings() {
 				className: "text-muted-foreground mt-2 text-lg",
 				children: "Personalize sua experiência de aprendizado e gerencie seus dados."
 			})] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Preferências e IA" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Defina seu nível e configure as chaves de API para os módulos de geração." })] }),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-					className: "space-y-6",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "grid grid-cols-1 md:grid-cols-2 gap-6",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid grid-cols-1 md:grid-cols-2 gap-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "flex flex-col",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Preferências de Ensino" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Ajuste o seu nível e metas diárias." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "space-y-6 flex-1",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "space-y-3",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nível de Inglês (CEFR)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 									value: localSettings?.level,
@@ -49326,7 +49436,8 @@ function Settings() {
 										]
 									})]
 								})]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "space-y-3",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Meta Diária (Novas Palavras)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 									type: "number",
@@ -49336,129 +49447,209 @@ function Settings() {
 										dailyGoal: parseInt(e.target.value) || 0
 									}))
 								})]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "grid grid-cols-1 md:grid-cols-2 gap-4 bg-secondary/50 p-5 rounded-2xl border border-border/50",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-2 gap-4 bg-secondary/50 p-4 rounded-2xl border border-border/50",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "space-y-1.5",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
 										className: "text-xs text-muted-foreground",
-										children: "Multiplicador de Intervalo (SRS)"
+										children: "Multiplicador SRS"
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 										className: "text-base font-bold text-foreground",
 										children: [(localSettings?.srsMultiplier ?? 1.2).toFixed(1), "x"]
 									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "space-y-1.5",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
 										className: "text-xs text-muted-foreground",
-										children: "Complexidade (Builder)"
+										children: "Complexidade"
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 										className: "text-base font-bold text-foreground capitalize",
 										children: localSettings?.complexity ?? "intermediate"
 									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "col-span-full pt-2",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xs text-muted-foreground",
-										children: "Estes valores são ajustados automaticamente com base no seu nível de inglês."
-									})
-								})
-							]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-3 pt-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Chave de API (OpenAI / Anthropic)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex gap-3",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-									type: "password",
-									placeholder: "sk-...",
-									value: localSettings?.apiKey ?? "",
-									onChange: (e) => setLocalSettings((prev) => ({
+								})]
+							})
+						]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "flex flex-col border-primary/20 bg-primary/5",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+						className: "flex items-center gap-2 text-primary",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PlugZap, { className: "w-5 h-5" }), "Provedor de IA"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "A inteligência artificial é usada para criar exercícios e explicações." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "space-y-6 flex-1",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Plataforma" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: localSettings?.aiProvider,
+									onValueChange: (v) => setLocalSettings((prev) => ({
 										...prev,
-										apiKey: e.target.value
+										aiProvider: v
 									})),
-									className: "flex-1 font-mono"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-									variant: "secondary",
-									onClick: handleTestConnection,
-									disabled: isTesting,
-									className: "h-12 w-12 p-0 rounded-xl md:w-auto md:px-6 bg-background border border-border",
-									children: [isTesting ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "w-5 h-5 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PlugZap, { className: "w-5 h-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "ml-2 sr-only md:not-sr-only",
-										children: "Testar"
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+										className: "h-12 rounded-xl bg-background border-border shadow-sm",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o provedor" })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "openai",
+										children: "OpenAI"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "gemini",
+										children: "Google Gemini"
+									})] })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Modelo Recomendado" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: localSettings?.aiModel,
+									onValueChange: (v) => setLocalSettings((prev) => ({
+										...prev,
+										aiModel: v
+									})),
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+										className: "h-12 rounded-xl bg-background border-border shadow-sm",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione o modelo" })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: localSettings?.aiProvider === "openai" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "gpt-4o-mini",
+											children: "GPT-4o Mini (Rápido)"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "gpt-4o",
+											children: "GPT-4o (Avançado)"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "gpt-3.5-turbo",
+											children: "GPT-3.5 Turbo"
+										})
+									] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "gemini-1.5-flash",
+										children: "Gemini 1.5 Flash (Rápido)"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+										value: "gemini-1.5-pro",
+										children: "Gemini 1.5 Pro (Avançado)"
+									})] }) })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Chave de API" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex gap-3",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+										type: "password",
+										placeholder: localSettings?.aiProvider === "openai" ? "sk-..." : "AIzaSy...",
+										value: localSettings?.apiKey ?? "",
+										onChange: (e) => setLocalSettings((prev) => ({
+											...prev,
+											apiKey: e.target.value
+										})),
+										className: "flex-1 font-mono bg-background"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+										variant: "secondary",
+										onClick: handleTestConnection,
+										disabled: isTesting,
+										className: "h-12 w-12 p-0 rounded-xl bg-background border border-border shadow-sm",
+										children: isTesting ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "w-5 h-5 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "w-5 h-5 text-primary" })
 									})]
 								})]
-							})]
-						})
-					]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
-					className: "bg-secondary/20 border-t border-border/50 flex justify-end px-6 py-5 rounded-b-[24px]",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						onClick: handleSave,
-						className: "gap-2 h-12 px-6",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "w-5 h-5" }), "Salvar Configurações"]
-					})
+							})
+						]
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex justify-end pt-4 pb-8 border-b border-border/60",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					onClick: handleSave,
+					size: "lg",
+					className: "gap-2 h-14 px-8 rounded-full shadow-md",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "w-5 h-5" }), "Salvar Alterações"]
 				})
-			] }),
+			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 				className: "border-destructive/30 bg-destructive/5 relative overflow-hidden",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute top-0 right-0 w-64 h-64 bg-destructive/10 blur-[80px] rounded-full" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-						className: "text-destructive flex items-center gap-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HardDrive, { className: "w-6 h-6" }), "Dados e Armazenamento"]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
-						className: "text-destructive/80",
-						children: "Monitore e exporte os dados armazenados localmente no seu navegador."
-					})] }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-						className: "space-y-8 relative z-10",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-3",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex justify-between text-sm",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-bold text-foreground",
-										children: "Uso de Armazenamento Local"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: "text-muted-foreground font-mono",
-										children: [formatBytes(storageUsage?.bytes), " / 5 MB"]
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
-									value: storageUsage?.percentage ?? 0,
-									className: "h-3"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-									className: "text-xs text-muted-foreground",
-									children: [(storageUsage?.percentage ?? 0).toFixed(1), "% utilizado. Todos os dados são salvos com segurança de forma offline."]
-								})
-							]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex flex-col sm:flex-row gap-4 pt-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+					className: "text-destructive flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HardDrive, { className: "w-6 h-6" }), "Dados e Armazenamento"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
+					className: "text-destructive/80",
+					children: "Todos os seus dados são salvos localmente. Exporte um backup regularmente."
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+					className: "space-y-8 relative z-10",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-3",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex justify-between text-sm",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-bold text-foreground",
+									children: "Uso de Armazenamento Local"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "text-muted-foreground font-mono",
+									children: [formatBytes(storageUsage?.bytes), " / 5 MB"]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
+								value: storageUsage?.percentage ?? 0,
+								className: "h-3"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+								className: "text-xs text-muted-foreground",
+								children: [(storageUsage?.percentage ?? 0).toFixed(1), "% utilizado no navegador."]
+							})
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 								variant: "outline",
-								className: "flex-1 gap-2 h-12 bg-background",
+								className: "gap-2 h-12 bg-background rounded-xl",
 								onClick: handleExport,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "w-5 h-5" }), "Exportar Dados"]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "w-5 h-5" }), "Exportar"]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
+								htmlFor: "import-data",
+								className: "flex items-center justify-center gap-2 h-12 bg-background border border-border rounded-xl cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm font-medium text-sm",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { className: "w-5 h-5" }),
+									"Importar Backup",
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+										id: "import-data",
+										type: "file",
+										accept: ".json",
+										className: "hidden",
+										onChange: handleImport
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 								variant: "destructive",
-								className: "flex-1 gap-2 h-12",
+								className: "gap-2 h-12 rounded-xl",
 								onClick: handleClearData,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "w-5 h-5" }), "Apagar Progresso"]
-							})]
-						})]
-					})
-				]
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "w-5 h-5" }), "Apagar Tudo"]
+							})
+						]
+					})]
+				})]
 			})
 		]
+	});
+}
+function Check(props) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
+		...props,
+		xmlns: "http://www.w3.org/2000/svg",
+		width: "24",
+		height: "24",
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2",
+		strokeLinecap: "round",
+		strokeLinejoin: "round",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M20 6 9 17l-5-5" })
 	});
 }
 var NotFound = () => {
@@ -49544,4 +49735,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BBMyUpz5.js.map
+//# sourceMappingURL=index-CHZbENZO.js.map
