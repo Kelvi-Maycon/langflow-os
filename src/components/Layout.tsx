@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, BookOpen, Zap, BrainCircuit, Menu } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Zap, BrainCircuit, Menu, TrendingUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
@@ -10,6 +10,7 @@ const mainNav = [
   { path: '/reader', label: 'Biblioteca', icon: BookOpen },
   { path: '/practice', label: 'Prática Rápida', icon: Zap, badge: 'HOT' },
   { path: '/flashcards', label: 'Revisão', icon: BrainCircuit },
+  { path: '/evolution', label: 'Evolução', icon: TrendingUp },
 ]
 
 function SidebarContent() {

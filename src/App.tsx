@@ -9,6 +9,7 @@ import Practice from './pages/Practice'
 import Flashcards from './pages/Flashcards'
 import Settings from './pages/Settings'
 import Vocabulary from './pages/Vocabulary'
+import Evolution from './pages/Evolution'
 import NotFound from './pages/NotFound'
 import { StoreProvider } from './store/main'
 
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/reader" element={<Reader />} />
             <Route path="/practice" element={<Practice />} />
             <Route path="/flashcards" element={<Flashcards />} />
+            <Route path="/evolution" element={<Evolution />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/vocabulary" element={<Vocabulary />} />
             <Route path="/builder" element={<Navigate to="/practice" replace />} />
