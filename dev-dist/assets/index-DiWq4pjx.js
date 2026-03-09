@@ -50754,210 +50754,6 @@ function Index() {
 		]
 	});
 }
-var mockDictionary = {
-	the: {
-		translation: "o, a, os, as",
-		explanation: "This is a definite article used to indicate a specific noun that is known to the reader or listener. It helps point out particular objects or people. For example, \"the book\" refers to a specific book."
-	},
-	is: {
-		translation: "é, está",
-		explanation: "This is the third-person singular form of the verb \"to be\" in the present tense. It is used to describe a state of being or existence. For example, \"she is happy\"."
-	},
-	quick: {
-		translation: "rápido",
-		explanation: "An adjective that describes something moving or functioning with high speed. It can refer to physical movement or mental sharpness. For instance, a \"quick learner\"."
-	},
-	brown: {
-		translation: "marrom",
-		explanation: "This word describes a color often found in nature, like wood or soil. It is commonly used as an adjective to detail the appearance of an object or animal."
-	},
-	fox: {
-		translation: "raposa",
-		explanation: "A small to medium-sized carnivorous mammal known for its bushy tail and cleverness. It belongs to the dog family and is often featured in folklore."
-	},
-	serendipity: {
-		translation: "serendipidade",
-		explanation: "Serendipity refers to the occurrence of events by chance in a happy or beneficial way. It describes those lucky moments when you find something wonderful without looking for it. A great example is accidentally discovering a new favorite restaurant."
-	},
-	ephemeral: {
-		translation: "efêmero",
-		explanation: "Ephemeral describes something that lasts for a very short time. It is often used for things like delicate flowers, beautiful sunsets, or passing feelings. The temporary nature of ephemeral things often makes them more precious."
-	},
-	ubiquitous: {
-		translation: "onipresente",
-		explanation: "When something is ubiquitous, it is present, appearing, or found everywhere. In modern times, smartphones have become a ubiquitous part of daily life. It emphasizes how common and widespread something is."
-	}
-};
-function WordInteraction({ word, sentence, onCapture }) {
-	const [open, setOpen] = (0, import_react.useState)(false);
-	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
-	const [wordData, setWordData] = (0, import_react.useState)(null);
-	const { settings, words, addWord, updateWordStatus } = useStore();
-	const { toast: toast$2 } = useToast();
-	const cleanWord = word.replace(/[^\w-]/g, "").toLowerCase();
-	const fetched = (0, import_react.useRef)(false);
-	(0, import_react.useEffect)(() => {
-		if (open && !wordData && !fetched.current) {
-			setIsLoading(true);
-			fetched.current = true;
-			const fetchDefinition = async () => {
-				const cacheKey = `langflow_cache_${cleanWord}_${settings.level}`;
-				const cached = localStorage.getItem(cacheKey);
-				if (cached) try {
-					const parsed = JSON.parse(cached);
-					if (parsed.translation && parsed.explanation) {
-						setWordData(parsed);
-						setIsLoading(false);
-						return;
-					}
-				} catch (e) {}
-				if (!settings.apiKey) {
-					setTimeout(() => {
-						setWordData(mockDictionary[cleanWord] || {
-							translation: `tradução de "${cleanWord}"`,
-							explanation: `(Offline Mode) Explanation unavailable. Please configure your ${settings.aiProvider === "gemini" ? "Gemini" : "OpenAI"} key to get personalized, 2-3 sentence explanations.`
-						});
-						setIsLoading(false);
-					}, 600);
-					return;
-				}
-				try {
-					let result = null;
-					const aiPrompt = `You are an intelligent English dictionary. The user is at CEFR level ${settings.level || "B1"}. Analyze the target word within the provided context sentence. Return the most accurate Portuguese translation for this specific context, and provide a 2-3 sentence explanation in English of the word's meaning and usage, tailored to the user's level. Respond ONLY with valid JSON: {"translation": "...", "explanation": "..."}`;
-					if (settings.aiProvider === "gemini") {
-						const data = await (await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${settings.aiModel || "gemini-1.5-flash"}:generateContent?key=${settings.apiKey}`, {
-							method: "POST",
-							headers: { "Content-Type": "application/json" },
-							body: JSON.stringify({
-								contents: [{ parts: [{ text: `${aiPrompt}\n\nTarget word: "${cleanWord}"\nContext: "${sentence}"` }] }],
-								generationConfig: { responseMimeType: "application/json" }
-							})
-						})).json();
-						if (data.error) throw new Error(data.error.message);
-						result = JSON.parse(data.candidates[0].content.parts[0].text);
-					} else {
-						const data = await (await fetch("https://api.openai.com/v1/chat/completions", {
-							method: "POST",
-							headers: {
-								"Content-Type": "application/json",
-								Authorization: `Bearer ${settings.apiKey}`
-							},
-							body: JSON.stringify({
-								model: settings.aiModel || "gpt-4o-mini",
-								messages: [{
-									role: "system",
-									content: aiPrompt
-								}, {
-									role: "user",
-									content: `Target word: "${cleanWord}"\nContext: "${sentence}"`
-								}],
-								response_format: { type: "json_object" }
-							})
-						})).json();
-						if (data.error) throw new Error(data.error.message);
-						result = JSON.parse(data.choices[0].message.content);
-					}
-					const dataToCache = {
-						translation: result.translation || cleanWord,
-						explanation: result.explanation || "Explanation unavailable."
-					};
-					localStorage.setItem(cacheKey, JSON.stringify(dataToCache));
-					setWordData(dataToCache);
-				} catch (error) {
-					console.error(error);
-					setWordData({
-						translation: "Erro na tradução",
-						explanation: "Explanation unavailable. Please check your AI provider settings and API key."
-					});
-				} finally {
-					setIsLoading(false);
-				}
-			};
-			fetchDefinition();
-		}
-	}, [
-		open,
-		cleanWord,
-		sentence,
-		settings.apiKey,
-		settings.aiModel,
-		settings.aiProvider,
-		settings.level,
-		wordData
-	]);
-	if (!cleanWord) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: word });
-	const handleCaptureClick = () => {
-		if (wordData) {
-			const existing = words.find((w) => w.word.toLowerCase() === cleanWord.toLowerCase());
-			if (!existing) addWord({
-				word: cleanWord,
-				translation: wordData.translation,
-				contextSentence: sentence.trim(),
-				status: "learning"
-			});
-			else updateWordStatus(existing.id, "learning");
-			onCapture(cleanWord, wordData.translation, sentence.trim());
-			setOpen(false);
-			toast$2({
-				title: "Palavra reconhecida",
-				description: `"${cleanWord}" foi salva no seu banco de vocabulário.`
-			});
-		}
-	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, {
-		open,
-		onOpenChange: (isOpen) => {
-			setOpen(isOpen);
-			if (!isOpen) fetched.current = false;
-		},
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
-			asChild: true,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-				className: "cursor-pointer hover:bg-primary/20 hover:text-primary transition-colors rounded px-1 py-0.5 mx-0.5 inline-block border-b-2 border-transparent hover:border-primary/40 data-[state=open]:bg-primary/20 data-[state=open]:text-primary",
-				children: word
-			})
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
-			side: "top",
-			sideOffset: 6,
-			className: "w-[320px] p-4 shadow-xl border-border/60 bg-popover rounded-xl z-50",
-			children: isLoading || !wordData ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "py-8 flex justify-center items-center flex-col gap-3 text-muted-foreground",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "w-6 h-6 animate-spin text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-sm font-medium animate-pulse",
-					children: "Analisando contexto..."
-				})]
-			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "space-y-4 animate-fade-in",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-start justify-between gap-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-							className: "font-bold text-xl leading-none text-foreground",
-							children: cleanWord
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-sm text-primary font-medium mt-1.5",
-							children: wordData.translation
-						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "p-2 bg-primary/10 rounded-lg shrink-0",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-4 h-4 text-primary" })
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "text-sm text-muted-foreground bg-secondary/50 p-3.5 rounded-xl leading-relaxed border border-border/50",
-						children: wordData.explanation
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						size: "sm",
-						className: "w-full mt-1 shadow-sm h-10 text-sm font-semibold gap-2 rounded-lg",
-						onClick: handleCaptureClick,
-						disabled: wordData.translation === "Erro na tradução",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "w-4 h-4" }), " Salvar Palavra"]
-					})
-				]
-			})
-		})]
-	});
-}
 var DirectionContext = import_react.createContext(void 0);
 function useDirection(localDir) {
 	const globalDir = import_react.useContext(DirectionContext);
@@ -51391,6 +51187,318 @@ function ReaderInputTabs({ inputText, setInputText, ytUrl, setYtUrl, isProcessin
 				})]
 			})
 		]
+	});
+}
+var mockDictionary = {
+	the: {
+		translation: "o, a, os, as",
+		explanation: "This is a definite article used to indicate a specific noun that is known to the reader or listener. It helps point out particular objects or people. For example, \"the book\" refers to a specific book."
+	},
+	is: {
+		translation: "é, está",
+		explanation: "This is the third-person singular form of the verb \"to be\" in the present tense. It is used to describe a state of being or existence. For example, \"she is happy\"."
+	},
+	quick: {
+		translation: "rápido",
+		explanation: "An adjective that describes something moving or functioning with high speed. It can refer to physical movement or mental sharpness. For instance, a \"quick learner\"."
+	},
+	brown: {
+		translation: "marrom",
+		explanation: "This word describes a color often found in nature, like wood or soil. It is commonly used as an adjective to detail the appearance of an object or animal."
+	},
+	fox: {
+		translation: "raposa",
+		explanation: "A small to medium-sized carnivorous mammal known for its bushy tail and cleverness. It belongs to the dog family and is often featured in folklore."
+	},
+	serendipity: {
+		translation: "serendipidade",
+		explanation: "Serendipity refers to the occurrence of events by chance in a happy or beneficial way. It describes those lucky moments when you find something wonderful without looking for it. A great example is accidentally discovering a new favorite restaurant."
+	},
+	ephemeral: {
+		translation: "efêmero",
+		explanation: "Ephemeral describes something that lasts for a very short time. It is often used for things like delicate flowers, beautiful sunsets, or passing feelings. The temporary nature of ephemeral things often makes them more precious."
+	},
+	ubiquitous: {
+		translation: "onipresente",
+		explanation: "When something is ubiquitous, it is present, appearing, or found everywhere. In modern times, smartphones have become a ubiquitous part of daily life. It emphasizes how common and widespread something is."
+	}
+};
+function WordInteraction({ word, sentence, onCapture }) {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
+	const [wordData, setWordData] = (0, import_react.useState)(null);
+	const { settings, words, addWord, updateWordStatus } = useStore();
+	const { toast: toast$2 } = useToast();
+	const cleanWord = word.replace(/[^\w-]/g, "").toLowerCase();
+	const fetched = (0, import_react.useRef)(false);
+	(0, import_react.useEffect)(() => {
+		if (open && !wordData && !fetched.current) {
+			setIsLoading(true);
+			fetched.current = true;
+			const fetchDefinition = async () => {
+				const cacheKey = `langflow_cache_${cleanWord}_${settings.level}`;
+				const cached = localStorage.getItem(cacheKey);
+				if (cached) try {
+					const parsed = JSON.parse(cached);
+					if (parsed.translation && parsed.explanation) {
+						setWordData(parsed);
+						setIsLoading(false);
+						return;
+					}
+				} catch (e) {}
+				if (!settings.apiKey) {
+					setTimeout(() => {
+						setWordData(mockDictionary[cleanWord] || {
+							translation: `tradução de "${cleanWord}"`,
+							explanation: `(Offline Mode) Explanation unavailable. Please configure your ${settings.aiProvider === "gemini" ? "Gemini" : "OpenAI"} key to get personalized, 2-3 sentence explanations.`
+						});
+						setIsLoading(false);
+					}, 600);
+					return;
+				}
+				try {
+					let result = null;
+					const aiPrompt = `You are an intelligent English dictionary. The user is at CEFR level ${settings.level || "B1"}. Analyze the target word within the provided context sentence. Return the most accurate Portuguese translation for this specific context, and provide a 2-3 sentence explanation in English of the word's meaning and usage, tailored to the user's level. Respond ONLY with valid JSON: {"translation": "...", "explanation": "..."}`;
+					if (settings.aiProvider === "gemini") {
+						const data = await (await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${settings.aiModel || "gemini-1.5-flash"}:generateContent?key=${settings.apiKey}`, {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({
+								contents: [{ parts: [{ text: `${aiPrompt}\n\nTarget word: "${cleanWord}"\nContext: "${sentence}"` }] }],
+								generationConfig: { responseMimeType: "application/json" }
+							})
+						})).json();
+						if (data.error) throw new Error(data.error.message);
+						result = JSON.parse(data.candidates[0].content.parts[0].text);
+					} else {
+						const data = await (await fetch("https://api.openai.com/v1/chat/completions", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+								Authorization: `Bearer ${settings.apiKey}`
+							},
+							body: JSON.stringify({
+								model: settings.aiModel || "gpt-4o-mini",
+								messages: [{
+									role: "system",
+									content: aiPrompt
+								}, {
+									role: "user",
+									content: `Target word: "${cleanWord}"\nContext: "${sentence}"`
+								}],
+								response_format: { type: "json_object" }
+							})
+						})).json();
+						if (data.error) throw new Error(data.error.message);
+						result = JSON.parse(data.choices[0].message.content);
+					}
+					const dataToCache = {
+						translation: result.translation || cleanWord,
+						explanation: result.explanation || "Explanation unavailable."
+					};
+					localStorage.setItem(cacheKey, JSON.stringify(dataToCache));
+					setWordData(dataToCache);
+				} catch (error) {
+					console.error(error);
+					setWordData({
+						translation: "Erro na tradução",
+						explanation: "Explanation unavailable. Please check your AI provider settings and API key."
+					});
+				} finally {
+					setIsLoading(false);
+				}
+			};
+			fetchDefinition();
+		}
+	}, [
+		open,
+		cleanWord,
+		sentence,
+		settings.apiKey,
+		settings.aiModel,
+		settings.aiProvider,
+		settings.level,
+		wordData
+	]);
+	if (!cleanWord) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: word });
+	const handleCaptureClick = () => {
+		if (wordData) {
+			const existing = words.find((w) => w.word.toLowerCase() === cleanWord.toLowerCase());
+			if (!existing) addWord({
+				word: cleanWord,
+				translation: wordData.translation,
+				contextSentence: sentence.trim(),
+				status: "learning"
+			});
+			else updateWordStatus(existing.id, "learning");
+			onCapture(cleanWord, wordData.translation, sentence.trim());
+			setOpen(false);
+			toast$2({
+				title: "Palavra reconhecida",
+				description: `"${cleanWord}" foi salva no seu banco de vocabulário.`
+			});
+		}
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, {
+		open,
+		onOpenChange: (isOpen) => {
+			setOpen(isOpen);
+			if (!isOpen) fetched.current = false;
+		},
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				className: "cursor-pointer hover:bg-primary/20 hover:text-primary transition-colors rounded px-1 py-0.5 mx-0.5 inline-block border-b-2 border-transparent hover:border-primary/40 data-[state=open]:bg-primary/20 data-[state=open]:text-primary",
+				children: word
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
+			side: "top",
+			sideOffset: 6,
+			className: "w-[320px] p-4 shadow-xl border-border/60 bg-popover rounded-xl z-50",
+			children: isLoading || !wordData ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "py-8 flex justify-center items-center flex-col gap-3 text-muted-foreground",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "w-6 h-6 animate-spin text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-sm font-medium animate-pulse",
+					children: "Analisando contexto..."
+				})]
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-4 animate-fade-in",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-start justify-between gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+							className: "font-bold text-xl leading-none text-foreground",
+							children: cleanWord
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-sm text-primary font-medium mt-1.5",
+							children: wordData.translation
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "p-2 bg-primary/10 rounded-lg shrink-0",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-4 h-4 text-primary" })
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-sm text-muted-foreground bg-secondary/50 p-3.5 rounded-xl leading-relaxed border border-border/50",
+						children: wordData.explanation
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						size: "sm",
+						className: "w-full mt-1 shadow-sm h-10 text-sm font-semibold gap-2 rounded-lg",
+						onClick: handleCaptureClick,
+						disabled: wordData.translation === "Erro na tradução",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "w-4 h-4" }), " Salvar Palavra"]
+					})
+				]
+			})
+		})]
+	});
+}
+function ReaderContent({ processedText, isReadingMode, activeVideoId, onCapture }) {
+	const processedContent = (0, import_react.useMemo)(() => {
+		if (!isReadingMode) return null;
+		return processedText.split("\n").map((paragraph, pIdx) => {
+			if (!paragraph.trim()) return null;
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "mb-4 leading-[2.2]",
+				children: (paragraph.match(/[^.!?]+[.!?]+/g) || [paragraph]).map((sentence, sIdx) => {
+					return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "mr-1",
+						children: sentence.split(/([\s.,!?;:]+)/).map((token, tIdx) => {
+							if (/^[\s.,!?;:]+$/.test(token)) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: token }, tIdx);
+							return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WordInteraction, {
+								word: token,
+								sentence: sentence.trim(),
+								onCapture
+							}, `${pIdx}-${sIdx}-${tIdx}`);
+						})
+					}, sIdx);
+				})
+			}, pIdx);
+		});
+	}, [
+		processedText,
+		isReadingMode,
+		onCapture
+	]);
+	if (!isReadingMode) return null;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [activeVideoId && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+		className: "overflow-hidden rounded-[24px] border-border shadow-md shrink-0 mb-2",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "aspect-video w-full bg-black",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("iframe", {
+				width: "100%",
+				height: "100%",
+				src: `https://www.youtube.com/embed/${activeVideoId}`,
+				title: "YouTube video player",
+				frameBorder: "0",
+				allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+				allowFullScreen: true
+			})
+		})
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground overflow-y-auto max-h-[65vh] border-t-4 border-t-primary shadow-md relative rounded-[24px]",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none rounded-[24px]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "relative z-10",
+			children: processedContent
+		})]
+	})] });
+}
+function ReaderActiveSession({ capturedWords, onExit, onNextPhase }) {
+	if (capturedWords.length === 0) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex flex-col sm:flex-row justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-[24px] border border-border shadow-sm shrink-0 gap-4",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "text-sm font-medium flex items-center gap-3 text-muted-foreground w-full sm:w-auto text-center sm:text-left",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "p-2 bg-primary/10 rounded-full hidden sm:block",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-primary" })
+			}), "Clique nas palavras no texto acima para gerar explicações com IA e salvá-las."]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+			variant: "outline",
+			size: "sm",
+			className: "rounded-xl h-10 bg-background hover:bg-secondary border-border w-full sm:w-auto",
+			onClick: onExit,
+			children: "Editar Fonte"
+		})]
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "bg-card/95 backdrop-blur-md p-5 rounded-[24px] border border-primary/30 shadow-lg animate-fade-in-up shrink-0 ring-1 ring-primary/20",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col md:flex-row justify-between gap-4 md:items-center",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex-1",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+					className: "text-sm font-bold mb-3 flex items-center gap-2 text-foreground uppercase tracking-wider",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-primary" }),
+						"Sessão Ativa (",
+						capturedWords.length,
+						")"
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex flex-wrap gap-2 max-h-[100px] overflow-y-auto",
+					children: capturedWords.map((cw) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "px-3 py-1.5 rounded-lg text-sm font-semibold bg-primary/10 text-primary border border-primary/20 shadow-sm transition-all hover:bg-primary/20",
+						children: cw.word
+					}, cw.word))
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col sm:flex-row gap-3 md:w-auto w-full shrink-0 items-end md:items-center justify-end",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+					variant: "ghost",
+					className: "h-12 rounded-xl text-muted-foreground hover:text-foreground",
+					onClick: onExit,
+					children: "Sair do Leitor"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					className: "h-12 rounded-xl shadow-md group text-base px-6 w-full sm:w-auto",
+					onClick: onNextPhase,
+					children: [
+						"Praticar Palavras",
+						" ",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" })
+					]
+				})]
+			})]
+		})
 	});
 }
 function clamp(value, [min$4, max$5]) {
@@ -52422,9 +52530,64 @@ var SelectSeparator = import_react.forwardRef(({ className, ...props }, ref) => 
 	...props
 }));
 SelectSeparator.displayName = Separator.displayName;
+function ReaderHeader({ isReadingMode, isPlayingTTS, aiModel, onToggleTTS, onModelChange }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+		className: "flex flex-col md:flex-row md:items-start justify-between gap-4 shrink-0",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+			className: "text-3xl font-bold tracking-tight text-foreground",
+			children: "Leitor Imersivo"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-muted-foreground mt-2 text-lg",
+			children: "Processe textos ou vídeos do YouTube e capture vocabulário em contexto."
+		})] }), isReadingMode && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-wrap items-center gap-2 shrink-0",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				onClick: onToggleTTS,
+				variant: "secondary",
+				size: "sm",
+				className: cn("h-9 gap-2 shadow-sm rounded-xl px-3 border border-border transition-all", isPlayingTTS && "bg-primary/10 text-primary border-primary/30 hover:bg-primary/20"),
+				children: [isPlayingTTS ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleStop, { className: "w-4 h-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Volume2, { className: "w-4 h-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "hidden sm:inline",
+					children: isPlayingTTS ? "Parar Áudio" : "Ouvir Texto"
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2 bg-secondary/40 p-1.5 rounded-xl border border-border animate-fade-in shadow-sm shrink-0",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings2, { className: "w-4 h-4 text-primary ml-2" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					value: aiModel || "gpt-4o-mini",
+					onValueChange: onModelChange,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+						className: "w-[160px] h-9 border-0 bg-transparent focus:ring-0 shadow-none font-medium",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Modelo de IA" })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "gpt-4o",
+							children: "GPT-4o"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "gpt-4o-mini",
+							children: "GPT-4o Mini"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "gpt-3.5-turbo",
+							children: "GPT-3.5 Turbo"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: "claude-3-haiku",
+							children: "Claude 3 Haiku"
+						})
+					] })]
+				})]
+			})]
+		})]
+	});
+}
 var defaultText = `The quick brown fox jumps over the lazy dog. 
 This is a serendipity moment where you can learn new words.
 Reading ephemeral texts ubiquitous on the internet helps improve your active vocabulary.`;
+function extractYoutubeId(url) {
+	const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+	return match ? match[1] : null;
+}
 function Reader() {
 	const [inputText, setInputText] = (0, import_react.useState)(defaultText);
 	const [ytUrl, setYtUrl] = (0, import_react.useState)("");
@@ -52433,6 +52596,7 @@ function Reader() {
 	const [isProcessingYt, setIsProcessingYt] = (0, import_react.useState)(false);
 	const [capturedWords, setCapturedWords] = (0, import_react.useState)([]);
 	const [isPlayingTTS, setIsPlayingTTS] = (0, import_react.useState)(false);
+	const [activeVideoId, setActiveVideoId] = (0, import_react.useState)(null);
 	const { settings, updateSettings, words: globalWords, updateWordStatus } = useStore();
 	const navigate = useNavigate();
 	const { toast: toast$2 } = useToast();
@@ -52445,12 +52609,14 @@ function Reader() {
 		const text = inputText.trim();
 		if (!text) return;
 		setProcessedText(text);
+		setActiveVideoId(null);
 		setIsReadingMode(true);
 	};
 	const handleProcessYt = async () => {
 		const url = ytUrl.trim();
 		if (!url) return;
-		if (!/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/.test(url)) {
+		const videoId = extractYoutubeId(url);
+		if (!videoId) {
 			toast$2({
 				title: "URL Inválida",
 				description: "Por favor, insira um link válido do YouTube.",
@@ -52460,18 +52626,10 @@ function Reader() {
 		}
 		setIsProcessingYt(true);
 		setTimeout(() => {
-			if (url.includes("error")) {
-				toast$2({
-					title: "Transcript indisponível",
-					description: "Não foi possível extrair as legendas. Tente colar o texto diretamente.",
-					variant: "destructive"
-				});
-				setIsProcessingYt(false);
-			} else {
-				setProcessedText("This is a simulated transcript from the YouTube video you pasted. The quick brown fox jumps over the lazy dog. Here we can find serendipity and ephemeral moments. Exploring ubiquitous features is genuinely fun and helps you learn new things easily.");
-				setIsReadingMode(true);
-				setIsProcessingYt(false);
-			}
+			setProcessedText("This is a simulated transcript from the YouTube video you pasted. The quick brown fox jumps over the lazy dog. Here we can find serendipity and ephemeral moments. Exploring ubiquitous features is genuinely fun and helps you learn new things easily.");
+			setActiveVideoId(videoId);
+			setIsReadingMode(true);
+			setIsProcessingYt(false);
 		}, 1500);
 	};
 	const handleTTS = () => {
@@ -52509,82 +52667,14 @@ function Reader() {
 		});
 		navigate("/practice");
 	};
-	const processedContent = (0, import_react.useMemo)(() => {
-		if (!isReadingMode) return null;
-		return processedText.split("\n").map((paragraph, pIdx) => {
-			if (!paragraph.trim()) return null;
-			return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "mb-4 leading-[2.2]",
-				children: (paragraph.match(/[^.!?]+[.!?]+/g) || [paragraph]).map((sentence, sIdx) => {
-					return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "mr-1",
-						children: sentence.split(/([\s.,!?;:]+)/).map((token, tIdx) => {
-							if (/^[\s.,!?;:]+$/.test(token)) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: token }, tIdx);
-							return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WordInteraction, {
-								word: token,
-								sentence: sentence.trim(),
-								onCapture: handleCapture
-							}, `${pIdx}-${sIdx}-${tIdx}`);
-						})
-					}, sIdx);
-				})
-			}, pIdx);
-		});
-	}, [
-		processedText,
-		isReadingMode,
-		handleCapture
-	]);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-8 animate-fade-in pb-12",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-			className: "flex flex-col md:flex-row md:items-start justify-between gap-4 shrink-0",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-				className: "text-3xl font-bold tracking-tight text-foreground",
-				children: "Leitor Imersivo"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-2 text-lg",
-				children: "Processe textos ou vídeos do YouTube e capture vocabulário em contexto."
-			})] }), isReadingMode && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-wrap items-center gap-2 shrink-0",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-					onClick: handleTTS,
-					variant: "secondary",
-					size: "sm",
-					className: cn("h-9 gap-2 shadow-sm rounded-xl px-3 border border-border transition-all", isPlayingTTS && "bg-primary/10 text-primary border-primary/30 hover:bg-primary/20"),
-					children: [isPlayingTTS ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleStop, { className: "w-4 h-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Volume2, { className: "w-4 h-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "hidden sm:inline",
-						children: isPlayingTTS ? "Parar Áudio" : "Ouvir Texto"
-					})]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-2 bg-secondary/40 p-1.5 rounded-xl border border-border animate-fade-in shadow-sm shrink-0",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings2, { className: "w-4 h-4 text-primary ml-2" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-						value: settings.aiModel || "gpt-4o-mini",
-						onValueChange: (v) => updateSettings({ aiModel: v }),
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
-							className: "w-[160px] h-9 border-0 bg-transparent focus:ring-0 shadow-none font-medium",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Modelo de IA" })
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "gpt-4o",
-								children: "GPT-4o"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "gpt-4o-mini",
-								children: "GPT-4o Mini"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "gpt-3.5-turbo",
-								children: "GPT-3.5 Turbo"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								value: "claude-3-haiku",
-								children: "Claude 3 Haiku"
-							})
-						] })]
-					})]
-				})]
-			})]
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReaderHeader, {
+			isReadingMode,
+			isPlayingTTS,
+			aiModel: settings.aiModel || "gpt-4o-mini",
+			onToggleTTS: handleTTS,
+			onModelChange: (v) => updateSettings({ aiModel: v })
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "grid grid-cols-1 xl:grid-cols-3 gap-8",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -52599,75 +52689,21 @@ function Reader() {
 					onProcessYt: handleProcessYt
 				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-col gap-6 animate-fade-in-up h-full",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground overflow-y-auto max-h-[65vh] border-t-4 border-t-primary shadow-md relative rounded-[24px]",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none rounded-[24px]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "relative z-10",
-							children: processedContent
-						})]
-					}), capturedWords.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "bg-card/95 backdrop-blur-md p-5 rounded-[24px] border border-primary/30 shadow-lg animate-fade-in-up shrink-0 ring-1 ring-primary/20",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex flex-col md:flex-row justify-between gap-4 md:items-center",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex-1",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
-									className: "text-sm font-bold mb-3 flex items-center gap-2 text-foreground uppercase tracking-wider",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-primary" }),
-										"Sessão Ativa (",
-										capturedWords.length,
-										")"
-									]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "flex flex-wrap gap-2 max-h-[100px] overflow-y-auto",
-									children: capturedWords.map((cw) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-										className: "px-3 py-1.5 rounded-lg text-sm font-semibold bg-primary/10 text-primary border border-primary/20 shadow-sm transition-all hover:bg-primary/20",
-										children: cw.word
-									}, cw.word))
-								})]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex flex-col sm:flex-row gap-3 md:w-auto w-full shrink-0 items-end md:items-center justify-end",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-									variant: "ghost",
-									className: "h-12 rounded-xl text-muted-foreground hover:text-foreground",
-									onClick: () => {
-										setIsReadingMode(false);
-										setCapturedWords([]);
-										if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-										setIsPlayingTTS(false);
-									},
-									children: "Sair do Leitor"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-									className: "h-12 rounded-xl shadow-md group text-base px-6 w-full sm:w-auto",
-									onClick: handleNextPhase,
-									children: [
-										"Praticar Palavras",
-										" ",
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" })
-									]
-								})]
-							})]
-						})
-					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col sm:flex-row justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-[24px] border border-border shadow-sm shrink-0 gap-4",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "text-sm font-medium flex items-center gap-3 text-muted-foreground w-full sm:w-auto text-center sm:text-left",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "p-2 bg-primary/10 rounded-full hidden sm:block",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-primary" })
-							}), "Clique nas palavras no texto acima para gerar explicações com IA e salvá-las."]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-							variant: "outline",
-							size: "sm",
-							className: "rounded-xl h-10 bg-background hover:bg-secondary border-border w-full sm:w-auto",
-							onClick: () => {
-								setIsReadingMode(false);
-								if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-								setIsPlayingTTS(false);
-							},
-							children: "Editar Fonte"
-						})]
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReaderContent, {
+						processedText,
+						isReadingMode,
+						activeVideoId,
+						onCapture: handleCapture
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReaderActiveSession, {
+						capturedWords,
+						onExit: () => {
+							setIsReadingMode(false);
+							setActiveVideoId(null);
+							setCapturedWords([]);
+							if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+							setIsPlayingTTS(false);
+						},
+						onNextPhase: handleNextPhase
 					})]
 				})
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -55011,4 +55047,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-B93QUXwf.js.map
+//# sourceMappingURL=index-DiWq4pjx.js.map
