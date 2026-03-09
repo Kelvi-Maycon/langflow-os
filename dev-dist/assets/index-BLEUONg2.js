@@ -19379,6 +19379,26 @@ var PartyPopper = createLucideIcon("party-popper", [
 		key: "4kbmks"
 	}]
 ]);
+var PenTool = createLucideIcon("pen-tool", [
+	["path", {
+		d: "M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z",
+		key: "nt11vn"
+	}],
+	["path", {
+		d: "m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18",
+		key: "15qc1e"
+	}],
+	["path", {
+		d: "m2.3 2.3 7.286 7.286",
+		key: "1wuzzi"
+	}],
+	["circle", {
+		cx: "11",
+		cy: "11",
+		r: "2",
+		key: "xmgehs"
+	}]
+]);
 var Play = createLucideIcon("play", [["path", {
 	d: "M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z",
 	key: "10ikf1"
@@ -19485,6 +19505,26 @@ var Smile = createLucideIcon("smile", [
 		y1: "9",
 		y2: "9",
 		key: "1p4y9e"
+	}]
+]);
+var Sparkles = createLucideIcon("sparkles", [
+	["path", {
+		d: "M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z",
+		key: "1s2grr"
+	}],
+	["path", {
+		d: "M20 2v4",
+		key: "1rf3ol"
+	}],
+	["path", {
+		d: "M22 4h-4",
+		key: "gwowj6"
+	}],
+	["circle", {
+		cx: "4",
+		cy: "20",
+		r: "2",
+		key: "6kqj1y"
 	}]
 ]);
 var SquareLibrary = createLucideIcon("square-library", [
@@ -25756,7 +25796,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$17({ inst: {
+			cachedValue = useState$18({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -25793,7 +25833,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$34 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$17 = React$34.useState, useEffect$12 = React$34.useEffect, useLayoutEffect$1 = React$34.useLayoutEffect, useDebugValue = React$34.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$34 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$18 = React$34.useState, useEffect$12 = React$34.useEffect, useLayoutEffect$1 = React$34.useLayoutEffect, useDebugValue = React$34.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$34.useSyncExternalStore ? React$34.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -26189,21 +26229,21 @@ var generateMissions = () => [
 	},
 	{
 		id: "m2",
-		title: "Revisão Constante",
-		subtitle: "Acerte 10 flashcards",
-		type: "flashcard",
-		target: 10,
+		title: "Escrita Criativa",
+		subtitle: "Complete o Daily Prompt",
+		type: "prompt",
+		target: 1,
 		progress: 0,
 		xpReward: 80,
 		completed: false,
-		icon: "brain"
+		icon: "penTool"
 	},
 	{
 		id: "m3",
 		title: "Caçador de XP",
-		subtitle: "Ganhe 100 XP hoje",
+		subtitle: "Ganhe 150 XP hoje",
 		type: "xp",
-		target: 100,
+		target: 150,
 		progress: 0,
 		xpReward: 120,
 		completed: false,
@@ -26223,7 +26263,8 @@ var defaultStats = {
 	missionsDate: "",
 	achievements: defaultAchievements,
 	consecutiveCorrect: 0,
-	consecutiveIncorrect: 0
+	consecutiveIncorrect: 0,
+	dailyPromptsHistory: []
 };
 var mockWords = [{
 	id: "1",
@@ -26427,6 +26468,38 @@ function StoreProvider({ children }) {
 		...prev,
 		...newSettings
 	}));
+	const submitDailyPrompt = (response, prompt, targetWord) => {
+		if (!response.toLowerCase().includes(targetWord.toLowerCase())) return false;
+		if (response.trim().length < 10) return false;
+		const todayStr = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+		if ((stats.dailyPromptsHistory || []).some((h) => h.date === todayStr)) return false;
+		setStats((prev) => {
+			const newXp = (prev.xp || 0) + 50;
+			const newEntry = {
+				date: todayStr,
+				prompt,
+				targetWord,
+				response
+			};
+			const newMissions = (prev.dailyMissions || []).map((m) => {
+				if (m.completed) return m;
+				let p = m.progress;
+				if (m.type === "prompt") p += 1;
+				if (m.type === "xp") p += 50;
+				return {
+					...m,
+					progress: p
+				};
+			});
+			return checkGamification({
+				...prev,
+				xp: newXp,
+				dailyPromptsHistory: [newEntry, ...prev.dailyPromptsHistory || []],
+				dailyMissions: newMissions
+			}, words.length);
+		});
+		return true;
+	};
 	const updateStats = (isCorrect, type) => {
 		setStats((prev) => {
 			const now$2 = Date.now();
@@ -26471,6 +26544,7 @@ function StoreProvider({ children }) {
 				activityHistory: hist,
 				xp: newXp,
 				flashcardAttempts,
+				flashcardAttempts,
 				flashcardCorrect,
 				practiceAttempts,
 				practiceCorrect,
@@ -26489,6 +26563,7 @@ function StoreProvider({ children }) {
 		reviewWord,
 		updateSettings,
 		removeWord,
+		submitDailyPrompt,
 		recordPracticeAttempt: (correct) => updateStats(correct, "practice"),
 		recordFlashcardAttempt: (correct) => updateStats(correct, "flashcard")
 	} }, children);
@@ -26755,7 +26830,8 @@ var iconMap$1 = {
 	star: Star,
 	flame: Flame,
 	mic: Mic,
-	library: SquareLibrary
+	library: SquareLibrary,
+	penTool: PenTool
 };
 function MissionsToday() {
 	const { stats } = useStore();
@@ -48466,6 +48542,174 @@ function ActivityChart() {
 		})]
 	});
 }
+var Textarea = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
+		className: cn("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
+		ref,
+		...props
+	});
+});
+Textarea.displayName = "Textarea";
+var DAILY_PROMPTS = [
+	{
+		word: "Resilient",
+		prompt: "Write about a time you had to be strong and overcome a difficulty."
+	},
+	{
+		word: "Ephemeral",
+		prompt: "Describe something beautiful that is temporary and fleeting."
+	},
+	{
+		word: "Serendipity",
+		prompt: "Tell a story about a happy accident or unexpected good luck."
+	},
+	{
+		word: "Eloquent",
+		prompt: "Describe someone whose words move people deeply."
+	},
+	{
+		word: "Nostalgia",
+		prompt: "Write about a memory that brings a bittersweet feeling."
+	},
+	{
+		word: "Vibrant",
+		prompt: "Describe a scene full of life and vivid colors."
+	},
+	{
+		word: "Meticulous",
+		prompt: "Explain a process that requires extreme attention to detail."
+	}
+];
+function DailyPromptWidget() {
+	const { stats, submitDailyPrompt } = useStore();
+	const { toast: toast$2 } = useToast();
+	const [text, setText] = (0, import_react.useState)("");
+	const [isSubmitting, setIsSubmitting] = (0, import_react.useState)(false);
+	const todayStr = (0, import_react.useMemo)(() => (/* @__PURE__ */ new Date()).toISOString().split("T")[0], []);
+	const dayOfYear = (0, import_react.useMemo)(() => {
+		const today = /* @__PURE__ */ new Date();
+		return Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 1e3 / 60 / 60 / 24);
+	}, []);
+	const challenge = (0, import_react.useMemo)(() => DAILY_PROMPTS[dayOfYear % DAILY_PROMPTS.length], [dayOfYear]);
+	const todaysSubmission = stats.dailyPromptsHistory?.find((h) => h.date === todayStr);
+	const handleSubmit = () => {
+		if (text.trim().length < 10) {
+			toast$2({
+				title: "Texto muito curto",
+				description: "Escreva um pouco mais para completar o desafio.",
+				variant: "destructive"
+			});
+			return;
+		}
+		setIsSubmitting(true);
+		setTimeout(() => {
+			const success = submitDailyPrompt(text, challenge.prompt, challenge.word);
+			setIsSubmitting(false);
+			if (success) toast$2({
+				title: "✨ Desafio Concluído!",
+				description: "Você ganhou +50 XP e progrediu nas missões!"
+			});
+			else toast$2({
+				title: "Palavra ausente",
+				description: `Certifique-se de usar a palavra "${challenge.word}" na sua resposta.`,
+				variant: "destructive"
+			});
+		}, 600);
+	};
+	if (todaysSubmission) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "p-6 md:p-8 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 border-indigo-500/20 shadow-sm rounded-[24px] hover:shadow-md transition-shadow",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-center gap-3 mb-6",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "p-2.5 bg-indigo-500/10 rounded-xl border border-indigo-500/20",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-6 h-6 text-indigo-500" })
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+				className: "text-xl font-bold text-foreground",
+				children: "Desafio do Dia Concluído!"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+				className: "text-sm text-muted-foreground",
+				children: [
+					"Você usou a palavra",
+					" ",
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-bold text-indigo-500",
+						children: challenge.word
+					}),
+					" brilhantemente."
+				]
+			})] })]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "p-5 bg-background/60 rounded-xl border border-indigo-500/10 italic text-muted-foreground shadow-inner relative",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "absolute top-2 left-2 text-indigo-500/20 text-4xl leading-none font-serif",
+				children: "\""
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "relative z-10 pl-4",
+				children: todaysSubmission.response
+			})]
+		})]
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "p-6 md:p-8 bg-gradient-to-br from-indigo-500/10 via-card to-purple-500/5 border-indigo-500/20 shadow-sm rounded-[24px] relative overflow-hidden group hover:shadow-md transition-shadow",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute -top-12 -right-12 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-colors duration-700" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "relative z-10",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-start justify-between mb-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "p-3 bg-indigo-500/10 rounded-2xl shadow-inner border border-indigo-500/20 group-hover:scale-110 transition-transform duration-500",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PenTool, { className: "w-6 h-6 text-indigo-500" })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+							className: "text-xl font-bold text-foreground flex items-center gap-2",
+							children: ["Daily Prompt ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "w-4 h-4 text-indigo-500" })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-sm text-muted-foreground mt-0.5",
+							children: "Pratique sua escrita criativa hoje"
+						})] })]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "bg-indigo-500/10 text-indigo-600 text-xs font-bold px-3 py-1.5 rounded-full border border-indigo-500/20 whitespace-nowrap hidden sm:block",
+						children: "+50 XP"
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "mb-6 p-4 rounded-xl bg-background/50 border border-border/50",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-foreground font-medium mb-3 text-lg leading-relaxed",
+						children: challenge.prompt
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: "text-sm text-muted-foreground flex items-center gap-2",
+						children: ["Palavra obrigatória:", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "font-bold text-indigo-500 bg-indigo-500/10 px-2.5 py-1 rounded-md tracking-wide",
+							children: challenge.word
+						})]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+						placeholder: "Escreva sua resposta aqui. Tente elaborar pelo menos duas frases para um melhor contexto...",
+						value: text,
+						onChange: (e) => setText(e.target.value),
+						className: "min-h-[120px] bg-background/50 border-indigo-500/20 focus-visible:ring-indigo-500 text-base resize-y"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-between",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "text-xs text-muted-foreground hidden sm:inline-block",
+							children: [text.length, " caracteres"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							onClick: handleSubmit,
+							disabled: isSubmitting || !text.trim(),
+							className: "bg-indigo-500 hover:bg-indigo-600 text-white rounded-full px-8 shadow-[0_4px_14px_0_rgba(99,102,241,0.25)] h-12 text-base font-bold w-full sm:w-auto",
+							children: isSubmitting ? "Avaliando..." : "Enviar Resposta"
+						})]
+					})]
+				})
+			]
+		})]
+	});
+}
 function LevelProgressWidget() {
 	const { stats } = useStore();
 	const { current, next } = getLevelTier(stats.xp);
@@ -48679,6 +48923,7 @@ function Index() {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "xl:col-span-2 space-y-12",
 					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DailyPromptWidget, {}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ActivityChart, {}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MissionsToday, {}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AchievementsList, {}),
@@ -49145,14 +49390,6 @@ function WordInteraction({ word, sentence, onCapture }) {
 		})]
 	});
 }
-var Textarea = import_react.forwardRef(({ className, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
-		className: cn("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
-		ref,
-		...props
-	});
-});
-Textarea.displayName = "Textarea";
 var DirectionContext = import_react.createContext(void 0);
 function useDirection(localDir) {
 	const globalDir = import_react.useContext(DirectionContext);
@@ -52519,4 +52756,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BPGMezvE.js.map
+//# sourceMappingURL=index-BLEUONg2.js.map

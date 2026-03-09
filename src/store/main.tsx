@@ -23,6 +23,7 @@ interface StoreContextType extends AppState {
   removeWord: (id: string) => void
   recordPracticeAttempt: (correct: boolean) => void
   recordFlashcardAttempt: (correct: boolean) => void
+  submitDailyPrompt: (response: string, prompt: string, targetWord: string) => boolean
 }
 
 const defaultSettings: UserSettings = {
@@ -98,21 +99,21 @@ const generateMissions = (): DailyMission[] => [
   },
   {
     id: 'm2',
-    title: 'Revisão Constante',
-    subtitle: 'Acerte 10 flashcards',
-    type: 'flashcard',
-    target: 10,
+    title: 'Escrita Criativa',
+    subtitle: 'Complete o Daily Prompt',
+    type: 'prompt',
+    target: 1,
     progress: 0,
     xpReward: 80,
     completed: false,
-    icon: 'brain',
+    icon: 'penTool',
   },
   {
     id: 'm3',
     title: 'Caçador de XP',
-    subtitle: 'Ganhe 100 XP hoje',
+    subtitle: 'Ganhe 150 XP hoje',
     type: 'xp',
-    target: 100,
+    target: 150,
     progress: 0,
     xpReward: 120,
     completed: false,
@@ -134,6 +135,7 @@ const defaultStats: UserStats = {
   achievements: defaultAchievements,
   consecutiveCorrect: 0,
   consecutiveIncorrect: 0,
+  dailyPromptsHistory: [],
 }
 
 const mockWords: WordEntry[] = [
@@ -339,6 +341,37 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const updateSettings = (newSettings: Partial<UserSettings>) =>
     setSettings((prev) => ({ ...prev, ...newSettings }))
 
+  const submitDailyPrompt = (response: string, prompt: string, targetWord: string) => {
+    if (!response.toLowerCase().includes(targetWord.toLowerCase())) return false
+    if (response.trim().length < 10) return false
+
+    const todayStr = new Date().toISOString().split('T')[0]
+    const history = stats.dailyPromptsHistory || []
+    if (history.some((h) => h.date === todayStr)) return false
+
+    setStats((prev) => {
+      const newXp = (prev.xp || 0) + 50
+      const newEntry = { date: todayStr, prompt, targetWord, response }
+
+      const newMissions = (prev.dailyMissions || []).map((m) => {
+        if (m.completed) return m
+        let p = m.progress
+        if (m.type === 'prompt') p += 1
+        if (m.type === 'xp') p += 50
+        return { ...m, progress: p }
+      })
+
+      const newState = {
+        ...prev,
+        xp: newXp,
+        dailyPromptsHistory: [newEntry, ...(prev.dailyPromptsHistory || [])],
+        dailyMissions: newMissions,
+      }
+      return checkGamification(newState, words.length)
+    })
+    return true
+  }
+
   const updateStats = (isCorrect: boolean, type: 'practice' | 'flashcard') => {
     setStats((prev) => {
       const now = Date.now()
@@ -391,6 +424,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         activityHistory: hist,
         xp: newXp,
         flashcardAttempts,
+        flashcardAttempts,
         flashcardCorrect,
         practiceAttempts,
         practiceCorrect,
@@ -415,6 +449,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         reviewWord,
         updateSettings,
         removeWord,
+        submitDailyPrompt,
         recordPracticeAttempt: (correct) => updateStats(correct, 'practice'),
         recordFlashcardAttempt: (correct) => updateStats(correct, 'flashcard'),
       },

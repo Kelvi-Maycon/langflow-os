@@ -32,7 +32,7 @@ export interface DailyMission {
   id: string
   title: string
   subtitle: string
-  type: 'practice' | 'flashcard' | 'xp'
+  type: 'practice' | 'flashcard' | 'xp' | 'prompt'
   target: number
   progress: number
   xpReward: number
@@ -51,6 +51,13 @@ export interface Achievement {
   type: 'streak' | 'words' | 'xp' | 'flashcards'
 }
 
+export interface DailyPromptEntry {
+  date: string
+  prompt: string
+  targetWord: string
+  response: string
+}
+
 export interface UserStats {
   practiceAttempts: number
   practiceCorrect: number
@@ -65,6 +72,7 @@ export interface UserStats {
   achievements: Achievement[]
   consecutiveCorrect?: number
   consecutiveIncorrect?: number
+  dailyPromptsHistory?: DailyPromptEntry[]
 }
 
 export interface AppState {

@@ -9,6 +9,7 @@ import { RetentionOverview } from '@/components/dashboard/RetentionOverview'
 import { MemoryStrength } from '@/components/dashboard/MemoryStrength'
 import { StreakWidget } from '@/components/dashboard/StreakWidget'
 import { ActivityChart } from '@/components/dashboard/ActivityChart'
+import { DailyPromptWidget } from '@/components/dashboard/DailyPromptWidget'
 import { LevelProgressWidget } from '@/components/gamification/LevelProgressWidget'
 import { AchievementsList } from '@/components/gamification/AchievementsList'
 import { GamificationWatcher } from '@/components/gamification/GamificationWatcher'
@@ -107,8 +108,9 @@ export default function Index() {
 
       {/* Main Dashboard Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 pt-4">
-        {/* Left Column (Activity, Missions, Roadmap, Collections) */}
+        {/* Left Column (Daily Prompt, Activity, Missions, Roadmap, Collections) */}
         <div className="xl:col-span-2 space-y-12">
+          <DailyPromptWidget />
           <ActivityChart />
           <MissionsToday />
           <AchievementsList />

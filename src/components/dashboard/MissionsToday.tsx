@@ -1,7 +1,7 @@
 import { useStore } from '@/store/main'
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { Check, Mic, LibrarySquare, Zap, Star, Flame, Brain } from 'lucide-react'
+import { Check, Mic, LibrarySquare, Zap, Star, Flame, Brain, PenTool } from 'lucide-react'
 
 const iconMap: Record<string, any> = {
   check: Check,
@@ -11,6 +11,7 @@ const iconMap: Record<string, any> = {
   flame: Flame,
   mic: Mic,
   library: LibrarySquare,
+  penTool: PenTool,
 }
 
 export function MissionsToday() {
