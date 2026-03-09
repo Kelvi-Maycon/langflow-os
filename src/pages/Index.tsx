@@ -5,6 +5,10 @@ import { MissionsToday } from '@/components/dashboard/MissionsToday'
 import { ProgressionRoadmap } from '@/components/dashboard/ProgressionRoadmap'
 import { StatsSidebar } from '@/components/dashboard/StatsSidebar'
 import { CollectionsSection } from '@/components/dashboard/CollectionsSection'
+import { RetentionOverview } from '@/components/dashboard/RetentionOverview'
+import { MemoryStrength } from '@/components/dashboard/MemoryStrength'
+import { StreakWidget } from '@/components/dashboard/StreakWidget'
+import { ActivityChart } from '@/components/dashboard/ActivityChart'
 import { useToast } from '@/hooks/use-toast'
 import { useStore } from '@/store/main'
 import { useState } from 'react'
@@ -84,16 +88,24 @@ export default function Index() {
       {/* Hero Section */}
       <HeroWelcome />
 
+      {/* Dashboard Overview Widgets */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
+        <RetentionOverview />
+        <MemoryStrength />
+        <StreakWidget />
+      </div>
+
       {/* Main Dashboard Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 pt-4">
-        {/* Left Column (Missions, Roadmap, Collections) */}
+        {/* Left Column (Activity, Missions, Roadmap, Collections) */}
         <div className="xl:col-span-2 space-y-12">
+          <ActivityChart />
           <MissionsToday />
           <ProgressionRoadmap />
           <CollectionsSection />
         </div>
 
-        {/* Right Column (Stats, Chart, Achievements) */}
+        {/* Right Column (Stats, Achievements) */}
         <div className="xl:col-span-1">
           <StatsSidebar />
         </div>

@@ -27,14 +27,25 @@ const defaultSettings: UserSettings = {
   aiModel: 'gpt-4o-mini',
 }
 
+const getMockActivityHistory = () =>
+  Array.from({ length: 90 }, (_, i) => {
+    const d = new Date()
+    d.setDate(d.getDate() - i)
+    return {
+      date: d.toISOString().split('T')[0],
+      count: Math.random() > 0.3 ? Math.floor(Math.random() * 20) + 5 : 0,
+    }
+  }).reverse()
+
 const defaultStats: UserStats = {
   practiceAttempts: 0,
   practiceCorrect: 0,
   flashcardAttempts: 0,
   flashcardCorrect: 0,
   xp: 0,
-  streak: 0,
+  streak: 5,
   lastActiveDate: Date.now(),
+  activityHistory: getMockActivityHistory(),
 }
 
 const mockWords: WordEntry[] = [
@@ -87,8 +98,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       const now = new Date()
       const last = new Date(parsed.lastActiveDate)
       const diffDays = Math.floor((now.getTime() - last.getTime()) / (1000 * 3600 * 24))
-      if (diffDays > 1) {
-        parsed.streak = 0
+      if (diffDays > 1) parsed.streak = 0
+      if (!parsed.activityHistory || !parsed.activityHistory.length) {
+        parsed.activityHistory = defaultStats.activityHistory
       }
       return parsed
     }
@@ -147,46 +159,41 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const updateSettings = (newSettings: Partial<UserSettings>) =>
     setSettings((prev) => ({ ...prev, ...newSettings }))
 
-  const updateEngagement = () => {
+  const updateStats = (isCorrect: boolean, type: 'practice' | 'flashcard') => {
     setStats((prev) => {
       const now = Date.now()
-      const lastDate = new Date(prev.lastActiveDate)
-      const currDate = new Date(now)
-      const isSameDay = lastDate.toDateString() === currDate.toDateString()
-      const isNextDay =
-        new Date(lastDate.getTime() + 86400000).toDateString() === currDate.toDateString()
+      const dNow = new Date(now),
+        dLast = new Date(prev.lastActiveDate)
+      const isNext = new Date(dLast.getTime() + 86400000).toDateString() === dNow.toDateString()
+      let streak = isNext
+        ? prev.streak + 1
+        : dLast.toDateString() === dNow.toDateString()
+          ? prev.streak
+          : 1
 
-      let newStreak = prev.streak
-      if (isNextDay) newStreak += 1
-      else if (!isSameDay && !isNextDay) newStreak = 1
-      else if (newStreak === 0) newStreak = 1
+      const todayStr = dNow.toISOString().split('T')[0]
+      const hist = prev.activityHistory ? [...prev.activityHistory] : []
+      const idx = hist.findIndex((h) => h.date === todayStr)
+      if (idx >= 0) hist[idx].count += 1
+      else hist.push({ date: todayStr, count: 1 })
 
       return {
         ...prev,
-        streak: newStreak,
+        streak,
         lastActiveDate: now,
+        activityHistory: hist,
+        xp: (prev.xp || 0) + (type === 'practice' ? (isCorrect ? 10 : 2) : isCorrect ? 15 : 5),
+        ...(type === 'practice'
+          ? {
+              practiceAttempts: (prev.practiceAttempts || 0) + 1,
+              practiceCorrect: (prev.practiceCorrect || 0) + (isCorrect ? 1 : 0),
+            }
+          : {
+              flashcardAttempts: (prev.flashcardAttempts || 0) + 1,
+              flashcardCorrect: (prev.flashcardCorrect || 0) + (isCorrect ? 1 : 0),
+            }),
       }
     })
-  }
-
-  const recordPracticeAttempt = (correct: boolean) => {
-    updateEngagement()
-    setStats((prev) => ({
-      ...prev,
-      practiceAttempts: (prev.practiceAttempts || 0) + 1,
-      practiceCorrect: (prev.practiceCorrect || 0) + (correct ? 1 : 0),
-      xp: (prev.xp || 0) + (correct ? 10 : 2),
-    }))
-  }
-
-  const recordFlashcardAttempt = (correct: boolean) => {
-    updateEngagement()
-    setStats((prev) => ({
-      ...prev,
-      flashcardAttempts: (prev.flashcardAttempts || 0) + 1,
-      flashcardCorrect: (prev.flashcardCorrect || 0) + (correct ? 1 : 0),
-      xp: (prev.xp || 0) + (correct ? 15 : 5),
-    }))
   }
 
   return React.createElement(
@@ -201,8 +208,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         reviewWord,
         updateSettings,
         removeWord,
-        recordPracticeAttempt,
-        recordFlashcardAttempt,
+        recordPracticeAttempt: (correct) => updateStats(correct, 'practice'),
+        recordFlashcardAttempt: (correct) => updateStats(correct, 'flashcard'),
       },
     },
     children,

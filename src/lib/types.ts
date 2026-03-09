@@ -23,6 +23,11 @@ export interface UserSettings {
   aiModel?: string
 }
 
+export interface ActivityEntry {
+  date: string
+  count: number
+}
+
 export interface UserStats {
   practiceAttempts: number
   practiceCorrect: number
@@ -31,6 +36,7 @@ export interface UserStats {
   xp: number
   streak: number
   lastActiveDate: number
+  activityHistory?: ActivityEntry[]
 }
 
 export interface AppState {

@@ -1,7 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Trophy, BookOpen, BrainCircuit, Star } from 'lucide-react'
-import { WeeklyChart } from './WeeklyChart'
 import { useToast } from '@/hooks/use-toast'
 import { useStore } from '@/store/main'
 
@@ -133,9 +132,6 @@ export function StatsSidebar() {
           </div>
         </Card>
       </div>
-
-      {/* Chart */}
-      <WeeklyChart />
     </div>
   )
 }
