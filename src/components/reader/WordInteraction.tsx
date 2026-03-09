@@ -14,39 +14,43 @@ interface WordInteractionProps {
 const mockDictionary: Record<string, { translation: string; explanation: string }> = {
   the: {
     translation: 'o, a, os, as',
-    explanation: 'Artigo definido usado para indicar um substantivo específico.',
+    explanation:
+      'This is a definite article used to indicate a specific noun that is known to the reader or listener. It helps point out particular objects or people. For example, "the book" refers to a specific book.',
   },
-  is: { translation: 'é, está', explanation: 'Terceira pessoa do singular do verbo "to be".' },
+  is: {
+    translation: 'é, está',
+    explanation:
+      'This is the third-person singular form of the verb "to be" in the present tense. It is used to describe a state of being or existence. For example, "she is happy".',
+  },
   quick: {
     translation: 'rápido',
-    explanation: 'Adjetivo que descreve algo que se move com velocidade.',
+    explanation:
+      'An adjective that describes something moving or functioning with high speed. It can refer to physical movement or mental sharpness. For instance, a "quick learner".',
   },
   brown: {
     translation: 'marrom',
-    explanation: 'Cor resultante da mistura de vermelho, amarelo e preto.',
+    explanation:
+      'This word describes a color often found in nature, like wood or soil. It is commonly used as an adjective to detail the appearance of an object or animal.',
   },
-  fox: { translation: 'raposa', explanation: 'Mamífero carnívoro da família dos canídeos.' },
-  jumps: { translation: 'pula', explanation: 'Terceira pessoa do singular do verbo "to jump".' },
-  over: { translation: 'sobre', explanation: 'Preposição que indica posição superior.' },
-  lazy: {
-    translation: 'preguiçoso',
-    explanation: 'Adjetivo para descrever alguém que evita esforço.',
-  },
-  dog: {
-    translation: 'cachorro',
-    explanation: 'Mamífero doméstico frequentemente mantido como pet.',
+  fox: {
+    translation: 'raposa',
+    explanation:
+      'A small to medium-sized carnivorous mammal known for its bushy tail and cleverness. It belongs to the dog family and is often featured in folklore.',
   },
   serendipity: {
     translation: 'serendipidade',
-    explanation: 'Ocorrência de eventos por acaso de maneira feliz.',
+    explanation:
+      'Serendipity refers to the occurrence of events by chance in a happy or beneficial way. It describes those lucky moments when you find something wonderful without looking for it. A great example is accidentally discovering a new favorite restaurant.',
   },
   ephemeral: {
     translation: 'efêmero',
-    explanation: 'Algo que dura por um tempo muito curto; transitório.',
+    explanation:
+      'Ephemeral describes something that lasts for a very short time. It is often used for things like delicate flowers, beautiful sunsets, or passing feelings. The temporary nature of ephemeral things often makes them more precious.',
   },
   ubiquitous: {
     translation: 'onipresente',
-    explanation: 'Presente ou encontrado em todos os lugares.',
+    explanation:
+      'When something is ubiquitous, it is present, appearing, or found everywhere. In modern times, smartphones have become a ubiquitous part of daily life. It emphasizes how common and widespread something is.',
   },
 }
 
@@ -57,7 +61,7 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
     null,
   )
 
-  const { settings } = useStore()
+  const { settings, words, addWord, updateWordStatus } = useStore()
   const { toast } = useToast()
 
   const cleanWord = word.replace(/[^\w-]/g, '').toLowerCase()
@@ -69,16 +73,31 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
       fetched.current = true
 
       const fetchDefinition = async () => {
+        const cacheKey = `langflow_cache_${cleanWord}_${settings.level}`
+        const cached = localStorage.getItem(cacheKey)
+
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached)
+            if (parsed.translation && parsed.explanation) {
+              setWordData(parsed)
+              setIsLoading(false)
+              return
+            }
+          } catch (e) {
+            // Ignore cache parse error
+          }
+        }
+
         if (!settings.apiKey) {
           setTimeout(() => {
-            setWordData(
-              mockDictionary[cleanWord] || {
-                translation: `tradução de "${cleanWord}"`,
-                explanation: `(Modo Offline) Análise simulada. Configure sua API Key do ${
-                  settings.aiProvider === 'gemini' ? 'Gemini' : 'OpenAI'
-                } para explicações em tempo real.`,
-              },
-            )
+            const fallbackData = mockDictionary[cleanWord] || {
+              translation: `tradução de "${cleanWord}"`,
+              explanation: `(Offline Mode) Explanation unavailable. Please configure your ${
+                settings.aiProvider === 'gemini' ? 'Gemini' : 'OpenAI'
+              } key to get personalized, 2-3 sentence explanations.`,
+            }
+            setWordData(fallbackData)
             setIsLoading(false)
           }, 600)
           return
@@ -86,6 +105,9 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
 
         try {
           let result: any = null
+          const aiPrompt = `You are an intelligent English dictionary. The user is at CEFR level ${
+            settings.level || 'B1'
+          }. Analyze the target word within the provided context sentence. Return the most accurate Portuguese translation for this specific context, and provide a 2-3 sentence explanation in English of the word's meaning and usage, tailored to the user's level. Respond ONLY with valid JSON: {"translation": "...", "explanation": "..."}`
 
           if (settings.aiProvider === 'gemini') {
             const res = await fetch(
@@ -100,7 +122,7 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
                     {
                       parts: [
                         {
-                          text: `Você é um dicionário inteligente de inglês. Analise a palavra alvo dentro do contexto da frase fornecida. Retorne a tradução mais adequada para este contexto específico e uma breve explicação em português do papel e significado da palavra na frase. Responda apenas com JSON válido: {"translation": "...", "explanation": "..."}\n\nPalavra: "${cleanWord}"\nFrase: "${sentence}"`,
+                          text: `${aiPrompt}\n\nTarget word: "${cleanWord}"\nContext: "${sentence}"`,
                         },
                       ],
                     },
@@ -124,12 +146,11 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
                 messages: [
                   {
                     role: 'system',
-                    content:
-                      'Você é um dicionário inteligente de inglês. Analise a palavra alvo dentro do contexto da frase fornecida. Retorne a tradução mais adequada para este contexto específico e uma breve explicação em português do papel e significado da palavra na frase. Responda apenas com JSON válido: {"translation": "...", "explanation": "..."}',
+                    content: aiPrompt,
                   },
                   {
                     role: 'user',
-                    content: `Palavra: "${cleanWord}"\nFrase de contexto: "${sentence}"`,
+                    content: `Target word: "${cleanWord}"\nContext: "${sentence}"`,
                   },
                 ],
                 response_format: { type: 'json_object' },
@@ -140,16 +161,19 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
             result = JSON.parse(data.choices[0].message.content)
           }
 
-          setWordData({
+          const dataToCache = {
             translation: result.translation || cleanWord,
-            explanation: result.explanation || 'Sem explicação disponível.',
-          })
+            explanation: result.explanation || 'Explanation unavailable.',
+          }
+
+          localStorage.setItem(cacheKey, JSON.stringify(dataToCache))
+          setWordData(dataToCache)
         } catch (error) {
           console.error(error)
           setWordData({
             translation: 'Erro na tradução',
             explanation:
-              'Não foi possível conectar à IA. Verifique sua API Key e a conexão com a internet.',
+              'Explanation unavailable. Please check your AI provider settings and API key.',
           })
         } finally {
           setIsLoading(false)
@@ -158,17 +182,39 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
 
       fetchDefinition()
     }
-  }, [open, cleanWord, sentence, settings.apiKey, settings.aiModel, settings.aiProvider, wordData])
+  }, [
+    open,
+    cleanWord,
+    sentence,
+    settings.apiKey,
+    settings.aiModel,
+    settings.aiProvider,
+    settings.level,
+    wordData,
+  ])
 
   if (!cleanWord) return <span>{word}</span>
 
   const handleCaptureClick = () => {
     if (wordData) {
+      const existing = words.find((w) => w.word.toLowerCase() === cleanWord.toLowerCase())
+
+      if (!existing) {
+        addWord({
+          word: cleanWord,
+          translation: wordData.translation,
+          contextSentence: sentence.trim(),
+          status: 'learning',
+        })
+      } else {
+        updateWordStatus(existing.id, 'learning')
+      }
+
       onCapture(cleanWord, wordData.translation, sentence.trim())
       setOpen(false)
       toast({
-        title: 'Palavra capturada',
-        description: `"${cleanWord}" foi adicionada à sua lista com sucesso.`,
+        title: 'Palavra reconhecida',
+        description: `"${cleanWord}" foi salva no seu banco de vocabulário.`,
       })
     }
   }
@@ -191,18 +237,18 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
       <PopoverContent
         side="top"
         sideOffset={6}
-        className="w-[280px] p-4 shadow-xl border-border/60 bg-popover rounded-xl z-50"
+        className="w-[320px] p-4 shadow-xl border-border/60 bg-popover rounded-xl z-50"
       >
         {isLoading || !wordData ? (
-          <div className="py-6 flex justify-center items-center flex-col gap-3 text-muted-foreground">
+          <div className="py-8 flex justify-center items-center flex-col gap-3 text-muted-foreground">
             <Loader2 className="w-6 h-6 animate-spin text-primary" />
-            <p className="text-sm font-medium animate-pulse">Consultando modelo...</p>
+            <p className="text-sm font-medium animate-pulse">Analisando contexto...</p>
           </div>
         ) : (
-          <div className="space-y-3 animate-fade-in">
+          <div className="space-y-4 animate-fade-in">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h4 className="font-bold text-lg leading-none text-foreground">{cleanWord}</h4>
+                <h4 className="font-bold text-xl leading-none text-foreground">{cleanWord}</h4>
                 <p className="text-sm text-primary font-medium mt-1.5">{wordData.translation}</p>
               </div>
               <div className="p-2 bg-primary/10 rounded-lg shrink-0">
@@ -210,17 +256,17 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
               </div>
             </div>
 
-            <div className="text-sm text-muted-foreground bg-secondary/50 p-3 rounded-lg leading-relaxed border border-border/50">
+            <div className="text-sm text-muted-foreground bg-secondary/50 p-3.5 rounded-xl leading-relaxed border border-border/50">
               {wordData.explanation}
             </div>
 
             <Button
               size="sm"
-              className="w-full mt-2 shadow-sm h-9 text-sm font-semibold gap-2"
+              className="w-full mt-1 shadow-sm h-10 text-sm font-semibold gap-2 rounded-lg"
               onClick={handleCaptureClick}
               disabled={wordData.translation === 'Erro na tradução'}
             >
-              <Plus className="w-4 h-4" /> Adicionar
+              <Plus className="w-4 h-4" /> Salvar Palavra
             </Button>
           </div>
         )}

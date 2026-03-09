@@ -1,8 +1,17 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { Card } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { Play, FileText, CheckCircle2, Settings2, ArrowRight } from 'lucide-react'
+import {
+  Play,
+  FileText,
+  CheckCircle2,
+  Settings2,
+  ArrowRight,
+  Volume2,
+  Loader2,
+  StopCircle,
+} from 'lucide-react'
 import { WordInteraction } from '@/components/reader/WordInteraction'
 import {
   Select,
@@ -13,6 +22,8 @@ import {
 } from '@/components/ui/select'
 import { useStore } from '@/store/main'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from '@/hooks/use-toast'
+import { cn } from '@/lib/utils'
 
 const defaultText = `The quick brown fox jumps over the lazy dog. 
 This is a serendipity moment where you can learn new words.
@@ -26,11 +37,76 @@ interface CapturedWord {
 
 export default function Reader() {
   const [inputText, setInputText] = useState(defaultText)
+  const [processedText, setProcessedText] = useState('')
   const [isReadingMode, setIsReadingMode] = useState(false)
+  const [isProcessingYt, setIsProcessingYt] = useState(false)
   const [capturedWords, setCapturedWords] = useState<CapturedWord[]>([])
+  const [isPlayingTTS, setIsPlayingTTS] = useState(false)
 
-  const { settings, updateSettings, words: globalWords, addWord } = useStore()
+  const { settings, updateSettings, words: globalWords, updateWordStatus } = useStore()
   const navigate = useNavigate()
+  const { toast } = useToast()
+
+  // Clean up TTS on unmount
+  useEffect(() => {
+    return () => {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel()
+      }
+    }
+  }, [])
+
+  const handleProcessInput = async () => {
+    const text = inputText.trim()
+    if (!text) return
+
+    const ytRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/
+    if (ytRegex.test(text)) {
+      setIsProcessingYt(true)
+      // Simulate API fetch for YouTube transcript
+      setTimeout(() => {
+        if (text.includes('error')) {
+          toast({
+            title: 'Transcript indisponível',
+            description: 'Não foi possível extrair as legendas. Tente colar o texto diretamente.',
+            variant: 'destructive',
+          })
+          setIsProcessingYt(false)
+        } else {
+          setProcessedText(
+            'This is a simulated transcript from the YouTube video you pasted. The quick brown fox jumps over the lazy dog. Here we can find serendipity and ephemeral moments. Exploring ubiquitous features is genuinely fun and helps you learn new things easily.',
+          )
+          setIsReadingMode(true)
+          setIsProcessingYt(false)
+        }
+      }, 1500)
+    } else {
+      setProcessedText(text)
+      setIsReadingMode(true)
+    }
+  }
+
+  const handleTTS = () => {
+    if ('speechSynthesis' in window) {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel()
+        setIsPlayingTTS(false)
+      } else {
+        const utterance = new SpeechSynthesisUtterance(processedText)
+        utterance.lang = 'en-US'
+        utterance.onend = () => setIsPlayingTTS(false)
+        utterance.onerror = () => setIsPlayingTTS(false)
+        window.speechSynthesis.speak(utterance)
+        setIsPlayingTTS(true)
+      }
+    } else {
+      toast({
+        title: 'Erro',
+        description: 'Text-to-speech não é suportado neste navegador.',
+        variant: 'destructive',
+      })
+    }
+  }
 
   const handleCapture = useCallback((word: string, translation: string, sentence: string) => {
     setCapturedWords((prev) => {
@@ -41,14 +117,9 @@ export default function Reader() {
 
   const handleNextPhase = () => {
     capturedWords.forEach((cw) => {
-      const exists = globalWords.some((w) => w.word.toLowerCase() === cw.word.toLowerCase())
-      if (!exists) {
-        addWord({
-          word: cw.word,
-          translation: cw.translation,
-          contextSentence: cw.sentence,
-          status: 'builder',
-        })
+      const existing = globalWords.find((w) => w.word.toLowerCase() === cw.word.toLowerCase())
+      if (existing) {
+        updateWordStatus(existing.id, 'builder')
       }
     })
     navigate('/practice')
@@ -57,30 +128,39 @@ export default function Reader() {
   const processedContent = useMemo(() => {
     if (!isReadingMode) return null
 
-    const sentences = inputText.match(/[^.!?]+[.!?]+/g) || [inputText]
+    const paragraphs = processedText.split('\n')
 
-    return sentences.map((sentence, sIdx) => {
-      const tokens = sentence.split(/([\s.,!?;:]+)/)
+    return paragraphs.map((paragraph, pIdx) => {
+      if (!paragraph.trim()) return null
+
+      const sentences = paragraph.match(/[^.!?]+[.!?]+/g) || [paragraph]
 
       return (
-        <span key={sIdx} className="mr-1 leading-[2.2]">
-          {tokens.map((token, tIdx) => {
-            if (/^[\s.,!?;:]+$/.test(token)) {
-              return <span key={tIdx}>{token}</span>
-            }
+        <p key={pIdx} className="mb-4 leading-[2.2]">
+          {sentences.map((sentence, sIdx) => {
+            const tokens = sentence.split(/([\s.,!?;:]+)/)
             return (
-              <WordInteraction
-                key={`${sIdx}-${tIdx}`}
-                word={token}
-                sentence={sentence}
-                onCapture={handleCapture}
-              />
+              <span key={sIdx} className="mr-1">
+                {tokens.map((token, tIdx) => {
+                  if (/^[\s.,!?;:]+$/.test(token)) {
+                    return <span key={tIdx}>{token}</span>
+                  }
+                  return (
+                    <WordInteraction
+                      key={`${pIdx}-${sIdx}-${tIdx}`}
+                      word={token}
+                      sentence={sentence.trim()}
+                      onCapture={handleCapture}
+                    />
+                  )
+                })}
+              </span>
             )
           })}
-        </span>
+        </p>
       )
     })
-  }, [inputText, isReadingMode, handleCapture])
+  }, [processedText, isReadingMode, handleCapture])
 
   return (
     <div className="space-y-6 animate-fade-in max-w-4xl mx-auto h-full flex flex-col">
@@ -88,27 +168,43 @@ export default function Reader() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Leitor Imersivo</h1>
           <p className="text-muted-foreground mt-2 text-lg">
-            Cole um texto em inglês, leia e clique nas palavras que não conhece.
+            Processe textos ou vídeos do YouTube e capture vocabulário em contexto.
           </p>
         </div>
 
         {isReadingMode && (
-          <div className="flex items-center gap-2 bg-secondary/40 p-1.5 rounded-xl border border-border animate-fade-in shadow-sm shrink-0">
-            <Settings2 className="w-4 h-4 text-primary ml-2" />
-            <Select
-              value={settings.aiModel || 'gpt-4o-mini'}
-              onValueChange={(v) => updateSettings({ aiModel: v })}
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <Button
+              onClick={handleTTS}
+              variant="secondary"
+              size="sm"
+              className={cn(
+                'h-9 gap-2 shadow-sm rounded-xl px-3 border border-border transition-all',
+                isPlayingTTS && 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/20',
+              )}
             >
-              <SelectTrigger className="w-[160px] h-9 border-0 bg-transparent focus:ring-0 shadow-none font-medium">
-                <SelectValue placeholder="Modelo de IA" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="gpt-4o">GPT-4o</SelectItem>
-                <SelectItem value="gpt-4o-mini">GPT-4o Mini</SelectItem>
-                <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
-                <SelectItem value="claude-3-haiku">Claude 3 Haiku</SelectItem>
-              </SelectContent>
-            </Select>
+              {isPlayingTTS ? <StopCircle className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              <span className="hidden sm:inline">
+                {isPlayingTTS ? 'Parar Áudio' : 'Ouvir Texto'}
+              </span>
+            </Button>
+            <div className="flex items-center gap-2 bg-secondary/40 p-1.5 rounded-xl border border-border animate-fade-in shadow-sm shrink-0">
+              <Settings2 className="w-4 h-4 text-primary ml-2" />
+              <Select
+                value={settings.aiModel || 'gpt-4o-mini'}
+                onValueChange={(v) => updateSettings({ aiModel: v })}
+              >
+                <SelectTrigger className="w-[160px] h-9 border-0 bg-transparent focus:ring-0 shadow-none font-medium">
+                  <SelectValue placeholder="Modelo de IA" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="gpt-4o">GPT-4o</SelectItem>
+                  <SelectItem value="gpt-4o-mini">GPT-4o Mini</SelectItem>
+                  <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
+                  <SelectItem value="claude-3-haiku">Claude 3 Haiku</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         )}
       </header>
@@ -117,11 +213,11 @@ export default function Reader() {
         <div className="flex-1 flex flex-col gap-6 animate-fade-in-up">
           <Card className="flex-1 p-6 flex flex-col border-border bg-card/80 backdrop-blur-sm min-h-[400px] shadow-sm">
             <div className="flex items-center gap-2 mb-4 text-sm font-medium text-primary">
-              <FileText className="w-5 h-5" /> Cole seu texto aqui:
+              <FileText className="w-5 h-5" /> Cole seu texto em inglês ou URL do YouTube:
             </div>
             <Textarea
               className="flex-1 resize-none text-base md:text-lg p-6 font-sans bg-secondary/30 border-border rounded-[20px] focus-visible:ring-primary shadow-inner leading-relaxed"
-              placeholder="Paste English text here..."
+              placeholder="Ex: https://www.youtube.com/watch?v=... ou cole seu texto aqui..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
             />
@@ -129,15 +225,18 @@ export default function Reader() {
           <Button
             size="lg"
             className="w-full h-16 text-lg shadow-md group rounded-2xl shrink-0"
-            onClick={() => {
-              if (inputText.trim()) setIsReadingMode(true)
-            }}
+            onClick={handleProcessInput}
+            disabled={!inputText.trim() || isProcessingYt}
           >
-            <Play
-              className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
-              fill="currentColor"
-            />
-            Iniciar Leitura
+            {isProcessingYt ? (
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            ) : (
+              <Play
+                className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
+                fill="currentColor"
+              />
+            )}
+            {isProcessingYt ? 'Extraindo Transcript...' : 'Iniciar Leitura'}
           </Button>
         </div>
       ) : (
@@ -153,7 +252,7 @@ export default function Reader() {
                 <div className="flex-1">
                   <h3 className="text-sm font-bold mb-3 flex items-center gap-2 text-foreground uppercase tracking-wider">
                     <CheckCircle2 className="w-4 h-4 text-primary" />
-                    Palavras Capturadas ({capturedWords.length})
+                    Sessão Ativa ({capturedWords.length})
                   </h3>
                   <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto">
                     {capturedWords.map((cw) => (
@@ -173,6 +272,8 @@ export default function Reader() {
                     onClick={() => {
                       setIsReadingMode(false)
                       setCapturedWords([])
+                      if ('speechSynthesis' in window) window.speechSynthesis.cancel()
+                      setIsPlayingTTS(false)
                     }}
                   >
                     Sair do Leitor
@@ -181,7 +282,7 @@ export default function Reader() {
                     className="h-12 rounded-xl shadow-md group text-base px-6 w-full sm:w-auto"
                     onClick={handleNextPhase}
                   >
-                    Próxima Fase{' '}
+                    Praticar com estas palavras{' '}
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </div>
@@ -193,13 +294,17 @@ export default function Reader() {
                 <div className="p-2 bg-primary/10 rounded-full hidden sm:block">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
                 </div>
-                Clique nas palavras no texto acima para capturar o contexto.
+                Clique nas palavras no texto acima para gerar explicações com IA e salvá-las.
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 className="rounded-xl h-10 bg-background hover:bg-secondary border-border w-full sm:w-auto"
-                onClick={() => setIsReadingMode(false)}
+                onClick={() => {
+                  setIsReadingMode(false)
+                  if ('speechSynthesis' in window) window.speechSynthesis.cancel()
+                  setIsPlayingTTS(false)
+                }}
               >
                 Editar Texto
               </Button>

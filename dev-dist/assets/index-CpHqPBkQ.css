@@ -1326,6 +1326,10 @@ body::selection{
   width: 280px;
 }
 
+.w-\[320px\]{
+  width: 320px;
+}
+
 .w-auto{
   width: auto;
 }
@@ -1733,6 +1737,12 @@ body::selection{
   --tw-space-y-reverse: 0;
   margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+
+.space-y-4 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 
 .space-y-6 > :not([hidden]) ~ :not([hidden]){
@@ -2324,6 +2334,10 @@ body::selection{
   padding: 0.75rem;
 }
 
+.p-3\.5{
+  padding: 0.875rem;
+}
+
 .p-4{
   padding: 1rem;
 }
@@ -2427,6 +2441,11 @@ body::selection{
 .py-6{
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+
+.py-8{
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .pb-12{
@@ -4392,6 +4411,10 @@ body::selection{
 
   .sm\:block{
     display: block;
+  }
+
+  .sm\:inline{
+    display: inline;
   }
 
   .sm\:flex{
