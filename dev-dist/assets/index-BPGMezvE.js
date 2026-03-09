@@ -18966,6 +18966,10 @@ var createLucideIcon = (iconName, iconNode) => {
 	Component$2.displayName = toPascalCase(iconName);
 	return Component$2;
 };
+var Activity = createLucideIcon("activity", [["path", {
+	d: "M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2",
+	key: "169zse"
+}]]);
 var ArrowRight = createLucideIcon("arrow-right", [["path", {
 	d: "M5 12h14",
 	key: "1ays0h"
@@ -19531,6 +19535,20 @@ var Trash2 = createLucideIcon("trash-2", [
 		key: "e791ji"
 	}]
 ]);
+var TrendingDown = createLucideIcon("trending-down", [["path", {
+	d: "M16 17h6v-6",
+	key: "t6n2it"
+}], ["path", {
+	d: "m22 17-8.5-8.5-5 5L2 7",
+	key: "x473p"
+}]]);
+var TrendingUp = createLucideIcon("trending-up", [["path", {
+	d: "M16 7h6v6",
+	key: "box55l"
+}], ["path", {
+	d: "m22 7-8.5 8.5-5-5L2 17",
+	key: "1t1m79"
+}]]);
 var Trophy = createLucideIcon("trophy", [
 	["path", {
 		d: "M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978",
@@ -26203,7 +26221,9 @@ var defaultStats = {
 	activityHistory: getMockActivityHistory(),
 	dailyMissions: [],
 	missionsDate: "",
-	achievements: defaultAchievements
+	achievements: defaultAchievements,
+	consecutiveCorrect: 0,
+	consecutiveIncorrect: 0
 };
 var mockWords = [{
 	id: "1",
@@ -26325,6 +26345,47 @@ function StoreProvider({ children }) {
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem("langflow_stats", JSON.stringify(stats));
 	}, [stats]);
+	(0, import_react.useEffect)(() => {
+		const { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = stats;
+		const levels = [
+			"A1",
+			"A2",
+			"B1",
+			"B2",
+			"C1",
+			"C2"
+		];
+		const currentLevelIndex = levels.indexOf(settings.level);
+		if (consecutiveCorrect >= 5 && currentLevelIndex > -1 && currentLevelIndex < levels.length - 1) {
+			const newLevel = levels[currentLevelIndex + 1];
+			const comp = newLevel === "A1" || newLevel === "A2" ? "beginner" : newLevel === "B1" || newLevel === "B2" ? "intermediate" : "advanced";
+			setSettings((prev) => ({
+				...prev,
+				level: newLevel,
+				complexity: comp
+			}));
+			setStats((prev) => ({
+				...prev,
+				consecutiveCorrect: 0
+			}));
+		} else if (consecutiveIncorrect >= 3 && currentLevelIndex > 0) {
+			const newLevel = levels[currentLevelIndex - 1];
+			const comp = newLevel === "A1" || newLevel === "A2" ? "beginner" : newLevel === "B1" || newLevel === "B2" ? "intermediate" : "advanced";
+			setSettings((prev) => ({
+				...prev,
+				level: newLevel,
+				complexity: comp
+			}));
+			setStats((prev) => ({
+				...prev,
+				consecutiveIncorrect: 0
+			}));
+		}
+	}, [
+		stats.consecutiveCorrect,
+		stats.consecutiveIncorrect,
+		settings.level
+	]);
 	const addWord = (data) => {
 		const newWord = {
 			...data,
@@ -26395,6 +26456,14 @@ function StoreProvider({ children }) {
 					progress: p
 				};
 			});
+			let { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = prev;
+			if (isCorrect) {
+				consecutiveCorrect += 1;
+				consecutiveIncorrect = 0;
+			} else {
+				consecutiveIncorrect += 1;
+				consecutiveCorrect = 0;
+			}
 			return checkGamification({
 				...prev,
 				streak,
@@ -26405,7 +26474,9 @@ function StoreProvider({ children }) {
 				flashcardCorrect,
 				practiceAttempts,
 				practiceCorrect,
-				dailyMissions: newMissions
+				dailyMissions: newMissions,
+				consecutiveCorrect,
+				consecutiveIncorrect
 			}, words.length);
 		});
 	};
@@ -50825,20 +50896,31 @@ function usePracticeEngine(currentWord, settings) {
 			let result = null;
 			if (!settings.apiKey) {
 				setTimeout(() => {
+					const isAdvanced = settings.level === "C1" || settings.level === "C2";
+					const isIntermediate = settings.level === "B1" || settings.level === "B2";
+					let sentenceEn = `I saw a ${currentWord.word} today.`;
+					let sentencePt = `Eu vi um(a) ${currentWord.translation} hoje.`;
+					if (isAdvanced) {
+						sentenceEn = `The unexpected presence of a ${currentWord.word} drastically altered the situation.`;
+						sentencePt = `A presença inesperada de um(a) ${currentWord.translation} alterou drasticamente a situação.`;
+					} else if (isIntermediate) {
+						sentenceEn = `I quickly noticed a ${currentWord.word} while walking outside.`;
+						sentencePt = `Eu notei rapidamente um(a) ${currentWord.translation} enquanto caminhava lá fora.`;
+					}
 					if (type === "cloze") result = {
-						pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
-						en: `I saw a ${currentWord.word} today.`,
+						pt: sentencePt,
+						en: sentenceEn,
 						word: currentWord.word
 					};
 					else if (type === "transform") result = {
-						instruction: "Change to past tense",
-						original: `I see a ${currentWord.word} today.`,
-						transformed: `I saw a ${currentWord.word} today.`,
-						pt: `Eu vi um(a) ${currentWord.translation} hoje.`
+						instruction: isAdvanced ? "Change to passive voice" : "Change to past tense",
+						original: isAdvanced ? `They notice a ${currentWord.word} in the room.` : `I see a ${currentWord.word} today.`,
+						transformed: isAdvanced ? `A ${currentWord.word} is noticed in the room.` : sentenceEn,
+						pt: sentencePt
 					};
 					else result = {
-						pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
-						en: `I saw a ${currentWord.word} today.`
+						pt: sentencePt,
+						en: sentenceEn
 					};
 					setupData(result, type);
 				}, 800);
@@ -50846,9 +50928,10 @@ function usePracticeEngine(currentWord, settings) {
 			}
 			try {
 				let systemPrompt = "";
-				if (type === "builder") systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || "intermediate"}. Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`;
-				else if (type === "cloze") systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || "intermediate"}. Crie uma frase com a palavra "${currentWord.word}". Retorne JSON: {"pt": "frase pt", "en": "frase completa em ingles", "word": "${currentWord.word}"}`;
-				else if (type === "transform") systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || "intermediate"}. Crie uma frase simples usando a palavra "${currentWord.word}", uma instrução de transformação gramatical em inglês (ex: 'Change to negative', 'Change to past tense'), e a frase transformada. Retorne JSON: {"instruction": "instrução", "original": "frase original", "transformed": "frase transformada", "pt": "tradução da frase transformada"}`;
+				const baseLevelInfo = `Nível do aluno: ${settings.level} (${settings.complexity || "intermediate"}). Adapte a complexidade do vocabulário e da gramática da frase para este nível.`;
+				if (type === "builder") systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`;
+				else if (type === "cloze") systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie uma frase com a palavra "${currentWord.word}". Retorne JSON: {"pt": "frase pt", "en": "frase completa em ingles", "word": "${currentWord.word}"}`;
+				else if (type === "transform") systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie uma frase simples usando a palavra "${currentWord.word}", uma instrução de transformação gramatical em inglês (ex: 'Change to negative', 'Change to past tense'), e a frase transformada. Retorne JSON: {"instruction": "instrução", "original": "frase original", "transformed": "frase transformada", "pt": "tradução da frase transformada"}`;
 				const payload = settings.aiProvider === "gemini" ? {
 					url: `https://generativelanguage.googleapis.com/v1beta/models/${settings.aiModel || "gemini-1.5-flash"}:generateContent?key=${settings.apiKey}`,
 					body: {
@@ -51399,8 +51482,35 @@ function PracticeContent({ currentWord, practiceData, shuffledBlocks, exerciseTy
 	});
 }
 function Practice() {
-	const { words, settings } = useStore();
+	const { words, settings, stats } = useStore();
 	const [reviewedIds, setReviewedIds] = (0, import_react.useState)(/* @__PURE__ */ new Set());
+	const { toast: toast$2 } = useToast();
+	const prevLevelRef = (0, import_react.useRef)(settings.level);
+	(0, import_react.useEffect)(() => {
+		if (prevLevelRef.current && prevLevelRef.current !== settings.level) {
+			const levels = [
+				"A1",
+				"A2",
+				"B1",
+				"B2",
+				"C1",
+				"C2"
+			];
+			const oldIdx = levels.indexOf(prevLevelRef.current);
+			const newIdx = levels.indexOf(settings.level);
+			if (newIdx > oldIdx) toast$2({
+				title: "Nível Aumentado! 🚀",
+				description: `Seu nível subiu para ${settings.level}. Os próximos exercícios serão mais desafiadores.`,
+				className: "bg-success text-success-foreground border-success"
+			});
+			else if (newIdx < oldIdx) toast$2({
+				title: "Nível Ajustado 📉",
+				description: `Seu nível foi ajustado para ${settings.level} para melhor fixação.`,
+				className: "bg-primary text-primary-foreground border-primary"
+			});
+			prevLevelRef.current = settings.level;
+		}
+	}, [settings.level, toast$2]);
 	const queue = (0, import_react.useMemo)(() => {
 		const now$2 = Date.now();
 		const reviews = words.filter((w) => w.status === "srs" && w.nextReviewDate <= now$2 && !reviewedIds.has(w.id));
@@ -51418,12 +51528,40 @@ function Practice() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col pt-4",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-			className: "flex justify-between items-end mb-2 flex-shrink-0",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+			className: "flex justify-between items-start mb-2 flex-shrink-0",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 				className: "text-3xl font-bold tracking-tight text-foreground flex items-center gap-3",
 				children: currentWord.status === "srs" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "w-8 h-8 text-orange-500" }), " Revisão Espaçada"] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-8 h-8 text-primary" }), " Sentence Builder"] })
-			}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "text-sm font-medium bg-card px-4 py-2 rounded-full border shadow-sm",
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-3 mt-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-secondary text-secondary-foreground border",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, { className: "w-3.5 h-3.5" }),
+						"Nível: ",
+						settings.level
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex items-center gap-1 text-xs text-muted-foreground font-medium",
+					title: "Desempenho recente",
+					children: stats.consecutiveCorrect ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "flex items-center gap-1 text-success",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "w-3.5 h-3.5" }),
+							" +",
+							stats.consecutiveCorrect
+						]
+					}) : stats.consecutiveIncorrect ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "flex items-center gap-1 text-destructive",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingDown, { className: "w-3.5 h-3.5" }),
+							" -",
+							stats.consecutiveIncorrect
+						]
+					}) : null
+				})]
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "text-sm font-medium bg-card px-4 py-2 rounded-full border shadow-sm mt-1",
 				children: [
 					reviewedIds.size + 1,
 					" de ",
@@ -52381,4 +52519,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Bn3J4Yqa.js.map
+//# sourceMappingURL=index-BPGMezvE.js.map

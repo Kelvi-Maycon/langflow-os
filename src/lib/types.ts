@@ -63,6 +63,8 @@ export interface UserStats {
   dailyMissions: DailyMission[]
   missionsDate: string
   achievements: Achievement[]
+  consecutiveCorrect?: number
+  consecutiveIncorrect?: number
 }
 
 export interface AppState {

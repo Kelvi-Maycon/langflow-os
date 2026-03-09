@@ -31,24 +31,35 @@ export function usePracticeEngine(currentWord: WordEntry | undefined, settings: 
       let result = null
       if (!settings.apiKey) {
         setTimeout(() => {
+          const isAdvanced = settings.level === 'C1' || settings.level === 'C2'
+          const isIntermediate = settings.level === 'B1' || settings.level === 'B2'
+
+          let sentenceEn = `I saw a ${currentWord.word} today.`
+          let sentencePt = `Eu vi um(a) ${currentWord.translation} hoje.`
+
+          if (isAdvanced) {
+            sentenceEn = `The unexpected presence of a ${currentWord.word} drastically altered the situation.`
+            sentencePt = `A presença inesperada de um(a) ${currentWord.translation} alterou drasticamente a situação.`
+          } else if (isIntermediate) {
+            sentenceEn = `I quickly noticed a ${currentWord.word} while walking outside.`
+            sentencePt = `Eu notei rapidamente um(a) ${currentWord.translation} enquanto caminhava lá fora.`
+          }
+
           if (type === 'cloze') {
-            result = {
-              pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
-              en: `I saw a ${currentWord.word} today.`,
-              word: currentWord.word,
-            }
+            result = { pt: sentencePt, en: sentenceEn, word: currentWord.word }
           } else if (type === 'transform') {
             result = {
-              instruction: 'Change to past tense',
-              original: `I see a ${currentWord.word} today.`,
-              transformed: `I saw a ${currentWord.word} today.`,
-              pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
+              instruction: isAdvanced ? 'Change to passive voice' : 'Change to past tense',
+              original: isAdvanced
+                ? `They notice a ${currentWord.word} in the room.`
+                : `I see a ${currentWord.word} today.`,
+              transformed: isAdvanced
+                ? `A ${currentWord.word} is noticed in the room.`
+                : sentenceEn,
+              pt: sentencePt,
             }
           } else {
-            result = {
-              pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
-              en: `I saw a ${currentWord.word} today.`,
-            }
+            result = { pt: sentencePt, en: sentenceEn }
           }
           setupData(result, type)
         }, 800)
@@ -57,12 +68,14 @@ export function usePracticeEngine(currentWord: WordEntry | undefined, settings: 
 
       try {
         let systemPrompt = ''
+        const baseLevelInfo = `Nível do aluno: ${settings.level} (${settings.complexity || 'intermediate'}). Adapte a complexidade do vocabulário e da gramática da frase para este nível.`
+
         if (type === 'builder')
-          systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || 'intermediate'}. Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`
+          systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`
         else if (type === 'cloze')
-          systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || 'intermediate'}. Crie uma frase com a palavra "${currentWord.word}". Retorne JSON: {"pt": "frase pt", "en": "frase completa em ingles", "word": "${currentWord.word}"}`
+          systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie uma frase com a palavra "${currentWord.word}". Retorne JSON: {"pt": "frase pt", "en": "frase completa em ingles", "word": "${currentWord.word}"}`
         else if (type === 'transform')
-          systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || 'intermediate'}. Crie uma frase simples usando a palavra "${currentWord.word}", uma instrução de transformação gramatical em inglês (ex: 'Change to negative', 'Change to past tense'), e a frase transformada. Retorne JSON: {"instruction": "instrução", "original": "frase original", "transformed": "frase transformada", "pt": "tradução da frase transformada"}`
+          systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie uma frase simples usando a palavra "${currentWord.word}", uma instrução de transformação gramatical em inglês (ex: 'Change to negative', 'Change to past tense'), e a frase transformada. Retorne JSON: {"instruction": "instrução", "original": "frase original", "transformed": "frase transformada", "pt": "tradução da frase transformada"}`
 
         const payload =
           settings.aiProvider === 'gemini'

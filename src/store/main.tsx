@@ -132,6 +132,8 @@ const defaultStats: UserStats = {
   dailyMissions: [],
   missionsDate: '',
   achievements: defaultAchievements,
+  consecutiveCorrect: 0,
+  consecutiveIncorrect: 0,
 }
 
 const mockWords: WordEntry[] = [
@@ -261,6 +263,38 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('langflow_stats', JSON.stringify(stats))
   }, [stats])
 
+  useEffect(() => {
+    const { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = stats
+    const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const
+    const currentLevelIndex = levels.indexOf(settings.level as any)
+
+    if (
+      consecutiveCorrect >= 5 &&
+      currentLevelIndex > -1 &&
+      currentLevelIndex < levels.length - 1
+    ) {
+      const newLevel = levels[currentLevelIndex + 1]
+      const comp =
+        newLevel === 'A1' || newLevel === 'A2'
+          ? 'beginner'
+          : newLevel === 'B1' || newLevel === 'B2'
+            ? 'intermediate'
+            : 'advanced'
+      setSettings((prev) => ({ ...prev, level: newLevel, complexity: comp }))
+      setStats((prev) => ({ ...prev, consecutiveCorrect: 0 }))
+    } else if (consecutiveIncorrect >= 3 && currentLevelIndex > 0) {
+      const newLevel = levels[currentLevelIndex - 1]
+      const comp =
+        newLevel === 'A1' || newLevel === 'A2'
+          ? 'beginner'
+          : newLevel === 'B1' || newLevel === 'B2'
+            ? 'intermediate'
+            : 'advanced'
+      setSettings((prev) => ({ ...prev, level: newLevel, complexity: comp }))
+      setStats((prev) => ({ ...prev, consecutiveIncorrect: 0 }))
+    }
+  }, [stats.consecutiveCorrect, stats.consecutiveIncorrect, settings.level])
+
   const addWord = (data: Parameters<StoreContextType['addWord']>[0]) => {
     const newWord: WordEntry = {
       ...data,
@@ -341,6 +375,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return { ...m, progress: p }
       })
 
+      let { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = prev
+      if (isCorrect) {
+        consecutiveCorrect += 1
+        consecutiveIncorrect = 0
+      } else {
+        consecutiveIncorrect += 1
+        consecutiveCorrect = 0
+      }
+
       const newState = {
         ...prev,
         streak,
@@ -352,6 +395,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         practiceAttempts,
         practiceCorrect,
         dailyMissions: newMissions,
+        consecutiveCorrect,
+        consecutiveIncorrect,
       }
 
       return checkGamification(newState, words.length)

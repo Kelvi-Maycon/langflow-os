@@ -1,14 +1,40 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useStore } from '@/store/main'
 import { Card } from '@/components/ui/card'
-import { BrainCircuit, Loader2, Zap } from 'lucide-react'
+import { BrainCircuit, Loader2, Zap, TrendingUp, TrendingDown, Activity } from 'lucide-react'
 import { usePracticeEngine } from '@/hooks/use-practice-engine'
 import { PracticeEmpty } from '@/components/practice-empty'
 import { PracticeContent } from '@/components/practice/PracticeContent'
+import { useToast } from '@/hooks/use-toast'
 
 export default function Practice() {
-  const { words, settings } = useStore()
+  const { words, settings, stats } = useStore()
   const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set())
+  const { toast } = useToast()
+  const prevLevelRef = useRef(settings.level)
+
+  useEffect(() => {
+    if (prevLevelRef.current && prevLevelRef.current !== settings.level) {
+      const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+      const oldIdx = levels.indexOf(prevLevelRef.current as any)
+      const newIdx = levels.indexOf(settings.level as any)
+
+      if (newIdx > oldIdx) {
+        toast({
+          title: 'Nível Aumentado! 🚀',
+          description: `Seu nível subiu para ${settings.level}. Os próximos exercícios serão mais desafiadores.`,
+          className: 'bg-success text-success-foreground border-success',
+        })
+      } else if (newIdx < oldIdx) {
+        toast({
+          title: 'Nível Ajustado 📉',
+          description: `Seu nível foi ajustado para ${settings.level} para melhor fixação.`,
+          className: 'bg-primary text-primary-foreground border-primary',
+        })
+      }
+      prevLevelRef.current = settings.level
+    }
+  }, [settings.level, toast])
 
   const queue = useMemo(() => {
     const now = Date.now()
@@ -36,7 +62,7 @@ export default function Practice() {
 
   return (
     <div className="space-y-6 animate-fade-in max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col pt-4">
-      <header className="flex justify-between items-end mb-2 flex-shrink-0">
+      <header className="flex justify-between items-start mb-2 flex-shrink-0">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-3">
             {currentWord.status === 'srs' ? (
@@ -49,8 +75,29 @@ export default function Practice() {
               </>
             )}
           </h1>
+          <div className="flex items-center gap-3 mt-3">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-secondary text-secondary-foreground border">
+              <Activity className="w-3.5 h-3.5" />
+              Nível: {settings.level}
+            </span>
+
+            <div
+              className="flex items-center gap-1 text-xs text-muted-foreground font-medium"
+              title="Desempenho recente"
+            >
+              {stats.consecutiveCorrect ? (
+                <span className="flex items-center gap-1 text-success">
+                  <TrendingUp className="w-3.5 h-3.5" /> +{stats.consecutiveCorrect}
+                </span>
+              ) : stats.consecutiveIncorrect ? (
+                <span className="flex items-center gap-1 text-destructive">
+                  <TrendingDown className="w-3.5 h-3.5" /> -{stats.consecutiveIncorrect}
+                </span>
+              ) : null}
+            </div>
+          </div>
         </div>
-        <div className="text-sm font-medium bg-card px-4 py-2 rounded-full border shadow-sm">
+        <div className="text-sm font-medium bg-card px-4 py-2 rounded-full border shadow-sm mt-1">
           {reviewedIds.size + 1} de {Math.max(initialQueueSize, 1)}
         </div>
       </header>
