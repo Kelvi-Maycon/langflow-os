@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useStore } from '@/store/main'
-import { Star, Flame, Brain, BookOpen, Trophy, Zap } from 'lucide-react'
+import { Star, Flame, Brain, BookOpen, Trophy, Zap, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const iconMap: Record<string, any> = {
@@ -27,39 +28,67 @@ export function AchievementsList() {
       </header>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {achievements.map((ach) => {
-          const Icon = iconMap[ach.icon] || Trophy
-          return (
-            <Card
-              key={ach.id}
-              className={cn(
-                'p-5 flex flex-col items-center text-center gap-4 transition-all duration-300 rounded-[24px]',
-                ach.unlocked
-                  ? 'bg-card border-primary/30 shadow-sm hover:-translate-y-1 hover:shadow-md cursor-pointer'
-                  : 'bg-secondary/30 border-dashed opacity-60 grayscale',
-              )}
-            >
-              <div
-                className={cn(
-                  'w-16 h-16 rounded-full flex items-center justify-center transition-colors duration-500 shadow-sm',
-                  ach.unlocked
-                    ? 'bg-primary/20 border border-primary/20'
-                    : 'bg-muted border border-border',
-                )}
-              >
-                <Icon
-                  className={cn('w-8 h-8', ach.unlocked ? 'text-primary' : 'text-muted-foreground')}
-                />
-              </div>
-              <div>
-                <h4 className="font-bold text-[15px] leading-tight text-foreground">{ach.title}</h4>
-                <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed">
-                  {ach.description}
-                </p>
-              </div>
-            </Card>
-          )
-        })}
+        <TooltipProvider>
+          {achievements.map((ach) => {
+            const Icon = iconMap[ach.icon] || Trophy
+            const isUnlocked = ach.unlocked
+            return (
+              <Tooltip key={ach.id} delayDuration={300}>
+                <TooltipTrigger asChild>
+                  <Card
+                    className={cn(
+                      'p-5 flex flex-col items-center text-center gap-4 transition-all duration-300 rounded-[24px]',
+                      isUnlocked
+                        ? 'bg-card border-primary/30 shadow-sm hover:-translate-y-1 hover:shadow-md cursor-pointer'
+                        : 'bg-secondary/30 border-dashed opacity-60 grayscale hover:opacity-80 hover:grayscale-0 cursor-help',
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        'w-16 h-16 rounded-full flex items-center justify-center transition-colors duration-500 shadow-sm',
+                        isUnlocked
+                          ? 'bg-primary/20 border border-primary/20'
+                          : 'bg-muted border border-border',
+                      )}
+                    >
+                      <Icon
+                        className={cn(
+                          'w-8 h-8',
+                          isUnlocked ? 'text-primary' : 'text-muted-foreground',
+                        )}
+                      />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-[15px] leading-tight text-foreground">
+                        {ach.title}
+                      </h4>
+                      <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed">
+                        {ach.description}
+                      </p>
+                    </div>
+                  </Card>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="bottom"
+                  className="text-center p-3 max-w-[200px] bg-popover text-popover-foreground border border-border shadow-lg"
+                >
+                  <p className="font-bold text-sm mb-1">{ach.title}</p>
+                  <p className="text-xs text-muted-foreground">{ach.description}</p>
+                  {!isUnlocked && (
+                    <div className="mt-3 bg-secondary rounded-full px-3 py-1.5 text-[10px] font-bold text-foreground flex items-center justify-center gap-1.5 w-fit mx-auto border border-border/50">
+                      STATUS: BLOQUEADO <Lock className="w-3 h-3 opacity-60" />
+                    </div>
+                  )}
+                  {isUnlocked && (
+                    <div className="mt-3 bg-primary/10 text-primary rounded-full px-3 py-1.5 text-[10px] font-bold flex items-center justify-center gap-1.5 w-fit mx-auto border border-primary/20">
+                      <Star className="w-3 h-3 fill-current" /> DESBLOQUEADO
+                    </div>
+                  )}
+                </TooltipContent>
+              </Tooltip>
+            )
+          })}
+        </TooltipProvider>
       </div>
     </section>
   )

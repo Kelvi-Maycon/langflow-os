@@ -19491,6 +19491,13 @@ var Pen = createLucideIcon("pen", [["path", {
 	d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
 	key: "1a8usu"
 }]]);
+var Pencil = createLucideIcon("pencil", [["path", {
+	d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+	key: "1a8usu"
+}], ["path", {
+	d: "m15 5 4 4",
+	key: "1mk7zo"
+}]]);
 var Play = createLucideIcon("play", [["path", {
 	d: "M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z",
 	key: "10ikf1"
@@ -19661,6 +19668,26 @@ var Star = createLucideIcon("star", [["path", {
 	d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
 	key: "r04s7s"
 }]]);
+var Target = createLucideIcon("target", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "6",
+		key: "1vlfrh"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "2",
+		key: "1c9p78"
+	}]
+]);
 var Trash2 = createLucideIcon("trash-2", [
 	["path", {
 		d: "M10 11v6",
@@ -24452,8 +24479,12 @@ function getHullPresorted(points) {
 	else return upperHull.concat(lowerHull);
 }
 var Provider = TooltipProvider$1;
+var Root3 = Tooltip$2;
+var Trigger$4 = TooltipTrigger$1;
 var Content2$2 = TooltipContent$1;
 var TooltipProvider = Provider;
+var Tooltip = Root3;
+var TooltipTrigger = Trigger$4;
 var TooltipContent = import_react.forwardRef(({ className, sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$2, {
 	ref,
 	sideOffset,
@@ -24835,9 +24866,9 @@ function createSidecarMedium(options$1) {
 var SideCar = function(_a) {
 	var sideCar = _a.sideCar, rest = __rest(_a, ["sideCar"]);
 	if (!sideCar) throw new Error("Sidecar: please provide `sideCar` property to import the right car");
-	var Target = sideCar.read();
-	if (!Target) throw new Error("Sidecar medium not found");
-	return import_react.createElement(Target, __assign({}, rest));
+	var Target$1 = sideCar.read();
+	if (!Target$1) throw new Error("Sidecar medium not found");
+	return import_react.createElement(Target$1, __assign({}, rest));
 };
 SideCar.isSideCarExport = true;
 function exportSidecar(medium, exported) {
@@ -25904,7 +25935,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$19({ inst: {
+			cachedValue = useState$20({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -25941,7 +25972,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$39 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$19 = React$39.useState, useEffect$13 = React$39.useEffect, useLayoutEffect$1 = React$39.useLayoutEffect, useDebugValue = React$39.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$39 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$20 = React$39.useState, useEffect$13 = React$39.useEffect, useLayoutEffect$1 = React$39.useLayoutEffect, useDebugValue = React$39.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$39.useSyncExternalStore ? React$39.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -26194,6 +26225,42 @@ var defaultAchievements = [
 		icon: "book",
 		unlocked: false,
 		requirement: 10,
+		type: "words"
+	},
+	{
+		id: "a5",
+		title: "Semana Perfeita",
+		description: "Alcance uma ofensiva de 7 dias",
+		icon: "star",
+		unlocked: false,
+		requirement: 7,
+		type: "streak"
+	},
+	{
+		id: "a6",
+		title: "Primeira Revisão",
+		description: "Acerte seu primeiro flashcard",
+		icon: "zap",
+		unlocked: false,
+		requirement: 1,
+		type: "flashcards"
+	},
+	{
+		id: "a7",
+		title: "Centenário",
+		description: "Adicione 100 palavras ao sistema",
+		icon: "trophy",
+		unlocked: false,
+		requirement: 100,
+		type: "words"
+	},
+	{
+		id: "a8",
+		title: "Dicionário Humano",
+		description: "Adicione 500 palavras ao sistema",
+		icon: "brain",
+		unlocked: false,
+		requirement: 500,
 		type: "words"
 	}
 ];
@@ -32832,7 +32899,7 @@ function renderContent(content, props) {
 	if (typeof content === "function") return /* @__PURE__ */ import_react.createElement(content, props);
 	return /* @__PURE__ */ import_react.createElement(DefaultTooltipContent, props);
 }
-var Tooltip = /* @__PURE__ */ function(_PureComponent) {
+var Tooltip$1 = /* @__PURE__ */ function(_PureComponent) {
 	function Tooltip$3() {
 		_classCallCheck$18(this, Tooltip$3);
 		return _callSuper$14(this, Tooltip$3, arguments);
@@ -32866,8 +32933,8 @@ var Tooltip = /* @__PURE__ */ function(_PureComponent) {
 		}
 	}]);
 }(import_react.PureComponent);
-_defineProperty$38(Tooltip, "displayName", "Tooltip");
-_defineProperty$38(Tooltip, "defaultProps", {
+_defineProperty$38(Tooltip$1, "displayName", "Tooltip");
+_defineProperty$38(Tooltip$1, "defaultProps", {
 	accessibilityLayer: false,
 	allowEscapeViewBox: {
 		x: false,
@@ -49550,7 +49617,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 			_defineProperty(_this, "renderTooltip", function() {
 				var _tooltipItem$props$ac;
 				var _this$props3 = _this.props, children = _this$props3.children, accessibilityLayer = _this$props3.accessibilityLayer;
-				var tooltipItem = findChildByType(children, Tooltip);
+				var tooltipItem = findChildByType(children, Tooltip$1);
 				if (!tooltipItem) return null;
 				var _this$state5 = _this.state, isTooltipActive = _this$state5.isTooltipActive, activeCoordinate = _this$state5.activeCoordinate, activePayload = _this$state5.activePayload, activeLabel = _this$state5.activeLabel, offset$3 = _this$state5.offset;
 				var isActive = (_tooltipItem$props$ac = tooltipItem.props.active) !== null && _tooltipItem$props$ac !== void 0 ? _tooltipItem$props$ac : isTooltipActive;
@@ -49632,7 +49699,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 				var tooltipEventType = _this.getTooltipEventType();
 				var _this$state8 = _this.state, isTooltipActive = _this$state8.isTooltipActive, tooltipAxis = _this$state8.tooltipAxis, activeTooltipIndex = _this$state8.activeTooltipIndex, activeLabel = _this$state8.activeLabel;
 				var children = _this.props.children;
-				var tooltipItem = findChildByType(children, Tooltip);
+				var tooltipItem = findChildByType(children, Tooltip$1);
 				var _item$props = item.props, points = _item$props.points, isRange = _item$props.isRange, baseLine = _item$props.baseLine;
 				var itemItemProps = item.item.type.defaultProps !== void 0 ? _objectSpread(_objectSpread({}, item.item.type.defaultProps), item.item.props) : item.item.props;
 				var activeDot = itemItemProps.activeDot, hide$3 = itemItemProps.hide, activeBar = itemItemProps.activeBar, activeShape = itemItemProps.activeShape;
@@ -49754,7 +49821,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 				key: "displayDefaultTooltip",
 				value: function displayDefaultTooltip() {
 					var _this$props5 = this.props, children = _this$props5.children, data = _this$props5.data, height = _this$props5.height, layout = _this$props5.layout;
-					var tooltipElem = findChildByType(children, Tooltip);
+					var tooltipElem = findChildByType(children, Tooltip$1);
 					if (!tooltipElem) return;
 					var defaultIndex = tooltipElem.props.defaultIndex;
 					if (typeof defaultIndex !== "number" || defaultIndex < 0 || defaultIndex > this.state.tooltipTicks.length - 1) return;
@@ -49807,7 +49874,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 			{
 				key: "componentDidUpdate",
 				value: function componentDidUpdate(prevProps) {
-					if (!isChildrenEqual([findChildByType(prevProps.children, Tooltip)], [findChildByType(this.props.children, Tooltip)])) this.displayDefaultTooltip();
+					if (!isChildrenEqual([findChildByType(prevProps.children, Tooltip$1)], [findChildByType(this.props.children, Tooltip$1)])) this.displayDefaultTooltip();
 				}
 			},
 			{
@@ -49820,7 +49887,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 			{
 				key: "getTooltipEventType",
 				value: function getTooltipEventType() {
-					var tooltipItem = findChildByType(this.props.children, Tooltip);
+					var tooltipItem = findChildByType(this.props.children, Tooltip$1);
 					if (tooltipItem && typeof tooltipItem.props.shared === "boolean") {
 						var eventType = tooltipItem.props.shared ? "axis" : "item";
 						return validateTooltipEventTypes.indexOf(eventType) >= 0 ? eventType : defaultTooltipEventType;
@@ -49888,7 +49955,7 @@ var generateCategoricalChart = function generateCategoricalChart$1(_ref6) {
 				value: function parseEventsOfWrapper() {
 					var children = this.props.children;
 					var tooltipEventType = this.getTooltipEventType();
-					var tooltipItem = findChildByType(children, Tooltip);
+					var tooltipItem = findChildByType(children, Tooltip$1);
 					var tooltipEvents = {};
 					if (tooltipItem && tooltipEventType === "axis") if (tooltipItem.props.trigger === "click") tooltipEvents = { onClick: this.handleClick };
 					else tooltipEvents = {
@@ -50244,7 +50311,7 @@ ${colorConfig.map(([key, itemConfig]) => {
 }
 `).join("\n") } });
 };
-var ChartTooltip = Tooltip;
+var ChartTooltip = Tooltip$1;
 var ChartTooltipContent = import_react.forwardRef(({ active, payload, className, indicator = "dot", hideLabel = false, hideIndicator = false, label, labelFormatter, labelClassName, formatter, color: color$1, nameKey, labelKey }, ref) => {
 	const { config } = useChart();
 	const tooltipLabel = import_react.useMemo(() => {
@@ -50469,6 +50536,233 @@ function ActivityChart() {
 				})
 			})
 		})]
+	});
+}
+function VocabAccumulationChart() {
+	const { words } = useStore();
+	const data = (0, import_react.useMemo)(() => {
+		const result = [];
+		const today = /* @__PURE__ */ new Date();
+		today.setHours(23, 59, 59, 999);
+		const wordsPerDay = {};
+		words.forEach((w) => {
+			const d = new Date(w.createdAt).toISOString().split("T")[0];
+			wordsPerDay[d] = (wordsPerDay[d] || 0) + 1;
+		});
+		const ninetyDaysAgo = new Date(today);
+		ninetyDaysAgo.setDate(today.getDate() - 90);
+		let baseCount = words.filter((w) => w.createdAt < ninetyDaysAgo.getTime()).length;
+		for (let i = 89; i >= 0; i--) {
+			const d = new Date(today);
+			d.setDate(today.getDate() - i);
+			const dateStr = d.toISOString().split("T")[0];
+			baseCount += wordsPerDay[dateStr] || 0;
+			result.push({
+				date: d.toLocaleDateString("pt-BR", {
+					day: "2-digit",
+					month: "short"
+				}),
+				acumulado: baseCount
+			});
+		}
+		return result;
+	}, [words]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "p-6 md:p-8 bg-card border-border shadow-sm rounded-[24px] hover:shadow-md transition-shadow duration-300",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+				className: "text-2xl font-bold text-foreground tracking-tight flex items-center gap-2",
+				children: ["Acúmulo de Vocabulário ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-5 h-5 text-success" })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-sm text-muted-foreground mt-1",
+				children: "Crescimento contínuo do seu dicionário"
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "px-3 py-1.5 bg-success/10 text-success text-xs font-bold rounded-full border border-success/20 shadow-sm",
+				children: "Últimos 90 dias"
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "h-[280px] w-full",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+				config: { acumulado: {
+					label: "Total de Palavras",
+					color: "hsl(var(--success))"
+				} },
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResponsiveContainer, {
+					width: "100%",
+					height: "100%",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AreaChart, {
+						data,
+						margin: {
+							top: 10,
+							right: 0,
+							bottom: 0,
+							left: 0
+						},
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+								id: "colorAcumulado",
+								x1: "0",
+								y1: "0",
+								x2: "0",
+								y2: "1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+									offset: "5%",
+									stopColor: "hsl(var(--success))",
+									stopOpacity: .4
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+									offset: "95%",
+									stopColor: "hsl(var(--success))",
+									stopOpacity: 0
+								})]
+							}) }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
+								strokeDasharray: "3 3",
+								vertical: false,
+								stroke: "hsl(var(--border))",
+								opacity: .6
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
+								dataKey: "date",
+								axisLine: false,
+								tickLine: false,
+								tick: {
+									fontSize: 11,
+									fill: "hsl(var(--muted-foreground))"
+								},
+								tickMargin: 12,
+								minTickGap: 30
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
+								axisLine: false,
+								tickLine: false,
+								tick: {
+									fontSize: 11,
+									fill: "hsl(var(--muted-foreground))",
+									fontWeight: 600
+								},
+								width: 35
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
+								cursor: false,
+								content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, { indicator: "line" })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Area, {
+								type: "monotone",
+								dataKey: "acumulado",
+								stroke: "hsl(var(--success))",
+								strokeWidth: 3,
+								fillOpacity: 1,
+								fill: "url(#colorAcumulado)",
+								activeDot: {
+									r: 6,
+									fill: "hsl(var(--success))",
+									stroke: "hsl(var(--background))",
+									strokeWidth: 2
+								}
+							})
+						]
+					})
+				})
+			})
+		})]
+	});
+}
+function DailyGoalWidget() {
+	const { words, settings, updateSettings } = useStore();
+	const [isEditing, setIsEditing] = (0, import_react.useState)(false);
+	const [goalStr, setGoalStr] = (0, import_react.useState)((settings.dailyGoal || 20).toString());
+	const startOfToday = /* @__PURE__ */ new Date();
+	startOfToday.setHours(0, 0, 0, 0);
+	const wordsLearnedToday = words.filter((w) => w.createdAt >= startOfToday.getTime()).length;
+	const goal = settings.dailyGoal || 20;
+	const progress = Math.min(wordsLearnedToday / goal * 100, 100);
+	const isReached = wordsLearnedToday >= goal && goal > 0;
+	const handleSave = () => {
+		const val = parseInt(goalStr, 10);
+		if (!isNaN(val) && val > 0) updateSettings({ dailyGoal: val });
+		else setGoalStr(goal.toString());
+		setIsEditing(false);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: `p-6 bg-card border-border shadow-sm flex flex-col justify-between rounded-[24px] transition-all duration-300 relative overflow-hidden group ${isReached ? "bg-success/10 border-success/30" : "hover:shadow-md"}`,
+		children: [
+			isReached && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute -right-8 -top-8 w-32 h-32 bg-success/20 rounded-full blur-2xl pointer-events-none transition-colors duration-700" }),
+			!isReached && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute -right-8 -top-8 w-40 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none group-hover:bg-primary/20 transition-colors duration-700" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "relative z-10 flex flex-col h-full justify-between",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between mb-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "text-sm font-bold text-muted-foreground uppercase tracking-wider",
+						children: "Meta Diária"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: `p-2 rounded-full border ${isReached ? "bg-success/20 border-success/30" : "bg-primary/10 border-primary/20"}`,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { className: `w-4 h-4 ${isReached ? "text-success" : "text-primary"}` })
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-end gap-2 mb-8 h-12",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "text-5xl font-black text-foreground tracking-tighter leading-none",
+						children: wordsLearnedToday
+					}), isEditing ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-1 pb-1",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xl font-bold text-muted-foreground",
+								children: "/"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								value: goalStr,
+								onChange: (e) => setGoalStr(e.target.value),
+								className: "w-16 h-8 text-center font-bold px-1 text-sm bg-background border-border shadow-inner",
+								autoFocus: true,
+								onKeyDown: (e) => e.key === "Enter" && handleSave()
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: handleSave,
+								className: "p-1.5 hover:bg-success/20 text-success rounded-md transition-colors ml-1 bg-secondary border border-border",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "w-3.5 h-3.5" })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: () => {
+									setIsEditing(false);
+									setGoalStr(goal.toString());
+								},
+								className: "p-1.5 hover:bg-destructive/20 text-destructive rounded-md transition-colors bg-secondary border border-border",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "w-3.5 h-3.5" })
+							})
+						]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-2 pb-1.5 group/edit cursor-pointer",
+						onClick: () => setIsEditing(true),
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "text-sm font-bold text-muted-foreground uppercase tracking-wider",
+							children: [
+								"/ ",
+								goal,
+								" NOVAS"
+							]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pencil, { className: "w-3 h-3 text-muted-foreground opacity-0 group-hover/edit:opacity-100 transition-opacity" })]
+					})]
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "space-y-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
+						value: progress,
+						className: `h-2.5 ${isReached ? "[&>div]:bg-success shadow-[0_0_10px_rgba(34,197,94,0.3)]" : "[&>div]:bg-primary"}`
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex justify-between items-center min-h-[16px]",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-[10px] font-bold text-muted-foreground uppercase tracking-wider",
+							children: "Progresso"
+						}), isReached && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "text-[10px] font-bold text-success flex items-center gap-1 uppercase tracking-wider animate-in fade-in zoom-in",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-3 h-3" }), " Alcançada!"]
+						})]
+					})]
+				})]
+			})
+		]
 	});
 }
 var Textarea = import_react.forwardRef(({ className, ...props }, ref) => {
@@ -50719,22 +51013,50 @@ function AchievementsList() {
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "grid grid-cols-2 md:grid-cols-4 gap-4",
-			children: achievements.map((ach) => {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, { children: achievements.map((ach) => {
 				const Icon$2 = iconMap[ach.icon] || Trophy;
-				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-					className: cn("p-5 flex flex-col items-center text-center gap-4 transition-all duration-300 rounded-[24px]", ach.unlocked ? "bg-card border-primary/30 shadow-sm hover:-translate-y-1 hover:shadow-md cursor-pointer" : "bg-secondary/30 border-dashed opacity-60 grayscale"),
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: cn("w-16 h-16 rounded-full flex items-center justify-center transition-colors duration-500 shadow-sm", ach.unlocked ? "bg-primary/20 border border-primary/20" : "bg-muted border border-border"),
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: cn("w-8 h-8", ach.unlocked ? "text-primary" : "text-muted-foreground") })
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-						className: "font-bold text-[15px] leading-tight text-foreground",
-						children: ach.title
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-xs text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed",
-						children: ach.description
-					})] })]
+				const isUnlocked = ach.unlocked;
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, {
+					delayDuration: 300,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+						asChild: true,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+							className: cn("p-5 flex flex-col items-center text-center gap-4 transition-all duration-300 rounded-[24px]", isUnlocked ? "bg-card border-primary/30 shadow-sm hover:-translate-y-1 hover:shadow-md cursor-pointer" : "bg-secondary/30 border-dashed opacity-60 grayscale hover:opacity-80 hover:grayscale-0 cursor-help"),
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: cn("w-16 h-16 rounded-full flex items-center justify-center transition-colors duration-500 shadow-sm", isUnlocked ? "bg-primary/20 border border-primary/20" : "bg-muted border border-border"),
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: cn("w-8 h-8", isUnlocked ? "text-primary" : "text-muted-foreground") })
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+								className: "font-bold text-[15px] leading-tight text-foreground",
+								children: ach.title
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed",
+								children: ach.description
+							})] })]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TooltipContent, {
+						side: "bottom",
+						className: "text-center p-3 max-w-[200px] bg-popover text-popover-foreground border border-border shadow-lg",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "font-bold text-sm mb-1",
+								children: ach.title
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs text-muted-foreground",
+								children: ach.description
+							}),
+							!isUnlocked && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mt-3 bg-secondary rounded-full px-3 py-1.5 text-[10px] font-bold text-foreground flex items-center justify-center gap-1.5 w-fit mx-auto border border-border/50",
+								children: ["STATUS: BLOQUEADO ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Lock, { className: "w-3 h-3 opacity-60" })]
+							}),
+							isUnlocked && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mt-3 bg-primary/10 text-primary rounded-full px-3 py-1.5 text-[10px] font-bold flex items-center justify-center gap-1.5 w-fit mx-auto border border-primary/20",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Star, { className: "w-3 h-3 fill-current" }), " DESBLOQUEADO"]
+							})
+						]
+					})]
 				}, ach.id);
-			})
+			}) })
 		})]
 	});
 }
@@ -50975,8 +51297,9 @@ function Index() {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LevelProgressWidget, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LearningStatsCentral, {})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2",
+				className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-2",
 				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DailyGoalWidget, {}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RetentionOverview, {}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MemoryStrength, {}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(StreakWidget, {})
@@ -50988,7 +51311,10 @@ function Index() {
 					className: "xl:col-span-2 space-y-12",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DailyPromptWidget, {}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ActivityChart, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ActivityChart, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VocabAccumulationChart, {})]
+						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MissionsToday, {}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AchievementsList, {}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ProgressionRoadmap, {}),
@@ -55640,4 +55966,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-C0PbaJnr.js.map
+//# sourceMappingURL=index--fAvHm_9.js.map

@@ -9,6 +9,8 @@ import { RetentionOverview } from '@/components/dashboard/RetentionOverview'
 import { MemoryStrength } from '@/components/dashboard/MemoryStrength'
 import { StreakWidget } from '@/components/dashboard/StreakWidget'
 import { ActivityChart } from '@/components/dashboard/ActivityChart'
+import { VocabAccumulationChart } from '@/components/dashboard/VocabAccumulationChart'
+import { DailyGoalWidget } from '@/components/dashboard/DailyGoalWidget'
 import { DailyPromptWidget } from '@/components/dashboard/DailyPromptWidget'
 import { LevelProgressWidget } from '@/components/gamification/LevelProgressWidget'
 import { AchievementsList } from '@/components/gamification/AchievementsList'
@@ -102,7 +104,8 @@ export default function Index() {
       </div>
 
       {/* Dashboard Overview Widgets */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+        <DailyGoalWidget />
         <RetentionOverview />
         <MemoryStrength />
         <StreakWidget />
@@ -113,7 +116,10 @@ export default function Index() {
         {/* Left Column (Daily Prompt, Activity, Missions, Roadmap, Collections) */}
         <div className="xl:col-span-2 space-y-12">
           <DailyPromptWidget />
-          <ActivityChart />
+          <div className="space-y-6">
+            <ActivityChart />
+            <VocabAccumulationChart />
+          </div>
           <MissionsToday />
           <AchievementsList />
           <ProgressionRoadmap />

@@ -95,6 +95,42 @@ const defaultAchievements: Achievement[] = [
     requirement: 10,
     type: 'words',
   },
+  {
+    id: 'a5',
+    title: 'Semana Perfeita',
+    description: 'Alcance uma ofensiva de 7 dias',
+    icon: 'star',
+    unlocked: false,
+    requirement: 7,
+    type: 'streak',
+  },
+  {
+    id: 'a6',
+    title: 'Primeira Revisão',
+    description: 'Acerte seu primeiro flashcard',
+    icon: 'zap',
+    unlocked: false,
+    requirement: 1,
+    type: 'flashcards',
+  },
+  {
+    id: 'a7',
+    title: 'Centenário',
+    description: 'Adicione 100 palavras ao sistema',
+    icon: 'trophy',
+    unlocked: false,
+    requirement: 100,
+    type: 'words',
+  },
+  {
+    id: 'a8',
+    title: 'Dicionário Humano',
+    description: 'Adicione 500 palavras ao sistema',
+    icon: 'brain',
+    unlocked: false,
+    requirement: 500,
+    type: 'words',
+  },
 ]
 
 const generateMissions = (): DailyMission[] => [

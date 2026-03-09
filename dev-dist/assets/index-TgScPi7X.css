@@ -1273,6 +1273,10 @@ body::selection{
   min-height: 120px;
 }
 
+.min-h-\[16px\]{
+  min-height: 16px;
+}
+
 .min-h-\[250px\]{
   min-height: 250px;
 }
@@ -1523,6 +1527,10 @@ body::selection{
   max-width: 1400px;
 }
 
+.max-w-\[200px\]{
+  max-width: 200px;
+}
+
 .max-w-\[300px\]{
   max-width: 300px;
 }
@@ -1722,6 +1730,10 @@ body::selection{
 
 .cursor-default{
   cursor: default;
+}
+
+.cursor-help{
+  cursor: help;
 }
 
 .cursor-pointer{
@@ -2233,6 +2245,10 @@ body::selection{
   border-color: hsl(var(--success) / 0.2);
 }
 
+.border-success\/30{
+  border-color: hsl(var(--success) / 0.3);
+}
+
 .border-success\/50{
   border-color: hsl(var(--success) / 0.5);
 }
@@ -2504,6 +2520,10 @@ body::selection{
 
 .bg-success\/15{
   background-color: hsl(var(--success) / 0.15);
+}
+
+.bg-success\/20{
+  background-color: hsl(var(--success) / 0.2);
 }
 
 .bg-transparent{
@@ -2809,6 +2829,10 @@ body::selection{
 .py-8{
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.pb-1{
+  padding-bottom: 0.25rem;
 }
 
 .pb-1\.5{
@@ -3347,6 +3371,12 @@ body::selection{
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.shadow-\[0_0_10px_rgba\(34\2c 197\2c 94\2c 0\.3\)\]{
+  --tw-shadow: 0 0 10px rgba(34,197,94,0.3);
+  --tw-shadow-colored: 0 0 10px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .shadow-\[0_0_15px_rgba\(108\2c 63\2c 197\2c 0\.1\)\]{
   --tw-shadow: 0 0 15px rgba(108,63,197,0.1);
   --tw-shadow-colored: 0 0 15px var(--tw-shadow-color);
@@ -3636,12 +3666,20 @@ body::selection{
   --tw-enter-translate-y: initial;
 }
 
+.fade-in{
+  --tw-enter-opacity: 0;
+}
+
 .fade-in-0{
   --tw-enter-opacity: 0;
 }
 
 .fade-in-80{
   --tw-enter-opacity: 0.8;
+}
+
+.zoom-in{
+  --tw-enter-scale: 0;
 }
 
 .zoom-in-95{
@@ -3829,6 +3867,10 @@ body::selection{
   background-color: hsl(var(--destructive) / 0.1);
 }
 
+.hover\:bg-destructive\/20:hover{
+  background-color: hsl(var(--destructive) / 0.2);
+}
+
 .hover\:bg-destructive\/80:hover{
   background-color: hsl(var(--destructive) / 0.8);
 }
@@ -3915,6 +3957,10 @@ body::selection{
 
 .hover\:bg-success:hover{
   background-color: hsl(var(--success));
+}
+
+.hover\:bg-success\/20:hover{
+  background-color: hsl(var(--success) / 0.2);
 }
 
 .hover\:bg-transparent:hover{
@@ -4009,6 +4055,11 @@ body::selection{
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.hover\:grayscale-0:hover{
+  --tw-grayscale: grayscale(0);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .hover\:after\:bg-sidebar-border:hover::after{
@@ -4237,6 +4288,10 @@ body::selection{
   background-color: hsl(var(--primary) / 0.15);
 }
 
+.group:hover .group-hover\:bg-primary\/20{
+  background-color: hsl(var(--primary) / 0.2);
+}
+
 .group:hover .group-hover\:bg-red-500{
   --tw-bg-opacity: 1;
   background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
@@ -4262,6 +4317,10 @@ body::selection{
 .group:hover .group-hover\:text-white{
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.group\/edit:hover .group-hover\/edit\:opacity-100{
+  opacity: 1;
 }
 
 .group\/menu-item:hover .group-hover\/menu-item\:opacity-100{
@@ -5345,6 +5404,14 @@ body::selection{
 
 .\[\&\>button\]\:hidden>button{
   display: none;
+}
+
+.\[\&\>div\]\:bg-primary>div{
+  background-color: hsl(var(--primary));
+}
+
+.\[\&\>div\]\:bg-success>div{
+  background-color: hsl(var(--success));
 }
 
 .\[\&\>div\]\:bg-gradient-to-r>div{
