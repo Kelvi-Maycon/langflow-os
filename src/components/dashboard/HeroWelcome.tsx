@@ -1,13 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { Play, Map } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { useToast } from '@/hooks/use-toast'
 import { useStore } from '@/store/main'
 import { getLevelTier } from '@/lib/gamification'
 
 export function HeroWelcome() {
   const navigate = useNavigate()
-  const { toast } = useToast()
   const { stats } = useStore()
 
   const { current } = getLevelTier(stats.xp)
@@ -45,12 +43,7 @@ export function HeroWelcome() {
             <Play className="w-5 h-5 mr-2 fill-current" /> Continuar Jornada
           </Button>
           <Button
-            onClick={() =>
-              toast({
-                title: 'Mapa de Fluência',
-                description: 'Acessando a visualização completa da sua jornada de aprendizado...',
-              })
-            }
+            onClick={() => navigate('/evolution')}
             size="lg"
             variant="outline"
             className="rounded-full bg-background border-border hover:bg-secondary hover:text-foreground h-14 px-8 text-base font-bold transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] shadow-sm"

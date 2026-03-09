@@ -27088,7 +27088,6 @@ function getLevelTier(xp) {
 }
 function HeroWelcome() {
 	const navigate = useNavigate();
-	const { toast: toast$2 } = useToast();
 	const { stats } = useStore();
 	const { current } = getLevelTier(stats.xp);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -27133,10 +27132,7 @@ function HeroWelcome() {
 							className: "rounded-full bg-pink-500 hover:bg-pink-600 text-white border-0 h-14 px-8 text-base font-bold shadow-[0_4px_14px_0_rgba(236,72,153,0.25)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98]",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "w-5 h-5 mr-2 fill-current" }), " Continuar Jornada"]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							onClick: () => toast$2({
-								title: "Mapa de Fluência",
-								description: "Acessando a visualização completa da sua jornada de aprendizado..."
-							}),
+							onClick: () => navigate("/evolution"),
 							size: "lg",
 							variant: "outline",
 							className: "rounded-full bg-background border-border hover:bg-secondary hover:text-foreground h-14 px-8 text-base font-bold transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] shadow-sm",
@@ -27408,7 +27404,6 @@ var steps = [
 	}
 ];
 function ProgressionRoadmap() {
-	const { toast: toast$2 } = useToast();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 		className: "space-y-6",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
@@ -27416,11 +27411,8 @@ function ProgressionRoadmap() {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
 				className: "text-2xl font-bold text-foreground tracking-tight",
 				children: "Jornada de Maestria"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-				onClick: () => toast$2({
-					title: "Jornada Completa",
-					description: "O mapa interativo será liberado ao concluir o nível Intermediário."
-				}),
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+				to: "/evolution",
 				className: "text-sm font-bold text-pink-500 hover:text-pink-600 flex items-center gap-1 transition-all duration-250 ease-out p-2 rounded-lg hover:bg-pink-500/10 active:scale-95",
 				children: ["Ver Mapa Completo ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-4 h-4" })]
 			})]
@@ -55019,4 +55011,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DKBVJQ7g.js.map
+//# sourceMappingURL=index-B93QUXwf.js.map
