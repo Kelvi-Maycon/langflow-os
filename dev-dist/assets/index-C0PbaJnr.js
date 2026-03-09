@@ -19087,6 +19087,32 @@ var Brain = createLucideIcon("brain", [
 		key: "q97ue3"
 	}]
 ]);
+var CalendarPlus = createLucideIcon("calendar-plus", [
+	["path", {
+		d: "M16 19h6",
+		key: "xwg31i"
+	}],
+	["path", {
+		d: "M16 2v4",
+		key: "4m81vk"
+	}],
+	["path", {
+		d: "M19 16v6",
+		key: "tddt3s"
+	}],
+	["path", {
+		d: "M21 12.598V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8.5",
+		key: "1glfrc"
+	}],
+	["path", {
+		d: "M3 10h18",
+		key: "8toen8"
+	}],
+	["path", {
+		d: "M8 2v4",
+		key: "1cmpym"
+	}]
+]);
 var Check = createLucideIcon("check", [["path", {
 	d: "M20 6 9 17l-5-5",
 	key: "1gmf2c"
@@ -50742,6 +50768,141 @@ function GamificationWatcher() {
 	]);
 	return null;
 }
+function LearningStatsCentral() {
+	const { words, stats } = useStore();
+	const totalWords = words.length;
+	const streak = stats.streak;
+	const masteredWords = words.filter((w) => w.status === "mastered").length;
+	const oneWeekAgo = Date.now() - 10080 * 60 * 1e3;
+	const wordsThisWeek = words.filter((w) => (w.createdAt || 0) > oneWeekAgo).length;
+	const latestAchievement = (0, import_react.useMemo)(() => {
+		const unlocked = stats.achievements?.filter((a$1) => a$1.unlocked) || [];
+		if (unlocked.length === 0) return null;
+		return unlocked.reduce((latest, current) => {
+			return (current.unlockedAt || 0) > (latest.unlockedAt || 0) ? current : latest;
+		}, unlocked[0]);
+	}, [stats.achievements]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		className: "p-6 md:p-8 bg-card border-border shadow-sm rounded-[32px] overflow-hidden relative group transition-all duration-300 hover:shadow-md",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary/10 transition-colors duration-700" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "relative z-10",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
+					className: "mb-6 flex items-center justify-between",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "text-2xl font-bold text-foreground tracking-tight",
+						children: "Estatísticas de Aprendizado"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm text-muted-foreground mt-1",
+						children: "Seu progresso consolidado em tempo real"
+					})] })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 lg:grid-cols-4 gap-4",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col items-center justify-center p-5 bg-blue-500/5 rounded-[24px] border border-blue-500/10 transition-transform duration-300 hover:scale-[1.02] shadow-sm",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "p-3 bg-blue-500/10 rounded-full mb-3",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-6 h-6 text-blue-500" })
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-3xl font-black text-foreground tracking-tighter",
+									children: totalWords
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-[10px] font-bold text-blue-600/80 uppercase tracking-widest mt-1 text-center",
+									children: "Palavras Aprendidas"
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col items-center justify-center p-5 bg-orange-500/5 rounded-[24px] border border-orange-500/10 transition-transform duration-300 hover:scale-[1.02] shadow-sm",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "p-3 bg-orange-500/10 rounded-full mb-3",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Flame, { className: "w-6 h-6 text-orange-500" })
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-3xl font-black text-foreground tracking-tighter",
+									children: streak
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-[10px] font-bold text-orange-600/80 uppercase tracking-widest mt-1 text-center",
+									children: "Dias de Ofensiva"
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col items-center justify-center p-5 bg-yellow-500/5 rounded-[24px] border border-yellow-500/10 transition-transform duration-300 hover:scale-[1.02] shadow-sm",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "p-3 bg-yellow-500/10 rounded-full mb-3",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "w-6 h-6 text-yellow-500" })
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-3xl font-black text-foreground tracking-tighter",
+									children: masteredWords
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-[10px] font-bold text-yellow-600/80 uppercase tracking-widest mt-1 text-center",
+									children: "Palavras Dominadas"
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col items-center justify-center p-5 bg-green-500/5 rounded-[24px] border border-green-500/10 transition-transform duration-300 hover:scale-[1.02] shadow-sm",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "p-3 bg-green-500/10 rounded-full mb-3",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarPlus, { className: "w-6 h-6 text-green-500" })
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-3xl font-black text-foreground tracking-tighter",
+									children: wordsThisWeek
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-[10px] font-bold text-green-600/80 uppercase tracking-widest mt-1 text-center",
+									children: "Adicionadas na Semana"
+								})
+							]
+						})
+					]
+				}),
+				latestAchievement && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "mt-6 p-4 rounded-[20px] bg-gradient-to-r from-primary/10 via-secondary to-pink-500/5 border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-inner animate-fade-in-up",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "p-3 bg-card rounded-full border border-border shadow-sm shrink-0",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Star, {
+								className: "w-6 h-6 text-primary",
+								fill: "currentColor"
+							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+								className: "text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-0.5",
+								children: "Último Marco Alcançado"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-sm font-bold text-foreground",
+								children: latestAchievement.title
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs text-muted-foreground mt-0.5 hidden sm:block",
+								children: latestAchievement.description
+							})
+						] })]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full border border-primary/20 whitespace-nowrap self-start sm:self-auto flex items-center gap-1.5 shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "w-2 h-2 rounded-full bg-primary animate-pulse" }), "Desbloqueado"]
+					})]
+				})
+			]
+		})]
+	});
+}
 function Index() {
 	const { toast: toast$2 } = useToast();
 	const { stats } = useStore();
@@ -50809,9 +50970,9 @@ function Index() {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HeroWelcome, {}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "pt-2",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LevelProgressWidget, {})
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "pt-2 space-y-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LevelProgressWidget, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LearningStatsCentral, {})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2",
@@ -55479,4 +55640,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-D5XLsbtA.js.map
+//# sourceMappingURL=index-C0PbaJnr.js.map

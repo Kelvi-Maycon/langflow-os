@@ -1910,6 +1910,10 @@ body::selection{
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
 }
 
+.self-start{
+  align-self: flex-start;
+}
+
 .self-center{
   align-self: center;
 }
@@ -2104,6 +2108,10 @@ body::selection{
   border-color: hsl(var(--background));
 }
 
+.border-blue-500\/10{
+  border-color: rgb(59 130 246 / 0.1);
+}
+
 .border-border{
   border-color: hsl(var(--border));
 }
@@ -2148,6 +2156,10 @@ body::selection{
   border-color: hsl(var(--foreground));
 }
 
+.border-green-500\/10{
+  border-color: rgb(34 197 94 / 0.1);
+}
+
 .border-indigo-500\/10{
   border-color: rgb(99 102 241 / 0.1);
 }
@@ -2167,6 +2179,10 @@ body::selection{
 .border-orange-500{
   --tw-border-opacity: 1;
   border-color: rgb(249 115 22 / var(--tw-border-opacity, 1));
+}
+
+.border-orange-500\/10{
+  border-color: rgb(249 115 22 / 0.1);
 }
 
 .border-orange-500\/20{
@@ -2241,6 +2257,10 @@ body::selection{
   border-color: rgb(255 255 255 / 0.1);
 }
 
+.border-yellow-500\/10{
+  border-color: rgb(234 179 8 / 0.1);
+}
+
 .border-l-transparent{
   border-left-color: transparent;
 }
@@ -2302,6 +2322,10 @@ body::selection{
   background-color: rgb(59 130 246 / 0.2);
 }
 
+.bg-blue-500\/5{
+  background-color: rgb(59 130 246 / 0.05);
+}
+
 .bg-border{
   background-color: hsl(var(--border));
 }
@@ -2342,6 +2366,14 @@ body::selection{
   background-color: hsl(var(--foreground));
 }
 
+.bg-green-500\/10{
+  background-color: rgb(34 197 94 / 0.1);
+}
+
+.bg-green-500\/5{
+  background-color: rgb(34 197 94 / 0.05);
+}
+
 .bg-indigo-500{
   --tw-bg-opacity: 1;
   background-color: rgb(99 102 241 / var(--tw-bg-opacity, 1));
@@ -2378,6 +2410,10 @@ body::selection{
 
 .bg-orange-500\/20{
   background-color: rgb(249 115 22 / 0.2);
+}
+
+.bg-orange-500\/5{
+  background-color: rgb(249 115 22 / 0.05);
 }
 
 .bg-pink-500{
@@ -2495,8 +2531,16 @@ body::selection{
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
+.bg-yellow-500\/10{
+  background-color: rgb(234 179 8 / 0.1);
+}
+
 .bg-yellow-500\/20{
   background-color: rgb(234 179 8 / 0.2);
+}
+
+.bg-yellow-500\/5{
+  background-color: rgb(234 179 8 / 0.05);
 }
 
 .bg-gradient-to-b{
@@ -2574,12 +2618,21 @@ body::selection{
   --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--card)) var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
+.via-secondary{
+  --tw-gradient-to: hsl(var(--secondary) / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--secondary)) var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
 .to-pink-500{
   --tw-gradient-to: #ec4899 var(--tw-gradient-to-position);
 }
 
 .to-pink-500\/30{
   --tw-gradient-to: rgb(236 72 153 / 0.3) var(--tw-gradient-to-position);
+}
+
+.to-pink-500\/5{
+  --tw-gradient-to: rgb(236 72 153 / 0.05) var(--tw-gradient-to-position);
 }
 
 .to-primary{
@@ -3033,6 +3086,10 @@ body::selection{
   color: rgb(59 130 246 / var(--tw-text-opacity, 1));
 }
 
+.text-blue-600\/80{
+  color: rgb(37 99 235 / 0.8);
+}
+
 .text-card-foreground{
   color: hsl(var(--card-foreground));
 }
@@ -3063,6 +3120,15 @@ body::selection{
 
 .text-foreground\/80{
   color: hsl(var(--foreground) / 0.8);
+}
+
+.text-green-500{
+  --tw-text-opacity: 1;
+  color: rgb(34 197 94 / var(--tw-text-opacity, 1));
+}
+
+.text-green-600\/80{
+  color: rgb(22 163 74 / 0.8);
 }
 
 .text-indigo-500{
@@ -3103,6 +3169,10 @@ body::selection{
 .text-orange-600{
   --tw-text-opacity: 1;
   color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+}
+
+.text-orange-600\/80{
+  color: rgb(234 88 12 / 0.8);
 }
 
 .text-pink-500{
@@ -3193,6 +3263,10 @@ body::selection{
 .text-yellow-500{
   --tw-text-opacity: 1;
   color: rgb(234 179 8 / var(--tw-text-opacity, 1));
+}
+
+.text-yellow-600\/80{
+  color: rgb(202 138 4 / 0.8);
 }
 
 .underline-offset-4{
@@ -4155,6 +4229,10 @@ body::selection{
   background-color: rgb(249 115 22 / 0.2);
 }
 
+.group:hover .group-hover\:bg-primary\/10{
+  background-color: hsl(var(--primary) / 0.1);
+}
+
 .group:hover .group-hover\:bg-primary\/15{
   background-color: hsl(var(--primary) / 0.15);
 }
@@ -5017,6 +5095,10 @@ body::selection{
     --tw-space-x-reverse: 0;
     margin-right: calc(0.5rem * var(--tw-space-x-reverse));
     margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  .sm\:self-auto{
+    align-self: auto;
   }
 
   .sm\:rounded-lg{

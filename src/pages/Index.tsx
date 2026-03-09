@@ -13,6 +13,7 @@ import { DailyPromptWidget } from '@/components/dashboard/DailyPromptWidget'
 import { LevelProgressWidget } from '@/components/gamification/LevelProgressWidget'
 import { AchievementsList } from '@/components/gamification/AchievementsList'
 import { GamificationWatcher } from '@/components/gamification/GamificationWatcher'
+import { LearningStatsCentral } from '@/components/dashboard/LearningStatsCentral'
 import { useToast } from '@/hooks/use-toast'
 import { useStore } from '@/store/main'
 import { useState } from 'react'
@@ -94,9 +95,10 @@ export default function Index() {
       {/* Hero Section */}
       <HeroWelcome />
 
-      {/* Gamified Dashboard Widget */}
-      <div className="pt-2">
+      {/* Gamified Dashboard Widgets */}
+      <div className="pt-2 space-y-6">
         <LevelProgressWidget />
+        <LearningStatsCentral />
       </div>
 
       {/* Dashboard Overview Widgets */}
