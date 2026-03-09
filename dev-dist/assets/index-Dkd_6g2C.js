@@ -25683,7 +25683,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$13({ inst: {
+			cachedValue = useState$14({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -25697,7 +25697,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$9(function() {
+			useEffect$10(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -25720,7 +25720,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$31 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$13 = React$31.useState, useEffect$9 = React$31.useEffect, useLayoutEffect$1 = React$31.useLayoutEffect, useDebugValue = React$31.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$31 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$14 = React$31.useState, useEffect$10 = React$31.useEffect, useLayoutEffect$1 = React$31.useLayoutEffect, useDebugValue = React$31.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$31.useSyncExternalStore ? React$31.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -49302,44 +49302,20 @@ function Reader() {
 		})]
 	});
 }
-var practiceMocks = {
-	serendipity: {
-		pt: "Foi um momento de serendipidade.",
-		en: "It was a moment of serendipity."
-	},
-	ephemeral: {
-		pt: "A beleza é efêmera.",
-		en: "Beauty is ephemeral."
-	}
-};
-function Practice() {
-	const { words, updateWordStatus, settings, recordPracticeAttempt } = useStore();
-	const navigate = useNavigate();
-	const { toast: toast$2 } = useToast();
-	const builderWords = (0, import_react.useMemo)(() => words.filter((w) => w.status === "builder"), [words]);
-	const [currentIndex, setCurrentIndex] = (0, import_react.useState)(0);
-	const currentWord = builderWords[currentIndex];
+function usePracticeEngine(currentWord, settings) {
 	const [practiceData, setPracticeData] = (0, import_react.useState)(null);
 	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
 	const [shuffledBlocks, setShuffledBlocks] = (0, import_react.useState)([]);
-	const [selectedIndices, setSelectedIndices] = (0, import_react.useState)([]);
-	const [attempts, setAttempts] = (0, import_react.useState)(0);
-	const [status, setStatus] = (0, import_react.useState)("idle");
-	const [feedback, setFeedback] = (0, import_react.useState)([]);
 	const fetchedId = (0, import_react.useRef)(null);
 	(0, import_react.useEffect)(() => {
 		if (!currentWord || fetchedId.current === currentWord.id) return;
 		fetchedId.current = currentWord.id;
 		setIsLoading(true);
-		setStatus("idle");
-		setAttempts(0);
-		setSelectedIndices([]);
-		setFeedback([]);
 		const fetchPractice = async () => {
 			let result = null;
 			if (!settings.apiKey) {
 				setTimeout(() => {
-					result = practiceMocks[currentWord.word.toLowerCase()] || {
+					result = {
 						pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
 						en: `I saw a ${currentWord.word} today.`
 					};
@@ -49348,42 +49324,39 @@ function Practice() {
 				return;
 			}
 			try {
-				if (settings.aiProvider === "gemini") {
-					const data$1 = await (await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${settings.aiModel || "gemini-1.5-flash"}:generateContent?key=${settings.apiKey}`, {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify({
-							contents: [{ parts: [{ text: `Você é um professor de inglês. Usando a frase de contexto original, crie uma frase simples em inglês focada na palavra alvo. Forneça também a tradução em português. Retorne apenas JSON: {"pt": "frase em português", "en": "frase em inglês"}\nPalavra alvo: "${currentWord.word}"\nContexto: "${currentWord.contextSentence}"` }] }],
-							generationConfig: { responseMimeType: "application/json" }
-						})
-					})).json();
-					if (data$1.error) throw new Error(data$1.error.message);
-					result = JSON.parse(data$1.candidates[0].content.parts[0].text);
-				} else {
-					const data$1 = await (await fetch("https://api.openai.com/v1/chat/completions", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${settings.apiKey}`
-						},
-						body: JSON.stringify({
-							model: settings.aiModel || "gpt-4o-mini",
-							messages: [{
-								role: "system",
-								content: "Você é um professor de inglês. Usando a frase de contexto original, crie uma frase simples em inglês focada na palavra alvo. Forneça também a tradução natural e exata em português. Retorne apenas JSON: {\"pt\": \"frase em português\", \"en\": \"frase em inglês\"}"
-							}, {
-								role: "user",
-								content: `Palavra: "${currentWord.word}"\nTradução: "${currentWord.translation}"\nContexto: "${currentWord.contextSentence}"`
-							}],
-							response_format: { type: "json_object" }
-						})
-					})).json();
-					if (data$1.error) throw new Error(data$1.error.message);
-					result = JSON.parse(data$1.choices[0].message.content);
-				}
+				const payload = settings.aiProvider === "gemini" ? {
+					url: `https://generativelanguage.googleapis.com/v1beta/models/${settings.aiModel || "gemini-1.5-flash"}:generateContent?key=${settings.apiKey}`,
+					body: {
+						contents: [{ parts: [{ text: `Você é professor de inglês. Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}` }] }],
+						generationConfig: { responseMimeType: "application/json" }
+					}
+				} : {
+					url: "https://api.openai.com/v1/chat/completions",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${settings.apiKey}`
+					},
+					body: {
+						model: settings.aiModel || "gpt-4o-mini",
+						messages: [{
+							role: "system",
+							content: "Você é professor de inglês. Crie frase focada na palavra alvo. Retorne JSON: {\"pt\": \"frase pt\", \"en\": \"frase en\"}"
+						}, {
+							role: "user",
+							content: `Palavra: "${currentWord.word}"\nContexto: "${currentWord.contextSentence}"`
+						}],
+						response_format: { type: "json_object" }
+					}
+				};
+				const data$1 = await (await fetch(payload.url, {
+					method: "POST",
+					headers: "headers" in payload ? payload.headers : { "Content-Type": "application/json" },
+					body: JSON.stringify(payload.body)
+				})).json();
+				if (data$1.error) throw new Error(data$1.error.message);
+				result = JSON.parse(settings.aiProvider === "gemini" ? data$1.candidates[0].content.parts[0].text : data$1.choices[0].message.content);
 			} catch (err) {
-				console.error(err);
-				result = practiceMocks[currentWord.word.toLowerCase()] || {
+				result = {
 					pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
 					en: `I saw a ${currentWord.word} today.`
 				};
@@ -49399,16 +49372,64 @@ function Practice() {
 			setIsLoading(false);
 		};
 		fetchPractice();
-	}, [
-		currentWord,
-		settings.apiKey,
-		settings.aiModel,
-		settings.aiProvider
-	]);
-	const toggleSelect = (id) => {
+	}, [currentWord, settings]);
+	return {
+		practiceData,
+		isLoading,
+		shuffledBlocks
+	};
+}
+function PracticeEmpty() {
+	const navigate = useNavigate();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-6",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "w-32 h-32 bg-primary/10 rounded-full flex items-center justify-center mb-2 border border-primary/20 shadow-sm",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-16 h-16 text-primary" })
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				className: "text-4xl font-bold text-foreground tracking-tight",
+				children: "Sessão Concluída!"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground max-w-md text-xl",
+				children: "Você completou todas as palavras na fila de prática. Vá para a Biblioteca capturar novos termos."
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				size: "lg",
+				className: "mt-4 text-base h-14 px-8 rounded-xl",
+				onClick: () => navigate("/reader"),
+				children: ["Ir para a Biblioteca ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "ml-2 w-5 h-5" })]
+			})
+		]
+	});
+}
+function Practice() {
+	const { words, updateWordStatus, settings, recordPracticeAttempt } = useStore();
+	const { toast: toast$2 } = useToast();
+	const builderWords = (0, import_react.useMemo)(() => words.filter((w) => w.status === "builder"), [words]);
+	const [currentIndex, setCurrentIndex] = (0, import_react.useState)(0);
+	const currentWord = builderWords[currentIndex];
+	const { practiceData, isLoading, shuffledBlocks } = usePracticeEngine(currentWord, settings);
+	const [selectedIndices, setSelectedIndices] = (0, import_react.useState)([]);
+	const [attempts, setAttempts] = (0, import_react.useState)(0);
+	const [status, setStatus] = (0, import_react.useState)("idle");
+	const [feedback, setFeedback] = (0, import_react.useState)([]);
+	const [draggedId, setDraggedId] = (0, import_react.useState)(null);
+	const [dragTarget, setDragTarget] = (0, import_react.useState)(null);
+	(0, import_react.useEffect)(() => {
+		setSelectedIndices([]);
+		setAttempts(0);
+		setStatus("idle");
+		setFeedback([]);
+		setDraggedId(null);
+		setDragTarget(null);
+	}, [currentWord]);
+	const handleBlockClick = (id) => {
 		if (status !== "idle" && status !== "checking") return;
-		if (selectedIndices.includes(id)) setSelectedIndices(selectedIndices.filter((x$2) => x$2 !== id));
-		else setSelectedIndices([...selectedIndices, id]);
+		if (selectedIndices.includes(id)) setSelectedIndices((prev) => prev.filter((x$2) => x$2 !== id));
+		else setSelectedIndices((prev) => [...prev, id]);
 		if (status === "checking") setStatus("idle");
 	};
 	const checkAnswer = () => {
@@ -49417,7 +49438,7 @@ function Practice() {
 		if (selectedIndices.length !== targetWords.length) {
 			toast$2({
 				title: "Faltam blocos",
-				description: "Utilize todas as palavras para montar a frase.",
+				description: "Utilize todas as palavras.",
 				variant: "destructive"
 			});
 			return;
@@ -49442,7 +49463,6 @@ function Practice() {
 				setTimeout(() => {
 					setStatus("idle");
 					setFeedback([]);
-					setSelectedIndices([]);
 				}, 1500);
 			}
 		}
@@ -49451,39 +49471,49 @@ function Practice() {
 		if (status === "correct" || status === "incorrect") updateWordStatus(currentWord.id, "srs");
 		if (currentIndex >= builderWords.length - 1) setCurrentIndex(0);
 	};
-	if (builderWords.length === 0) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-6",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "w-32 h-32 bg-primary/10 rounded-full flex items-center justify-center mb-2 border border-primary/20 shadow-sm",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-16 h-16 text-primary" })
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-4xl font-bold text-foreground tracking-tight",
-				children: "Sessão Concluída!"
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground max-w-md text-xl",
-				children: "Você completou todas as palavras na fila de prática. Vá para a Biblioteca capturar novos termos."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				size: "lg",
-				className: "mt-4 text-base h-14 px-8 rounded-xl",
-				onClick: () => navigate("/reader"),
-				children: ["Ir para a Biblioteca ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "ml-2 w-5 h-5" })]
-			})
-		]
-	});
+	const onDragStart = (e, id) => {
+		if (status === "correct" || status === "incorrect") return e.preventDefault();
+		setDraggedId(id);
+		e.dataTransfer.setData("text/plain", id.toString());
+	};
+	const onDropBlock = (e, targetId) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setDragTarget(null);
+		if (draggedId === null || draggedId === targetId) return;
+		const isDragSel = selectedIndices.includes(draggedId);
+		const isTargetSel = selectedIndices.includes(targetId);
+		const newInd = [...selectedIndices];
+		if (isDragSel && isTargetSel) {
+			newInd.splice(newInd.indexOf(draggedId), 1);
+			newInd.splice(newInd.indexOf(targetId), 0, draggedId);
+		} else if (!isDragSel && isTargetSel) newInd.splice(newInd.indexOf(targetId), 0, draggedId);
+		setSelectedIndices(newInd);
+		setDraggedId(null);
+	};
+	const getBlockClass = (id, inZone, i) => {
+		let base = "px-5 py-3 rounded-xl font-bold text-lg border-2 transition-all cursor-pointer select-none active:scale-95";
+		if (inZone) {
+			if (status === "checking") base = cn(base, feedback[i] ? "bg-success text-success-foreground border-success" : "bg-destructive text-destructive-foreground border-destructive");
+			else if (status === "correct") base = cn(base, "bg-success text-success-foreground border-success");
+			else if (status === "incorrect") base = cn(base, "bg-destructive/10 text-destructive border-destructive/30");
+			else base = cn(base, "bg-background border-border text-foreground hover:bg-secondary");
+			if (dragTarget === id) base = cn(base, "ring-2 ring-primary ring-offset-2 border-primary");
+		} else if (selectedIndices.includes(id)) base = cn(base, "bg-secondary/50 text-transparent border-transparent shadow-none scale-95 pointer-events-none");
+		else base = cn(base, "bg-card border-border hover:bg-secondary text-foreground hover:-translate-y-1 shadow-sm hover:shadow-md");
+		return cn(base, draggedId === id && "opacity-50");
+	};
+	if (!builderWords.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeEmpty, {});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in max-w-3xl mx-auto h-full flex flex-col pt-4",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 			className: "flex justify-between items-end mb-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
 				className: "text-3xl font-bold tracking-tight text-foreground flex items-center gap-3",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-8 h-8 text-primary" }), "Sentence Builder"]
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-8 h-8 text-primary" }), " Sentence Builder"]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-muted-foreground mt-2 text-lg",
-				children: "Monte a frase correta ordenando os blocos."
+				children: "Arraste os blocos para montar a frase."
 			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "text-sm font-medium bg-card px-4 py-2 rounded-full border border-border shadow-sm text-foreground",
 				children: [
@@ -49506,7 +49536,7 @@ function Practice() {
 					className: "mb-8 text-center",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "bg-primary/10 text-primary px-4 py-1.5 rounded-full font-bold text-sm border border-primary/20 uppercase tracking-wider inline-block mb-6",
-						children: "Construa a frase em inglês"
+						children: "Construa a frase"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 						className: "text-3xl md:text-4xl font-medium text-foreground leading-tight",
 						children: practiceData.pt
@@ -49515,42 +49545,47 @@ function Practice() {
 					className: "flex-1 flex flex-col justify-end space-y-6",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							onDragOver: (e) => e.preventDefault(),
+							onDrop: (e) => {
+								e.preventDefault();
+								setDragTarget(null);
+								if (draggedId !== null && !selectedIndices.includes(draggedId)) setSelectedIndices([...selectedIndices, draggedId]);
+								setDraggedId(null);
+							},
 							className: cn("min-h-[100px] p-6 rounded-3xl border-2 flex flex-wrap gap-3 items-center transition-colors", selectedIndices.length === 0 ? "border-dashed border-border/80 bg-secondary/20" : "border-solid border-primary/30 bg-primary/5"),
 							children: [selectedIndices.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 								className: "text-muted-foreground/60 italic px-2 font-medium w-full text-center",
-								children: "Clique nos blocos abaixo para inseri-los aqui..."
-							}), selectedIndices.map((id, i) => {
-								const block = shuffledBlocks.find((b$1) => b$1.id === id);
-								let stateClass = "bg-background border-border shadow-sm text-foreground";
-								if (status === "checking") stateClass = feedback[i] ? "bg-success text-success-foreground border-success shadow-[0_0_15px_rgba(22,163,74,0.3)]" : "bg-destructive text-destructive-foreground border-destructive shadow-[0_0_15px_rgba(239,68,68,0.3)]";
-								else if (status === "correct") stateClass = "bg-success text-success-foreground border-success shadow-[0_0_15px_rgba(22,163,74,0.3)]";
-								else if (status === "incorrect") stateClass = "bg-destructive/10 text-destructive border-destructive/30";
-								return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-									onClick: () => toggleSelect(id),
-									className: cn("px-5 py-3 rounded-xl font-bold text-lg border-2 transition-all active:scale-95 cursor-pointer", stateClass),
-									children: block.text
-								}, id);
-							})]
+								children: "Arraste ou clique nos blocos abaixo para inseri-los aqui..."
+							}), selectedIndices.map((id, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								draggable: true,
+								onDragStart: (e) => onDragStart(e, id),
+								onDragOver: (e) => {
+									e.preventDefault();
+									if (draggedId !== id) setDragTarget(id);
+								},
+								onDragLeave: () => setDragTarget(null),
+								onDrop: (e) => onDropBlock(e, id),
+								onClick: () => handleBlockClick(id),
+								className: getBlockClass(id, true, i),
+								children: shuffledBlocks.find((b$1) => b$1.id === id)?.text
+							}, id))]
 						}),
 						status === "incorrect" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "text-destructive flex items-start gap-4 bg-destructive/10 border border-destructive/20 p-5 rounded-2xl animate-fade-in-up",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleX, { className: "w-6 h-6 shrink-0 mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "space-y-1.5",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "font-bold text-lg",
-									children: "Tentativas esgotadas"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-									className: "text-base opacity-90",
-									children: [
-										"A frase correta era:",
-										" ",
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
-											className: "font-semibold bg-background px-3 py-1 rounded-md ml-1 shadow-sm border border-border/50",
-											children: practiceData.en
-										})
-									]
-								})]
-							})]
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleX, { className: "w-6 h-6 shrink-0 mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "font-bold text-lg",
+								children: "Tentativas esgotadas"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+								className: "text-base opacity-90",
+								children: [
+									"A frase correta era:",
+									" ",
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+										className: "font-semibold",
+										children: practiceData.en
+									})
+								]
+							})] })]
 						}),
 						status === "correct" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "text-success-foreground flex items-center gap-4 bg-success/10 border border-success/20 p-5 rounded-2xl animate-fade-in-up",
@@ -49560,23 +49595,29 @@ function Practice() {
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "flex flex-wrap justify-center gap-3 py-6",
-							children: shuffledBlocks.map((block) => {
-								const isSelected = selectedIndices.includes(block.id);
-								return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-									onClick: () => toggleSelect(block.id),
-									disabled: isSelected || status === "correct" || status === "incorrect",
-									className: cn("px-6 py-3 rounded-xl font-bold text-lg transition-all border-2 active:scale-95", isSelected ? "bg-secondary/50 text-transparent border-transparent shadow-none scale-95 pointer-events-none" : "bg-card border-border shadow-sm hover:bg-secondary text-foreground hover:-translate-y-1 hover:shadow-md cursor-pointer"),
-									children: block.text
-								}, block.id);
-							})
+							onDragOver: (e) => e.preventDefault(),
+							onDrop: (e) => {
+								e.preventDefault();
+								setDragTarget(null);
+								if (draggedId !== null && selectedIndices.includes(draggedId)) setSelectedIndices((prev) => prev.filter((id) => id !== draggedId));
+								setDraggedId(null);
+							},
+							className: "flex flex-wrap justify-center gap-3 py-6 min-h-[100px]",
+							children: shuffledBlocks.map((block) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								draggable: !selectedIndices.includes(block.id),
+								onDragStart: (e) => onDragStart(e, block.id),
+								onClick: () => handleBlockClick(block.id),
+								disabled: selectedIndices.includes(block.id) || status === "correct" || status === "incorrect",
+								className: getBlockClass(block.id, false),
+								children: block.text
+							}, block.id))
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "pt-4 border-t border-border mt-auto",
 							children: status === "correct" || status === "incorrect" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 								onClick: handleNext,
 								size: "lg",
-								className: cn("w-full h-16 text-lg rounded-2xl group shadow-md animate-fade-in", status === "correct" ? "bg-success hover:bg-success/90 text-success-foreground shadow-[0_0_20px_rgba(22,163,74,0.3)]" : "bg-primary hover:bg-primary/90 text-primary-foreground"),
+								className: cn("w-full h-16 text-lg rounded-2xl group shadow-md animate-fade-in", status === "correct" ? "bg-success hover:bg-success/90 text-success-foreground" : "bg-primary hover:bg-primary/90 text-primary-foreground"),
 								children: [
 									currentIndex < builderWords.length - 1 ? "Próxima Palavra" : "Concluir Sessão",
 									" ",
@@ -50286,4 +50327,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-i2BmZAs3.js.map
+//# sourceMappingURL=index-Dkd_6g2C.js.map

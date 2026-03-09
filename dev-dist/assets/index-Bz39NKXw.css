@@ -2901,24 +2901,6 @@ body::selection{
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.shadow-\[0_0_15px_rgba\(22\2c 163\2c 74\2c 0\.3\)\]{
-  --tw-shadow: 0 0 15px rgba(22,163,74,0.3);
-  --tw-shadow-colored: 0 0 15px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.shadow-\[0_0_15px_rgba\(239\2c 68\2c 68\2c 0\.3\)\]{
-  --tw-shadow: 0 0 15px rgba(239,68,68,0.3);
-  --tw-shadow-colored: 0 0 15px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.shadow-\[0_0_20px_rgba\(22\2c 163\2c 74\2c 0\.3\)\]{
-  --tw-shadow: 0 0 20px rgba(22,163,74,0.3);
-  --tw-shadow-colored: 0 0 20px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
 .shadow-\[0_0_20px_rgba\(236\2c 72\2c 153\2c 0\.3\)\]{
   --tw-shadow: 0 0 20px rgba(236,72,153,0.3);
   --tw-shadow-colored: 0 0 20px var(--tw-shadow-color);
@@ -3000,6 +2982,10 @@ body::selection{
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
+.ring-primary{
+  --tw-ring-color: hsl(var(--primary));
+}
+
 .ring-primary\/20{
   --tw-ring-color: hsl(var(--primary) / 0.2);
 }
@@ -3010,6 +2996,10 @@ body::selection{
 
 .ring-sidebar-ring{
   --tw-ring-color: hsl(var(--sidebar-ring));
+}
+
+.ring-offset-2{
+  --tw-ring-offset-width: 2px;
 }
 
 .ring-offset-background{
