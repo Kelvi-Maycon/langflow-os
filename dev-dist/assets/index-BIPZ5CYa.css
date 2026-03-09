@@ -745,6 +745,10 @@ body::selection{
   left: 0.75rem;
 }
 
+.left-4{
+  left: 1rem;
+}
+
 .left-\[10\%\]{
   left: 10%;
 }
@@ -946,6 +950,10 @@ body::selection{
 
 .mr-2{
   margin-right: 0.5rem;
+}
+
+.mt-0{
+  margin-top: 0px;
 }
 
 .mt-0\.5{
@@ -1170,6 +1178,10 @@ body::selection{
   max-height: 300px;
 }
 
+.max-h-\[65vh\]{
+  max-height: 65vh;
+}
+
 .max-h-\[var\(--radix-dropdown-menu-content-available-height\)\]{
   max-height: var(--radix-dropdown-menu-content-available-height);
 }
@@ -1186,8 +1198,8 @@ body::selection{
   min-height: 100px;
 }
 
-.min-h-\[400px\]{
-  min-height: 400px;
+.min-h-\[300px\]{
+  min-height: 300px;
 }
 
 .min-h-\[450px\]{
@@ -1396,10 +1408,6 @@ body::selection{
   max-width: 48rem;
 }
 
-.max-w-4xl{
-  max-width: 56rem;
-}
-
 .max-w-\[--skeleton-width\]{
   max-width: var(--skeleton-width);
 }
@@ -1419,6 +1427,10 @@ body::selection{
 
 .max-w-md{
   max-width: 28rem;
+}
+
+.max-w-sm{
+  max-width: 24rem;
 }
 
 .max-w-xl{
@@ -2184,6 +2196,11 @@ body::selection{
   background-color: rgb(168 85 247 / 0.1);
 }
 
+.bg-red-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+
 .bg-secondary{
   background-color: hsl(var(--secondary));
 }
@@ -2462,6 +2479,10 @@ body::selection{
 
 .pb-8{
   padding-bottom: 2rem;
+}
+
+.pl-12{
+  padding-left: 3rem;
 }
 
 .pl-2{
@@ -2765,6 +2786,10 @@ body::selection{
 .text-purple-500{
   --tw-text-opacity: 1;
   color: rgb(168 85 247 / var(--tw-text-opacity, 1));
+}
+
+.text-red-500\/40{
+  color: rgb(239 68 68 / 0.4);
 }
 
 .text-secondary-foreground{
@@ -3347,6 +3372,11 @@ body::selection{
 
 .hover\:bg-primary\/90:hover{
   background-color: hsl(var(--primary) / 0.9);
+}
+
+.hover\:bg-red-600:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-secondary:hover{
@@ -3937,6 +3967,15 @@ body::selection{
 
 .data-\[state\=active\]\:text-foreground[data-state="active"]{
   color: hsl(var(--foreground));
+}
+
+.data-\[state\=active\]\:text-primary[data-state="active"]{
+  color: hsl(var(--primary));
+}
+
+.data-\[state\=active\]\:text-red-500[data-state="active"]{
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity, 1));
 }
 
 .data-\[state\=checked\]\:text-primary-foreground[data-state="checked"]{
@@ -4608,6 +4647,10 @@ body::selection{
 
   .xl\:col-span-2{
     grid-column: span 2 / span 2;
+  }
+
+  .xl\:block{
+    display: block;
   }
 
   .xl\:grid-cols-3{

@@ -17802,7 +17802,7 @@ function getElementRef$2(element) {
 }
 function createCollection(name) {
 	const PROVIDER_NAME$2 = name + "CollectionProvider";
-	const [createCollectionContext, createCollectionScope$2] = createContextScope(PROVIDER_NAME$2);
+	const [createCollectionContext, createCollectionScope$3] = createContextScope(PROVIDER_NAME$2);
 	const [CollectionProviderImpl, useCollectionContext] = createCollectionContext(PROVIDER_NAME$2, {
 		collectionRef: { current: null },
 		itemMap: /* @__PURE__ */ new Map()
@@ -17851,7 +17851,7 @@ function createCollection(name) {
 		});
 	});
 	CollectionItemSlot.displayName = ITEM_SLOT_NAME;
-	function useCollection$2(scope) {
+	function useCollection$3(scope) {
 		const context = useCollectionContext(name + "CollectionConsumer", scope);
 		return import_react.useCallback(() => {
 			const collectionNode = context.collectionRef.current;
@@ -17866,8 +17866,8 @@ function createCollection(name) {
 			Slot: CollectionSlot,
 			ItemSlot: CollectionItemSlot
 		},
-		useCollection$2,
-		createCollectionScope$2
+		useCollection$3,
+		createCollectionScope$3
 	];
 }
 var Primitive$1 = [
@@ -18097,7 +18097,7 @@ function handleAndDispatchCustomEvent$1(name, handler, detail, { discrete }) {
 	if (discrete) dispatchDiscreteCustomEvent(target, event);
 	else target.dispatchEvent(event);
 }
-var Root$6 = DismissableLayer;
+var Root$7 = DismissableLayer;
 var Branch = DismissableLayerBranch;
 var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
 var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
@@ -18288,11 +18288,11 @@ var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 VisuallyHidden.displayName = NAME$2;
-var Root$5 = VisuallyHidden;
+var Root$6 = VisuallyHidden;
 var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PROVIDER_NAME$1 = "ToastProvider";
-var [Collection$1, useCollection$1, createCollectionScope$1] = createCollection("Toast");
-var [createToastContext, createToastScope] = createContextScope("Toast", [createCollectionScope$1]);
+var [Collection$2, useCollection$2, createCollectionScope$2] = createCollection("Toast");
+var [createToastContext, createToastScope] = createContextScope("Toast", [createCollectionScope$2]);
 var [ToastProviderProvider, useToastProviderContext] = createToastContext(PROVIDER_NAME$1);
 var ToastProvider$1 = (props) => {
 	const { __scopeToast, label = "Notification", duration = 5e3, swipeDirection = "right", swipeThreshold = 50, children } = props;
@@ -18301,7 +18301,7 @@ var ToastProvider$1 = (props) => {
 	const isFocusedToastEscapeKeyDownRef = import_react.useRef(false);
 	const isClosePausedRef = import_react.useRef(false);
 	if (!label.trim()) console.error(`Invalid prop \`label\` supplied to \`${PROVIDER_NAME$1}\`. Expected non-empty \`string\`.`);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.Provider, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.Provider, {
 		scope: __scopeToast,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToastProviderProvider, {
 			scope: __scopeToast,
@@ -18328,7 +18328,7 @@ var VIEWPORT_RESUME = "toast.viewportResume";
 var ToastViewport$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeToast, hotkey = VIEWPORT_DEFAULT_HOTKEY, label = "Notifications ({hotkey})", ...viewportProps } = props;
 	const context = useToastProviderContext(VIEWPORT_NAME$1, __scopeToast);
-	const getItems = useCollection$1(__scopeToast);
+	const getItems = useCollection$2(__scopeToast);
 	const wrapperRef = import_react.useRef(null);
 	const headFocusProxyRef = import_react.useRef(null);
 	const tailFocusProxyRef = import_react.useRef(null);
@@ -18405,7 +18405,7 @@ var ToastViewport$1 = import_react.forwardRef((props, forwardedRef) => {
 					}
 					const sortedCandidates = getSortedTabbableCandidates({ tabbingDirection: isTabbingBackwards ? "backwards" : "forwards" });
 					const index$1 = sortedCandidates.findIndex((candidate) => candidate === focusedElement);
-					if (focusFirst$1(sortedCandidates.slice(index$1 + 1))) event.preventDefault();
+					if (focusFirst$2(sortedCandidates.slice(index$1 + 1))) event.preventDefault();
 					else isTabbingBackwards ? headFocusProxyRef.current?.focus() : tailFocusProxyRef.current?.focus();
 				}
 			};
@@ -18423,10 +18423,10 @@ var ToastViewport$1 = import_react.forwardRef((props, forwardedRef) => {
 			hasToasts && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusProxy, {
 				ref: headFocusProxyRef,
 				onFocusFromOutsideViewport: () => {
-					focusFirst$1(getSortedTabbableCandidates({ tabbingDirection: "forwards" }));
+					focusFirst$2(getSortedTabbableCandidates({ tabbingDirection: "forwards" }));
 				}
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.Slot, {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.Slot, {
 				scope: __scopeToast,
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.ol, {
 					tabIndex: -1,
@@ -18437,7 +18437,7 @@ var ToastViewport$1 = import_react.forwardRef((props, forwardedRef) => {
 			hasToasts && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusProxy, {
 				ref: tailFocusProxyRef,
 				onFocusFromOutsideViewport: () => {
-					focusFirst$1(getSortedTabbableCandidates({ tabbingDirection: "backwards" }));
+					focusFirst$2(getSortedTabbableCandidates({ tabbingDirection: "backwards" }));
 				}
 			})
 		]
@@ -18585,9 +18585,9 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToastInteractiveProvider, {
 		scope: __scopeToast,
 		onClose: handleClose,
-		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.ItemSlot, {
+		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.ItemSlot, {
 			scope: __scopeToast,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
 				asChild: true,
 				onEscapeKeyDown: composeEventHandlers(onEscapeKeyDown, () => {
 					if (!context.isFocusedToastEscapeKeyDownRef.current) handleClose();
@@ -18807,7 +18807,7 @@ function getTabbableCandidates$1(container) {
 	while (walker.nextNode()) nodes.push(walker.currentNode);
 	return nodes;
 }
-function focusFirst$1(candidates) {
+function focusFirst$2(candidates) {
 	const previouslyFocusedElement = document.activeElement;
 	return candidates.some((candidate) => {
 		if (candidate === previouslyFocusedElement) return true;
@@ -18817,7 +18817,7 @@ function focusFirst$1(candidates) {
 }
 var Provider$1 = ToastProvider$1;
 var Viewport$1 = ToastViewport$1;
-var Root2$3 = Toast$2;
+var Root2$4 = Toast$2;
 var Title$1 = ToastTitle$1;
 var Description$1 = ToastDescription$1;
 var Action = ToastAction$1;
@@ -19217,6 +19217,13 @@ var LayoutDashboard = createLucideIcon("layout-dashboard", [
 		key: "ldoo1y"
 	}]
 ]);
+var Link$1 = createLucideIcon("link", [["path", {
+	d: "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71",
+	key: "1cjeqo"
+}], ["path", {
+	d: "M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71",
+	key: "19qd67"
+}]]);
 var LoaderCircle = createLucideIcon("loader-circle", [["path", {
 	d: "M21 12a9 9 0 1 1-6.219-8.56",
 	key: "13zald"
@@ -19529,6 +19536,13 @@ var X = createLucideIcon("x", [["path", {
 }], ["path", {
 	d: "m6 6 12 12",
 	key: "d8bk6v"
+}]]);
+var Youtube = createLucideIcon("youtube", [["path", {
+	d: "M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17",
+	key: "1q2vi4"
+}], ["path", {
+	d: "m10 15 5-3-5-3z",
+	key: "1jp15x"
 }]]);
 var Zap = createLucideIcon("zap", [["path", {
 	d: "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
@@ -20937,13 +20951,13 @@ var toastVariants = cva("group pointer-events-auto relative flex w-full items-ce
 	defaultVariants: { variant: "default" }
 });
 var Toast$1 = import_react.forwardRef(({ className, variant, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
 		ref,
 		className: cn(toastVariants({ variant }), className),
 		...props
 	});
 });
-Toast$1.displayName = Root2$3.displayName;
+Toast$1.displayName = Root2$4.displayName;
 var ToastAction = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Action, {
 	ref,
 	className: cn("inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive", className),
@@ -21323,10 +21337,10 @@ var Observer = class {
 			if (typeof id !== "string" && typeof id !== "number") return { unwrap };
 			else return Object.assign(id, { unwrap });
 		};
-		this.custom = (jsx$22, data$1) => {
+		this.custom = (jsx$24, data$1) => {
 			const id = (data$1 == null ? void 0 : data$1.id) || toastsCounter++;
 			this.create({
-				jsx: jsx$22(id),
+				jsx: jsx$24(id),
 				id,
 				...data$1
 			});
@@ -23466,7 +23480,7 @@ var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Arrow$1.displayName = NAME$1;
-var Root$4 = Arrow$1;
+var Root$5 = Arrow$1;
 function useSize(element) {
 	const [size$3, setSize] = import_react.useState(void 0);
 	useLayoutEffect2(() => {
@@ -23533,11 +23547,11 @@ var PopperAnchor = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 PopperAnchor.displayName = ANCHOR_NAME$1;
-var CONTENT_NAME$4 = "PopperContent";
-var [PopperContentProvider, useContentContext] = createPopperContext(CONTENT_NAME$4);
+var CONTENT_NAME$5 = "PopperContent";
+var [PopperContentProvider, useContentContext] = createPopperContext(CONTENT_NAME$5);
 var PopperContent = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopper, side = "bottom", sideOffset = 0, align = "center", alignOffset = 0, arrowPadding = 0, avoidCollisions = true, collisionBoundary = [], collisionPadding: collisionPaddingProp = 0, sticky = "partial", hideWhenDetached = false, updatePositionStrategy = "optimized", onPlaced, ...contentProps } = props;
-	const context = usePopperContext(CONTENT_NAME$4, __scopePopper);
+	const context = usePopperContext(CONTENT_NAME$5, __scopePopper);
 	const [content, setContent] = import_react.useState(null);
 	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
 	const [arrow$3, setArrow] = import_react.useState(null);
@@ -23650,7 +23664,7 @@ var PopperContent = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-PopperContent.displayName = CONTENT_NAME$4;
+PopperContent.displayName = CONTENT_NAME$5;
 var ARROW_NAME$3 = "PopperArrow";
 var OPPOSITE_SIDE = {
 	top: "bottom",
@@ -23683,7 +23697,7 @@ var PopperArrow = import_react.forwardRef(function PopperArrow2(props, forwarded
 			}[contentContext.placedSide],
 			visibility: contentContext.shouldHideArrow ? "hidden" : void 0
 		},
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$4, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
 			...arrowProps,
 			ref: forwardedRef,
 			style: {
@@ -23738,9 +23752,9 @@ function getSideAndAlignFromPlacement(placement) {
 	const [side, align = "center"] = placement.split("-");
 	return [side, align];
 }
-var Root2$2 = Popper;
+var Root2$3 = Popper;
 var Anchor = PopperAnchor;
-var Content$1 = PopperContent;
+var Content$2 = PopperContent;
 var Arrow = PopperArrow;
 var [createTooltipContext, createTooltipScope] = createContextScope("Tooltip", [createPopperScope]);
 var usePopperScope$2 = createPopperScope();
@@ -23832,7 +23846,7 @@ var Tooltip$2 = (props) => {
 			}
 		};
 	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContextProvider, {
 			scope: __scopeTooltip,
@@ -23864,11 +23878,11 @@ var Tooltip$2 = (props) => {
 	});
 };
 Tooltip$2.displayName = TOOLTIP_NAME;
-var TRIGGER_NAME$3 = "TooltipTrigger";
+var TRIGGER_NAME$4 = "TooltipTrigger";
 var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, ...triggerProps } = props;
-	const context = useTooltipContext(TRIGGER_NAME$3, __scopeTooltip);
-	const providerContext = useTooltipProviderContext(TRIGGER_NAME$3, __scopeTooltip);
+	const context = useTooltipContext(TRIGGER_NAME$4, __scopeTooltip);
+	const providerContext = useTooltipProviderContext(TRIGGER_NAME$4, __scopeTooltip);
 	const popperScope = usePopperScope$2(__scopeTooltip);
 	const composedRefs = useComposedRefs(forwardedRef, import_react.useRef(null), context.onTriggerChange);
 	const isPointerDownRef = import_react.useRef(false);
@@ -23909,7 +23923,7 @@ var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TooltipTrigger$1.displayName = TRIGGER_NAME$3;
+TooltipTrigger$1.displayName = TRIGGER_NAME$4;
 var PORTAL_NAME$3 = "TooltipPortal";
 var [PortalProvider$2, usePortalContext$2] = createTooltipContext(PORTAL_NAME$3, { forceMount: void 0 });
 var TooltipPortal = (props) => {
@@ -23929,11 +23943,11 @@ var TooltipPortal = (props) => {
 	});
 };
 TooltipPortal.displayName = PORTAL_NAME$3;
-var CONTENT_NAME$3 = "TooltipContent";
+var CONTENT_NAME$4 = "TooltipContent";
 var TooltipContent$1 = import_react.forwardRef((props, forwardedRef) => {
-	const portalContext = usePortalContext$2(CONTENT_NAME$3, props.__scopeTooltip);
+	const portalContext = usePortalContext$2(CONTENT_NAME$4, props.__scopeTooltip);
 	const { forceMount = portalContext.forceMount, side = "top", ...contentProps } = props;
-	const context = useTooltipContext(CONTENT_NAME$3, props.__scopeTooltip);
+	const context = useTooltipContext(CONTENT_NAME$4, props.__scopeTooltip);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 		present: forceMount || context.open,
 		children: context.disableHoverableContent ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContentImpl, {
@@ -23948,8 +23962,8 @@ var TooltipContent$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 var TooltipContentHoverable = import_react.forwardRef((props, forwardedRef) => {
-	const context = useTooltipContext(CONTENT_NAME$3, props.__scopeTooltip);
-	const providerContext = useTooltipProviderContext(CONTENT_NAME$3, props.__scopeTooltip);
+	const context = useTooltipContext(CONTENT_NAME$4, props.__scopeTooltip);
+	const providerContext = useTooltipProviderContext(CONTENT_NAME$4, props.__scopeTooltip);
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const [pointerGraceArea, setPointerGraceArea] = import_react.useState(null);
@@ -24026,7 +24040,7 @@ var [VisuallyHiddenContentContextProvider, useVisuallyHiddenContentContext] = cr
 var Slottable = /* @__PURE__ */ createSlottable("TooltipContent");
 var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, children, "aria-label": ariaLabel, onEscapeKeyDown, onPointerDownOutside, ...contentProps } = props;
-	const context = useTooltipContext(CONTENT_NAME$3, __scopeTooltip);
+	const context = useTooltipContext(CONTENT_NAME$4, __scopeTooltip);
 	const popperScope = usePopperScope$2(__scopeTooltip);
 	const { onClose } = context;
 	import_react.useEffect(() => {
@@ -24049,7 +24063,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 		onPointerDownOutside,
 		onFocusOutside: (event) => event.preventDefault(),
 		onDismiss: onClose,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$1, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$2, {
 			"data-state": context.stateAttribute,
 			...popperScope,
 			...contentProps,
@@ -24065,7 +24079,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Slottable, { children }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VisuallyHiddenContentContextProvider, {
 				scope: __scopeTooltip,
 				isInside: true,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$5, {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
 					id: context.contentId,
 					role: "tooltip",
 					children: ariaLabel || children
@@ -24074,7 +24088,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TooltipContent$1.displayName = CONTENT_NAME$3;
+TooltipContent$1.displayName = CONTENT_NAME$4;
 var ARROW_NAME$2 = "TooltipArrow";
 var TooltipArrow = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, ...arrowProps } = props;
@@ -24228,7 +24242,7 @@ var TooltipContent = import_react.forwardRef(({ className, sideOffset = 4, ...pr
 TooltipContent.displayName = Content2$2.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
-var EVENT_OPTIONS = {
+var EVENT_OPTIONS$1 = {
 	bubbles: false,
 	cancelable: true
 };
@@ -24288,18 +24302,18 @@ var FocusScope = import_react.forwardRef((props, forwardedRef) => {
 			focusScopesStack.add(focusScope);
 			const previouslyFocusedElement = document.activeElement;
 			if (!container.contains(previouslyFocusedElement)) {
-				const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS);
+				const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS$1);
 				container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
 				container.dispatchEvent(mountEvent);
 				if (!mountEvent.defaultPrevented) {
-					focusFirst(removeLinks(getTabbableCandidates(container)), { select: true });
+					focusFirst$1(removeLinks(getTabbableCandidates(container)), { select: true });
 					if (document.activeElement === previouslyFocusedElement) focus(container);
 				}
 			}
 			return () => {
 				container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
 				setTimeout(() => {
-					const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS);
+					const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS$1);
 					container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
 					container.dispatchEvent(unmountEvent);
 					if (!unmountEvent.defaultPrevented) focus(previouslyFocusedElement ?? document.body, { select: true });
@@ -24345,7 +24359,7 @@ var FocusScope = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 FocusScope.displayName = FOCUS_SCOPE_NAME;
-function focusFirst(candidates, { select = false } = {}) {
+function focusFirst$1(candidates, { select = false } = {}) {
 	const previouslyFocusedElement = document.activeElement;
 	for (const candidate of candidates) {
 		focus(candidate, { select });
@@ -25156,10 +25170,10 @@ var Dialog = (props) => {
 	});
 };
 Dialog.displayName = DIALOG_NAME;
-var TRIGGER_NAME$2 = "DialogTrigger";
+var TRIGGER_NAME$3 = "DialogTrigger";
 var DialogTrigger = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...triggerProps } = props;
-	const context = useDialogContext(TRIGGER_NAME$2, __scopeDialog);
+	const context = useDialogContext(TRIGGER_NAME$3, __scopeDialog);
 	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.button, {
 		type: "button",
@@ -25172,7 +25186,7 @@ var DialogTrigger = import_react.forwardRef((props, forwardedRef) => {
 		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
 	});
 });
-DialogTrigger.displayName = TRIGGER_NAME$2;
+DialogTrigger.displayName = TRIGGER_NAME$3;
 var PORTAL_NAME$2 = "DialogPortal";
 var [PortalProvider$1, usePortalContext$1] = createDialogContext(PORTAL_NAME$2, { forceMount: void 0 });
 var DialogPortal = (props) => {
@@ -25225,11 +25239,11 @@ var DialogOverlayImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-var CONTENT_NAME$2 = "DialogContent";
+var CONTENT_NAME$3 = "DialogContent";
 var DialogContent = import_react.forwardRef((props, forwardedRef) => {
-	const portalContext = usePortalContext$1(CONTENT_NAME$2, props.__scopeDialog);
+	const portalContext = usePortalContext$1(CONTENT_NAME$3, props.__scopeDialog);
 	const { forceMount = portalContext.forceMount, ...contentProps } = props;
-	const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
+	const context = useDialogContext(CONTENT_NAME$3, props.__scopeDialog);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 		present: forceMount || context.open,
 		children: context.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentModal, {
@@ -25241,9 +25255,9 @@ var DialogContent = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-DialogContent.displayName = CONTENT_NAME$2;
+DialogContent.displayName = CONTENT_NAME$3;
 var DialogContentModal = import_react.forwardRef((props, forwardedRef) => {
-	const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
+	const context = useDialogContext(CONTENT_NAME$3, props.__scopeDialog);
 	const contentRef = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
 	import_react.useEffect(() => {
@@ -25268,7 +25282,7 @@ var DialogContentModal = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 var DialogContentNonModal = import_react.forwardRef((props, forwardedRef) => {
-	const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
+	const context = useDialogContext(CONTENT_NAME$3, props.__scopeDialog);
 	const hasInteractedOutsideRef = import_react.useRef(false);
 	const hasPointerDownOutsideRef = import_react.useRef(false);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentImpl, {
@@ -25299,7 +25313,7 @@ var DialogContentNonModal = import_react.forwardRef((props, forwardedRef) => {
 });
 var DialogContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, trapFocus, onOpenAutoFocus, onCloseAutoFocus, ...contentProps } = props;
-	const context = useDialogContext(CONTENT_NAME$2, __scopeDialog);
+	const context = useDialogContext(CONTENT_NAME$3, __scopeDialog);
 	const contentRef = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, contentRef);
 	useFocusGuards();
@@ -25363,7 +25377,7 @@ function getState$1(open) {
 }
 var TITLE_WARNING_NAME = "DialogTitleWarning";
 var [WarningProvider, useWarningContext] = createContext2(TITLE_WARNING_NAME, {
-	contentName: CONTENT_NAME$2,
+	contentName: CONTENT_NAME$3,
 	titleName: TITLE_NAME,
 	docsSlug: "dialog"
 });
@@ -25396,16 +25410,16 @@ var DescriptionWarning = ({ contentRef, descriptionId }) => {
 	]);
 	return null;
 };
-var Root$3 = Dialog;
-var Trigger$2 = DialogTrigger;
+var Root$4 = Dialog;
+var Trigger$3 = DialogTrigger;
 var Portal$3 = DialogPortal;
 var Overlay = DialogOverlay;
-var Content = DialogContent;
+var Content$1 = DialogContent;
 var Title = DialogTitle;
 var Description = DialogDescription;
 var Close = DialogClose;
-var Sheet = Root$3;
-var SheetTrigger = Trigger$2;
+var Sheet = Root$4;
+var SheetTrigger = Trigger$3;
 var SheetPortal = Portal$3;
 var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
 	className: cn("fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
@@ -25422,7 +25436,7 @@ var sheetVariants = cva("fixed z-50 gap-4 bg-background p-6 shadow-lg transition
 	} },
 	defaultVariants: { side: "right" }
 });
-var SheetContent = import_react.forwardRef(({ side = "right", className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content, {
+var SheetContent = import_react.forwardRef(({ side = "right", className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$1, {
 	ref,
 	className: cn(sheetVariants({ side }), className),
 	...props,
@@ -25434,7 +25448,7 @@ var SheetContent = import_react.forwardRef(({ side = "right", className, childre
 		})]
 	})]
 })] }));
-SheetContent.displayName = Content.displayName;
+SheetContent.displayName = Content$1.displayName;
 var SheetHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	className: cn("flex flex-col space-y-2 text-center sm:text-left", className),
 	...props
@@ -25813,15 +25827,15 @@ function useImageLoadingStatus(src, { referrerPolicy, crossOrigin }) {
 	]);
 	return loadingStatus;
 }
-var Root$2 = Avatar$1;
+var Root$3 = Avatar$1;
 var Image = AvatarImage$1;
 var Fallback = AvatarFallback$1;
-var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
+var Avatar = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$3, {
 	ref,
 	className: cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className),
 	...props
 }));
-Avatar.displayName = Root$2.displayName;
+Avatar.displayName = Root$3.displayName;
 var AvatarImage = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Image, {
 	ref,
 	className: cn("aspect-square h-full w-full", className),
@@ -26397,7 +26411,7 @@ function getInvalidValueError(propValue, componentName) {
 
 Defaulting to \`null\`.`;
 }
-var Root$1 = Progress$1;
+var Root$2 = Progress$1;
 var Indicator = ProgressIndicator;
 var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => {
 	const [progress, setProgress] = import_react.useState(0);
@@ -26407,7 +26421,7 @@ var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => 
 		}, 100);
 		return () => clearTimeout(timer);
 	}, [value]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
 		ref,
 		className: cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary border border-border/50", className),
 		...props,
@@ -26417,7 +26431,7 @@ var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => 
 		})
 	});
 });
-Progress.displayName = Root$1.displayName;
+Progress.displayName = Root$2.displayName;
 var initialMissions = [
 	{
 		id: 1,
@@ -47109,14 +47123,6 @@ function Index() {
 		]
 	});
 }
-var Textarea = import_react.forwardRef(({ className, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
-		className: cn("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
-		ref,
-		...props
-	});
-});
-Textarea.displayName = "Textarea";
 var POPOVER_NAME = "Popover";
 var [createPopoverContext, createPopoverScope] = createContextScope(POPOVER_NAME, [createPopperScope]);
 var usePopperScope$1 = createPopperScope();
@@ -47132,7 +47138,7 @@ var Popover$1 = (props) => {
 		onChange: onOpenChange,
 		caller: POPOVER_NAME
 	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverProvider, {
 			scope: __scopePopover,
@@ -47167,10 +47173,10 @@ var PopoverAnchor = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 PopoverAnchor.displayName = ANCHOR_NAME;
-var TRIGGER_NAME$1 = "PopoverTrigger";
+var TRIGGER_NAME$2 = "PopoverTrigger";
 var PopoverTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopover, ...triggerProps } = props;
-	const context = usePopoverContext(TRIGGER_NAME$1, __scopePopover);
+	const context = usePopoverContext(TRIGGER_NAME$2, __scopePopover);
 	const popperScope = usePopperScope$1(__scopePopover);
 	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
 	const trigger = /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.button, {
@@ -47189,7 +47195,7 @@ var PopoverTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		children: trigger
 	});
 });
-PopoverTrigger$1.displayName = TRIGGER_NAME$1;
+PopoverTrigger$1.displayName = TRIGGER_NAME$2;
 var PORTAL_NAME$1 = "PopoverPortal";
 var [PortalProvider, usePortalContext] = createPopoverContext(PORTAL_NAME$1, { forceMount: void 0 });
 var PopoverPortal = (props) => {
@@ -47209,11 +47215,11 @@ var PopoverPortal = (props) => {
 	});
 };
 PopoverPortal.displayName = PORTAL_NAME$1;
-var CONTENT_NAME$1 = "PopoverContent";
+var CONTENT_NAME$2 = "PopoverContent";
 var PopoverContent$1 = import_react.forwardRef((props, forwardedRef) => {
-	const portalContext = usePortalContext(CONTENT_NAME$1, props.__scopePopover);
+	const portalContext = usePortalContext(CONTENT_NAME$2, props.__scopePopover);
 	const { forceMount = portalContext.forceMount, ...contentProps } = props;
-	const context = usePopoverContext(CONTENT_NAME$1, props.__scopePopover);
+	const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 		present: forceMount || context.open,
 		children: context.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentModal, {
@@ -47225,10 +47231,10 @@ var PopoverContent$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-PopoverContent$1.displayName = CONTENT_NAME$1;
+PopoverContent$1.displayName = CONTENT_NAME$2;
 var Slot$1 = /* @__PURE__ */ createSlot("PopoverContent.RemoveScroll");
 var PopoverContentModal = import_react.forwardRef((props, forwardedRef) => {
-	const context = usePopoverContext(CONTENT_NAME$1, props.__scopePopover);
+	const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
 	const contentRef = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, contentRef);
 	const isRightClickOutsideRef = import_react.useRef(false);
@@ -47258,7 +47264,7 @@ var PopoverContentModal = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 var PopoverContentNonModal = import_react.forwardRef((props, forwardedRef) => {
-	const context = usePopoverContext(CONTENT_NAME$1, props.__scopePopover);
+	const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
 	const hasInteractedOutsideRef = import_react.useRef(false);
 	const hasPointerDownOutsideRef = import_react.useRef(false);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentImpl, {
@@ -47289,7 +47295,7 @@ var PopoverContentNonModal = import_react.forwardRef((props, forwardedRef) => {
 });
 var PopoverContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopover, trapFocus, onOpenAutoFocus, onCloseAutoFocus, disableOutsidePointerEvents, onEscapeKeyDown, onPointerDownOutside, onFocusOutside, onInteractOutside, ...contentProps } = props;
-	const context = usePopoverContext(CONTENT_NAME$1, __scopePopover);
+	const context = usePopoverContext(CONTENT_NAME$2, __scopePopover);
 	const popperScope = usePopperScope$1(__scopePopover);
 	useFocusGuards();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusScope, {
@@ -47306,7 +47312,7 @@ var PopoverContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			onPointerDownOutside,
 			onFocusOutside,
 			onDismiss: () => context.onOpenChange(false),
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$1, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$2, {
 				"data-state": getState(context.open),
 				role: "dialog",
 				id: context.contentId,
@@ -47351,12 +47357,12 @@ PopoverArrow.displayName = ARROW_NAME$1;
 function getState(open) {
 	return open ? "open" : "closed";
 }
-var Root2$1 = Popover$1;
-var Trigger$1 = PopoverTrigger$1;
+var Root2$2 = Popover$1;
+var Trigger$2 = PopoverTrigger$1;
 var Portal$2 = PopoverPortal;
 var Content2$1 = PopoverContent$1;
-var Popover = Root2$1;
-var PopoverTrigger = Trigger$1;
+var Popover = Root2$2;
+var PopoverTrigger = Trigger$2;
 var PopoverContent = import_react.forwardRef(({ className, align = "center", sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$2, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$1, {
 	ref,
 	align,
@@ -47569,13 +47575,451 @@ function WordInteraction({ word, sentence, onCapture }) {
 		})]
 	});
 }
-function clamp(value, [min$4, max$4]) {
-	return Math.min(max$4, Math.max(min$4, value));
-}
+var Textarea = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
+		className: cn("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
+		ref,
+		...props
+	});
+});
+Textarea.displayName = "Textarea";
 var DirectionContext = import_react.createContext(void 0);
 function useDirection(localDir) {
 	const globalDir = import_react.useContext(DirectionContext);
 	return localDir || globalDir || "ltr";
+}
+var ENTRY_FOCUS = "rovingFocusGroup.onEntryFocus";
+var EVENT_OPTIONS = {
+	bubbles: false,
+	cancelable: true
+};
+var GROUP_NAME$1 = "RovingFocusGroup";
+var [Collection$1, useCollection$1, createCollectionScope$1] = createCollection(GROUP_NAME$1);
+var [createRovingFocusGroupContext, createRovingFocusGroupScope] = createContextScope(GROUP_NAME$1, [createCollectionScope$1]);
+var [RovingFocusProvider, useRovingFocusContext] = createRovingFocusGroupContext(GROUP_NAME$1);
+var RovingFocusGroup = import_react.forwardRef((props, forwardedRef) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.Provider, {
+		scope: props.__scopeRovingFocusGroup,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.Slot, {
+			scope: props.__scopeRovingFocusGroup,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RovingFocusGroupImpl, {
+				...props,
+				ref: forwardedRef
+			})
+		})
+	});
+});
+RovingFocusGroup.displayName = GROUP_NAME$1;
+var RovingFocusGroupImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeRovingFocusGroup, orientation, loop = false, dir, currentTabStopId: currentTabStopIdProp, defaultCurrentTabStopId, onCurrentTabStopIdChange, onEntryFocus, preventScrollOnEntryFocus = false, ...groupProps } = props;
+	const ref = import_react.useRef(null);
+	const composedRefs = useComposedRefs(forwardedRef, ref);
+	const direction = useDirection(dir);
+	const [currentTabStopId, setCurrentTabStopId] = useControllableState({
+		prop: currentTabStopIdProp,
+		defaultProp: defaultCurrentTabStopId ?? null,
+		onChange: onCurrentTabStopIdChange,
+		caller: GROUP_NAME$1
+	});
+	const [isTabbingBackOut, setIsTabbingBackOut] = import_react.useState(false);
+	const handleEntryFocus = useCallbackRef(onEntryFocus);
+	const getItems = useCollection$1(__scopeRovingFocusGroup);
+	const isClickFocusRef = import_react.useRef(false);
+	const [focusableItemsCount, setFocusableItemsCount] = import_react.useState(0);
+	import_react.useEffect(() => {
+		const node = ref.current;
+		if (node) {
+			node.addEventListener(ENTRY_FOCUS, handleEntryFocus);
+			return () => node.removeEventListener(ENTRY_FOCUS, handleEntryFocus);
+		}
+	}, [handleEntryFocus]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RovingFocusProvider, {
+		scope: __scopeRovingFocusGroup,
+		orientation,
+		dir: direction,
+		loop,
+		currentTabStopId,
+		onItemFocus: import_react.useCallback((tabStopId) => setCurrentTabStopId(tabStopId), [setCurrentTabStopId]),
+		onItemShiftTab: import_react.useCallback(() => setIsTabbingBackOut(true), []),
+		onFocusableItemAdd: import_react.useCallback(() => setFocusableItemsCount((prevCount) => prevCount + 1), []),
+		onFocusableItemRemove: import_react.useCallback(() => setFocusableItemsCount((prevCount) => prevCount - 1), []),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+			tabIndex: isTabbingBackOut || focusableItemsCount === 0 ? -1 : 0,
+			"data-orientation": orientation,
+			...groupProps,
+			ref: composedRefs,
+			style: {
+				outline: "none",
+				...props.style
+			},
+			onMouseDown: composeEventHandlers(props.onMouseDown, () => {
+				isClickFocusRef.current = true;
+			}),
+			onFocus: composeEventHandlers(props.onFocus, (event) => {
+				const isKeyboardFocus = !isClickFocusRef.current;
+				if (event.target === event.currentTarget && isKeyboardFocus && !isTabbingBackOut) {
+					const entryFocusEvent = new CustomEvent(ENTRY_FOCUS, EVENT_OPTIONS);
+					event.currentTarget.dispatchEvent(entryFocusEvent);
+					if (!entryFocusEvent.defaultPrevented) {
+						const items = getItems().filter((item) => item.focusable);
+						focusFirst([
+							items.find((item) => item.active),
+							items.find((item) => item.id === currentTabStopId),
+							...items
+						].filter(Boolean).map((item) => item.ref.current), preventScrollOnEntryFocus);
+					}
+				}
+				isClickFocusRef.current = false;
+			}),
+			onBlur: composeEventHandlers(props.onBlur, () => setIsTabbingBackOut(false))
+		})
+	});
+});
+var ITEM_NAME$1 = "RovingFocusGroupItem";
+var RovingFocusGroupItem = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeRovingFocusGroup, focusable = true, active = false, tabStopId, children, ...itemProps } = props;
+	const autoId = useId();
+	const id = tabStopId || autoId;
+	const context = useRovingFocusContext(ITEM_NAME$1, __scopeRovingFocusGroup);
+	const isCurrentTabStop = context.currentTabStopId === id;
+	const getItems = useCollection$1(__scopeRovingFocusGroup);
+	const { onFocusableItemAdd, onFocusableItemRemove, currentTabStopId } = context;
+	import_react.useEffect(() => {
+		if (focusable) {
+			onFocusableItemAdd();
+			return () => onFocusableItemRemove();
+		}
+	}, [
+		focusable,
+		onFocusableItemAdd,
+		onFocusableItemRemove
+	]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$1.ItemSlot, {
+		scope: __scopeRovingFocusGroup,
+		id,
+		focusable,
+		active,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.span, {
+			tabIndex: isCurrentTabStop ? 0 : -1,
+			"data-orientation": context.orientation,
+			...itemProps,
+			ref: forwardedRef,
+			onMouseDown: composeEventHandlers(props.onMouseDown, (event) => {
+				if (!focusable) event.preventDefault();
+				else context.onItemFocus(id);
+			}),
+			onFocus: composeEventHandlers(props.onFocus, () => context.onItemFocus(id)),
+			onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+				if (event.key === "Tab" && event.shiftKey) {
+					context.onItemShiftTab();
+					return;
+				}
+				if (event.target !== event.currentTarget) return;
+				const focusIntent = getFocusIntent(event, context.orientation, context.dir);
+				if (focusIntent !== void 0) {
+					if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+					event.preventDefault();
+					let candidateNodes = getItems().filter((item) => item.focusable).map((item) => item.ref.current);
+					if (focusIntent === "last") candidateNodes.reverse();
+					else if (focusIntent === "prev" || focusIntent === "next") {
+						if (focusIntent === "prev") candidateNodes.reverse();
+						const currentIndex = candidateNodes.indexOf(event.currentTarget);
+						candidateNodes = context.loop ? wrapArray$1(candidateNodes, currentIndex + 1) : candidateNodes.slice(currentIndex + 1);
+					}
+					setTimeout(() => focusFirst(candidateNodes));
+				}
+			}),
+			children: typeof children === "function" ? children({
+				isCurrentTabStop,
+				hasTabStop: currentTabStopId != null
+			}) : children
+		})
+	});
+});
+RovingFocusGroupItem.displayName = ITEM_NAME$1;
+var MAP_KEY_TO_FOCUS_INTENT = {
+	ArrowLeft: "prev",
+	ArrowUp: "prev",
+	ArrowRight: "next",
+	ArrowDown: "next",
+	PageUp: "first",
+	Home: "first",
+	PageDown: "last",
+	End: "last"
+};
+function getDirectionAwareKey(key, dir) {
+	if (dir !== "rtl") return key;
+	return key === "ArrowLeft" ? "ArrowRight" : key === "ArrowRight" ? "ArrowLeft" : key;
+}
+function getFocusIntent(event, orientation, dir) {
+	const key = getDirectionAwareKey(event.key, dir);
+	if (orientation === "vertical" && ["ArrowLeft", "ArrowRight"].includes(key)) return void 0;
+	if (orientation === "horizontal" && ["ArrowUp", "ArrowDown"].includes(key)) return void 0;
+	return MAP_KEY_TO_FOCUS_INTENT[key];
+}
+function focusFirst(candidates, preventScroll = false) {
+	const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement;
+	for (const candidate of candidates) {
+		if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return;
+		candidate.focus({ preventScroll });
+		if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return;
+	}
+}
+function wrapArray$1(array, startIndex) {
+	return array.map((_$1, index$1) => array[(startIndex + index$1) % array.length]);
+}
+var Root$1 = RovingFocusGroup;
+var Item$1 = RovingFocusGroupItem;
+var TABS_NAME = "Tabs";
+var [createTabsContext, createTabsScope] = createContextScope(TABS_NAME, [createRovingFocusGroupScope]);
+var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var [TabsProvider, useTabsContext] = createTabsContext(TABS_NAME);
+var Tabs$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeTabs, value: valueProp, onValueChange, defaultValue, orientation = "horizontal", dir, activationMode = "automatic", ...tabsProps } = props;
+	const direction = useDirection(dir);
+	const [value, setValue] = useControllableState({
+		prop: valueProp,
+		onChange: onValueChange,
+		defaultProp: defaultValue ?? "",
+		caller: TABS_NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsProvider, {
+		scope: __scopeTabs,
+		baseId: useId(),
+		value,
+		onValueChange: setValue,
+		orientation,
+		dir: direction,
+		activationMode,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+			dir: direction,
+			"data-orientation": orientation,
+			...tabsProps,
+			ref: forwardedRef
+		})
+	});
+});
+Tabs$1.displayName = TABS_NAME;
+var TAB_LIST_NAME = "TabsList";
+var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeTabs, loop = true, ...listProps } = props;
+	const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
+	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
+		asChild: true,
+		...rovingFocusGroupScope,
+		orientation: context.orientation,
+		dir: context.dir,
+		loop,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+			role: "tablist",
+			"aria-orientation": context.orientation,
+			...listProps,
+			ref: forwardedRef
+		})
+	});
+});
+TabsList$1.displayName = TAB_LIST_NAME;
+var TRIGGER_NAME$1 = "TabsTrigger";
+var TabsTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeTabs, value, disabled = false, ...triggerProps } = props;
+	const context = useTabsContext(TRIGGER_NAME$1, __scopeTabs);
+	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+	const triggerId = makeTriggerId(context.baseId, value);
+	const contentId = makeContentId(context.baseId, value);
+	const isSelected = value === context.value;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item$1, {
+		asChild: true,
+		...rovingFocusGroupScope,
+		focusable: !disabled,
+		active: isSelected,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.button, {
+			type: "button",
+			role: "tab",
+			"aria-selected": isSelected,
+			"aria-controls": contentId,
+			"data-state": isSelected ? "active" : "inactive",
+			"data-disabled": disabled ? "" : void 0,
+			disabled,
+			id: triggerId,
+			...triggerProps,
+			ref: forwardedRef,
+			onMouseDown: composeEventHandlers(props.onMouseDown, (event) => {
+				if (!disabled && event.button === 0 && event.ctrlKey === false) context.onValueChange(value);
+				else event.preventDefault();
+			}),
+			onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+				if ([" ", "Enter"].includes(event.key)) context.onValueChange(value);
+			}),
+			onFocus: composeEventHandlers(props.onFocus, () => {
+				const isAutomaticActivation = context.activationMode !== "manual";
+				if (!isSelected && !disabled && isAutomaticActivation) context.onValueChange(value);
+			})
+		})
+	});
+});
+TabsTrigger$1.displayName = TRIGGER_NAME$1;
+var CONTENT_NAME$1 = "TabsContent";
+var TabsContent$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeTabs, value, forceMount, children, ...contentProps } = props;
+	const context = useTabsContext(CONTENT_NAME$1, __scopeTabs);
+	const triggerId = makeTriggerId(context.baseId, value);
+	const contentId = makeContentId(context.baseId, value);
+	const isSelected = value === context.value;
+	const isMountAnimationPreventedRef = import_react.useRef(isSelected);
+	import_react.useEffect(() => {
+		const rAF = requestAnimationFrame(() => isMountAnimationPreventedRef.current = false);
+		return () => cancelAnimationFrame(rAF);
+	}, []);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+		present: forceMount || isSelected,
+		children: ({ present }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+			"data-state": isSelected ? "active" : "inactive",
+			"data-orientation": context.orientation,
+			role: "tabpanel",
+			"aria-labelledby": triggerId,
+			hidden: !present,
+			id: contentId,
+			tabIndex: 0,
+			...contentProps,
+			ref: forwardedRef,
+			style: {
+				...props.style,
+				animationDuration: isMountAnimationPreventedRef.current ? "0s" : void 0
+			},
+			children: present && children
+		})
+	});
+});
+TabsContent$1.displayName = CONTENT_NAME$1;
+function makeTriggerId(baseId, value) {
+	return `${baseId}-trigger-${value}`;
+}
+function makeContentId(baseId, value) {
+	return `${baseId}-content-${value}`;
+}
+var Root2$1 = Tabs$1;
+var List = TabsList$1;
+var Trigger$1 = TabsTrigger$1;
+var Content = TabsContent$1;
+var Tabs = Root2$1;
+var TabsList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(List, {
+	ref,
+	className: cn("inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground", className),
+	...props
+}));
+TabsList.displayName = List.displayName;
+var TabsTrigger = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trigger$1, {
+	ref,
+	className: cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm", className),
+	...props
+}));
+TabsTrigger.displayName = Trigger$1.displayName;
+var TabsContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content, {
+	ref,
+	className: cn("mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", className),
+	...props
+}));
+TabsContent.displayName = Content.displayName;
+function ReaderInputTabs({ inputText, setInputText, ytUrl, setYtUrl, isProcessingYt, onProcessText, onProcessYt }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+		defaultValue: "youtube",
+		className: "w-full",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+				className: "grid w-full grid-cols-2 mb-6 h-14 bg-secondary/50 rounded-[20px] p-1.5 border border-border/50",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+					value: "youtube",
+					className: "text-base h-11 rounded-2xl data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-red-500 font-semibold gap-2 transition-all",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Youtube, { className: "w-5 h-5" }), " YouTube"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+					value: "text",
+					className: "text-base h-11 rounded-2xl data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-primary font-semibold gap-2 transition-all",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "w-5 h-5" }), " Texto Livre"]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
+				value: "youtube",
+				className: "space-y-4 animate-fade-in-up mt-0",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "p-8 border-border bg-card/80 backdrop-blur-sm shadow-sm flex flex-col gap-6 rounded-[24px]",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+							className: "text-xl font-bold flex items-center gap-2 mb-2 text-foreground",
+							children: "Importar Legendas"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-muted-foreground",
+							children: "Cole o link do YouTube abaixo para extrairmos automaticamente o transcript em inglês do vídeo."
+						})] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "relative",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link$1, { className: "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								type: "url",
+								placeholder: "Ex: https://www.youtube.com/watch?v=...",
+								value: ytUrl,
+								onChange: (e) => setYtUrl(e.target.value),
+								className: "pl-12 h-16 text-lg rounded-[20px] bg-secondary/30 shadow-inner"
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "bg-secondary/40 rounded-[20px] p-6 text-center border border-border/50 text-muted-foreground mt-2",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Youtube, { className: "w-12 h-12 mx-auto text-red-500/40 mb-3" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "font-semibold text-foreground text-lg",
+									children: "Prática com Vídeos Reais"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm mt-1 max-w-sm mx-auto",
+									children: "Aprenda inglês com o conteúdo que você já gosta de assistir. Nós tokenizamos as palavras para facilitar sua absorção."
+								})
+							]
+						})
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					size: "lg",
+					className: "w-full h-16 text-lg shadow-md group rounded-[20px] bg-red-500 hover:bg-red-600 text-white",
+					onClick: onProcessYt,
+					disabled: !ytUrl.trim() || isProcessingYt,
+					children: [isProcessingYt ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "w-6 h-6 mr-2 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Youtube, {
+						className: "w-6 h-6 mr-2 group-hover:scale-110 transition-transform",
+						fill: "currentColor"
+					}), isProcessingYt ? "Processando Vídeo..." : "Carregar Vídeo"]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsContent, {
+				value: "text",
+				className: "space-y-4 animate-fade-in-up mt-0",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "p-8 border-border bg-card/80 backdrop-blur-sm shadow-sm flex flex-col gap-4 rounded-[24px]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "text-xl font-bold flex items-center gap-2 mb-2 text-foreground",
+						children: "Leitura de Textos"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-muted-foreground",
+						children: "Cole artigos, notícias ou trechos de livros que você gostaria de ler."
+					})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+						className: "flex-1 min-h-[300px] resize-none text-base md:text-lg p-6 font-sans bg-secondary/30 border-border rounded-[20px] focus-visible:ring-primary shadow-inner leading-relaxed",
+						placeholder: "Cole seu texto aqui...",
+						value: inputText,
+						onChange: (e) => setInputText(e.target.value)
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					size: "lg",
+					className: "w-full h-16 text-lg shadow-md group rounded-[20px]",
+					onClick: onProcessText,
+					disabled: !inputText.trim(),
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, {
+						className: "w-6 h-6 mr-2 group-hover:scale-110 transition-transform",
+						fill: "currentColor"
+					}), "Iniciar Leitura"]
+				})]
+			})
+		]
+	});
+}
+function clamp(value, [min$4, max$4]) {
+	return Math.min(max$4, Math.max(min$4, value));
 }
 function usePrevious(value) {
 	const ref = import_react.useRef({
@@ -47627,7 +48071,7 @@ var Select$1 = (props) => {
 	const isFormControl = trigger ? form || !!trigger.closest("form") : true;
 	const [nativeOptionsSet, setNativeOptionsSet] = import_react.useState(/* @__PURE__ */ new Set());
 	const nativeSelectKey = Array.from(nativeOptionsSet).map((option) => option.props.value).join(";");
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectProvider, {
 			required,
@@ -47824,7 +48268,7 @@ var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 		if (content) return hideOthers(content);
 	}, [content]);
 	useFocusGuards();
-	const focusFirst$2 = import_react.useCallback((candidates) => {
+	const focusFirst$3 = import_react.useCallback((candidates) => {
 		const [firstItem, ...restItems] = getItems().map((item) => item.ref.current);
 		const [lastItem] = restItems.slice(-1);
 		const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement;
@@ -47837,8 +48281,8 @@ var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return;
 		}
 	}, [getItems, viewport]);
-	const focusSelectedItem = import_react.useCallback(() => focusFirst$2([selectedItem, content]), [
-		focusFirst$2,
+	const focusSelectedItem = import_react.useCallback(() => focusFirst$3([selectedItem, content]), [
+		focusFirst$3,
 		selectedItem,
 		content
 	]);
@@ -47987,7 +48431,7 @@ var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 									const currentIndex = candidateNodes.indexOf(currentElement);
 									candidateNodes = candidateNodes.slice(currentIndex + 1);
 								}
-								setTimeout(() => focusFirst$2(candidateNodes));
+								setTimeout(() => focusFirst$3(candidateNodes));
 								event.preventDefault();
 							}
 						})
@@ -48128,7 +48572,7 @@ var POPPER_POSITION_NAME = "SelectPopperPosition";
 var SelectPopperPosition = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, align = "start", collisionPadding = CONTENT_MARGIN, ...popperProps } = props;
 	const popperScope = usePopperScope(__scopeSelect);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$1, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$2, {
 		...popperScope,
 		...popperProps,
 		ref: forwardedRef,
@@ -48608,6 +49052,7 @@ This is a serendipity moment where you can learn new words.
 Reading ephemeral texts ubiquitous on the internet helps improve your active vocabulary.`;
 function Reader() {
 	const [inputText, setInputText] = (0, import_react.useState)(defaultText);
+	const [ytUrl, setYtUrl] = (0, import_react.useState)("");
 	const [processedText, setProcessedText] = (0, import_react.useState)("");
 	const [isReadingMode, setIsReadingMode] = (0, import_react.useState)(false);
 	const [isProcessingYt, setIsProcessingYt] = (0, import_react.useState)(false);
@@ -48621,29 +49066,38 @@ function Reader() {
 			if ("speechSynthesis" in window) window.speechSynthesis.cancel();
 		};
 	}, []);
-	const handleProcessInput = async () => {
+	const handleProcessText = () => {
 		const text = inputText.trim();
 		if (!text) return;
-		if (/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/.test(text)) {
-			setIsProcessingYt(true);
-			setTimeout(() => {
-				if (text.includes("error")) {
-					toast$2({
-						title: "Transcript indisponível",
-						description: "Não foi possível extrair as legendas. Tente colar o texto diretamente.",
-						variant: "destructive"
-					});
-					setIsProcessingYt(false);
-				} else {
-					setProcessedText("This is a simulated transcript from the YouTube video you pasted. The quick brown fox jumps over the lazy dog. Here we can find serendipity and ephemeral moments. Exploring ubiquitous features is genuinely fun and helps you learn new things easily.");
-					setIsReadingMode(true);
-					setIsProcessingYt(false);
-				}
-			}, 1500);
-		} else {
-			setProcessedText(text);
-			setIsReadingMode(true);
+		setProcessedText(text);
+		setIsReadingMode(true);
+	};
+	const handleProcessYt = async () => {
+		const url = ytUrl.trim();
+		if (!url) return;
+		if (!/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/.test(url)) {
+			toast$2({
+				title: "URL Inválida",
+				description: "Por favor, insira um link válido do YouTube.",
+				variant: "destructive"
+			});
+			return;
 		}
+		setIsProcessingYt(true);
+		setTimeout(() => {
+			if (url.includes("error")) {
+				toast$2({
+					title: "Transcript indisponível",
+					description: "Não foi possível extrair as legendas. Tente colar o texto diretamente.",
+					variant: "destructive"
+				});
+				setIsProcessingYt(false);
+			} else {
+				setProcessedText("This is a simulated transcript from the YouTube video you pasted. The quick brown fox jumps over the lazy dog. Here we can find serendipity and ephemeral moments. Exploring ubiquitous features is genuinely fun and helps you learn new things easily.");
+				setIsReadingMode(true);
+				setIsProcessingYt(false);
+			}
+		}, 1500);
 	};
 	const handleTTS = () => {
 		if ("speechSynthesis" in window) if (window.speechSynthesis.speaking) {
@@ -48707,7 +49161,7 @@ function Reader() {
 		handleCapture
 	]);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in max-w-4xl mx-auto h-full flex flex-col",
+		className: "space-y-8 animate-fade-in pb-12",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 			className: "flex flex-col md:flex-row md:items-start justify-between gap-4 shrink-0",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
@@ -48756,100 +49210,94 @@ function Reader() {
 					})]
 				})]
 			})]
-		}), !isReadingMode ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex-1 flex flex-col gap-6 animate-fade-in-up",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "flex-1 p-6 flex flex-col border-border bg-card/80 backdrop-blur-sm min-h-[400px] shadow-sm",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-2 mb-4 text-sm font-medium text-primary",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "w-5 h-5" }), " Cole seu texto em inglês ou URL do YouTube:"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
-					className: "flex-1 resize-none text-base md:text-lg p-6 font-sans bg-secondary/30 border-border rounded-[20px] focus-visible:ring-primary shadow-inner leading-relaxed",
-					placeholder: "Ex: https://www.youtube.com/watch?v=... ou cole seu texto aqui...",
-					value: inputText,
-					onChange: (e) => setInputText(e.target.value)
-				})]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				size: "lg",
-				className: "w-full h-16 text-lg shadow-md group rounded-2xl shrink-0",
-				onClick: handleProcessInput,
-				disabled: !inputText.trim() || isProcessingYt,
-				children: [isProcessingYt ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "w-5 h-5 mr-2 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, {
-					className: "w-5 h-5 mr-2 group-hover:scale-110 transition-transform",
-					fill: "currentColor"
-				}), isProcessingYt ? "Extraindo Transcript..." : "Iniciar Leitura"]
-			})]
-		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex-1 flex flex-col gap-6 animate-fade-in-up overflow-hidden",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground overflow-y-auto border-t-4 border-t-primary shadow-md relative",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none rounded-[24px]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "relative z-10",
-					children: processedContent
-				})]
-			}), capturedWords.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "bg-card/95 backdrop-blur-md p-5 rounded-[24px] border border-primary/30 shadow-lg animate-fade-in-up shrink-0 ring-1 ring-primary/20",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col md:flex-row justify-between gap-4 md:items-center",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
-							className: "text-sm font-bold mb-3 flex items-center gap-2 text-foreground uppercase tracking-wider",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-primary" }),
-								"Sessão Ativa (",
-								capturedWords.length,
-								")"
-							]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "flex flex-wrap gap-2 max-h-[100px] overflow-y-auto",
-							children: capturedWords.map((cw) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "px-3 py-1.5 rounded-lg text-sm font-semibold bg-primary/10 text-primary border border-primary/20 shadow-sm transition-all hover:bg-primary/20",
-								children: cw.word
-							}, cw.word))
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid grid-cols-1 xl:grid-cols-3 gap-8",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "xl:col-span-2 space-y-6",
+				children: !isReadingMode ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReaderInputTabs, {
+					inputText,
+					setInputText,
+					ytUrl,
+					setYtUrl,
+					isProcessingYt,
+					onProcessText: handleProcessText,
+					onProcessYt: handleProcessYt
+				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col gap-6 animate-fade-in-up h-full",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground overflow-y-auto max-h-[65vh] border-t-4 border-t-primary shadow-md relative rounded-[24px]",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none rounded-[24px]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "relative z-10",
+							children: processedContent
 						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col sm:flex-row gap-3 md:w-auto w-full shrink-0 items-end md:items-center justify-end",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-							variant: "ghost",
-							className: "h-12 rounded-xl text-muted-foreground hover:text-foreground",
+					}), capturedWords.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "bg-card/95 backdrop-blur-md p-5 rounded-[24px] border border-primary/30 shadow-lg animate-fade-in-up shrink-0 ring-1 ring-primary/20",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col md:flex-row justify-between gap-4 md:items-center",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex-1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+									className: "text-sm font-bold mb-3 flex items-center gap-2 text-foreground uppercase tracking-wider",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-primary" }),
+										"Sessão Ativa (",
+										capturedWords.length,
+										")"
+									]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "flex flex-wrap gap-2 max-h-[100px] overflow-y-auto",
+									children: capturedWords.map((cw) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "px-3 py-1.5 rounded-lg text-sm font-semibold bg-primary/10 text-primary border border-primary/20 shadow-sm transition-all hover:bg-primary/20",
+										children: cw.word
+									}, cw.word))
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-col sm:flex-row gap-3 md:w-auto w-full shrink-0 items-end md:items-center justify-end",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									variant: "ghost",
+									className: "h-12 rounded-xl text-muted-foreground hover:text-foreground",
+									onClick: () => {
+										setIsReadingMode(false);
+										setCapturedWords([]);
+										if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+										setIsPlayingTTS(false);
+									},
+									children: "Sair do Leitor"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+									className: "h-12 rounded-xl shadow-md group text-base px-6 w-full sm:w-auto",
+									onClick: handleNextPhase,
+									children: [
+										"Praticar Palavras",
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" })
+									]
+								})]
+							})]
+						})
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col sm:flex-row justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-[24px] border border-border shadow-sm shrink-0 gap-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-sm font-medium flex items-center gap-3 text-muted-foreground w-full sm:w-auto text-center sm:text-left",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "p-2 bg-primary/10 rounded-full hidden sm:block",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-primary" })
+							}), "Clique nas palavras no texto acima para gerar explicações com IA e salvá-las."]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "outline",
+							size: "sm",
+							className: "rounded-xl h-10 bg-background hover:bg-secondary border-border w-full sm:w-auto",
 							onClick: () => {
 								setIsReadingMode(false);
-								setCapturedWords([]);
 								if ("speechSynthesis" in window) window.speechSynthesis.cancel();
 								setIsPlayingTTS(false);
 							},
-							children: "Sair do Leitor"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							className: "h-12 rounded-xl shadow-md group text-base px-6 w-full sm:w-auto",
-							onClick: handleNextPhase,
-							children: [
-								"Praticar com estas palavras",
-								" ",
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" })
-							]
+							children: "Editar Fonte"
 						})]
 					})]
 				})
-			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col sm:flex-row justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-2xl border border-border shadow-sm shrink-0 gap-4",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "text-sm font-medium flex items-center gap-3 text-muted-foreground w-full sm:w-auto text-center sm:text-left",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "p-2 bg-primary/10 rounded-full hidden sm:block",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-primary" })
-					}), "Clique nas palavras no texto acima para gerar explicações com IA e salvá-las."]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-					variant: "outline",
-					size: "sm",
-					className: "rounded-xl h-10 bg-background hover:bg-secondary border-border w-full sm:w-auto",
-					onClick: () => {
-						setIsReadingMode(false);
-						if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-						setIsPlayingTTS(false);
-					},
-					children: "Editar Texto"
-				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "xl:col-span-1 hidden xl:block",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StatsSidebar, {})
 			})]
 		})]
 	});
@@ -49838,4 +50286,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-NAvYgdUe.js.map
+//# sourceMappingURL=index-i2BmZAs3.js.map
