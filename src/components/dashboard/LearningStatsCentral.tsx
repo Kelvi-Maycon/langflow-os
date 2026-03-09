@@ -1,4 +1,5 @@
 import { Card } from '@/components/ui/card'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useStore } from '@/store/main'
 import { BookOpen, Flame, Trophy, CalendarPlus, Star, Share2 } from 'lucide-react'
 import { useMemo } from 'react'
@@ -108,17 +109,26 @@ export function LearningStatsCentral() {
                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                 Desbloqueado
               </div>
-              <button
-                onClick={() =>
-                  share(
-                    `I just unlocked the ${latestAchievement.title} badge in Langflow! My current streak is ${streak} days. #LangflowLearning`,
-                  )
-                }
-                className="p-2 text-primary bg-card border border-border shadow-sm hover:bg-primary/10 hover:border-primary/30 rounded-lg transition-all active:scale-95"
-                title="Compartilhar Conquista"
-              >
-                <Share2 className="w-4 h-4" />
-              </button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() =>
+                        share(
+                          `I just unlocked the ${latestAchievement.title} badge in Langflow! My current streak is ${streak} days. #LangflowLearning`,
+                        )
+                      }
+                      className="p-2 text-primary bg-card border border-border shadow-sm hover:bg-primary/10 hover:border-primary/30 rounded-lg transition-all active:scale-95"
+                      aria-label="Compartilhar Conquista"
+                    >
+                      <Share2 className="w-4 h-4" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Compartilhar Conquista</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
         )}
