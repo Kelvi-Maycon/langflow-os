@@ -24,6 +24,7 @@ interface StoreContextType extends AppState {
   reviewWord: (id: string, quality: number) => void
   updateSettings: (settings: Partial<UserSettings>) => void
   removeWord: (id: string) => void
+  editWord: (id: string, data: Partial<Omit<WordEntry, 'id' | 'createdAt'>>) => void
   recordPracticeAttempt: (correct: boolean) => void
   recordFlashcardAttempt: (correct: boolean) => void
   submitDailyPrompt: (response: string, prompt: string, targetWord: string) => boolean
@@ -408,6 +409,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const removeWord = (id: string) => setWords((prev) => prev.filter((w) => w.id !== id))
 
+  const editWord = (id: string, data: Partial<Omit<WordEntry, 'id' | 'createdAt'>>) => {
+    setWords((prev) => prev.map((w) => (w.id === id ? { ...w, ...data } : w)))
+  }
+
   const updateSettings = (newSettings: Partial<UserSettings>) =>
     setSettings((prev) => ({ ...prev, ...newSettings }))
 
@@ -520,6 +525,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         reviewWord,
         updateSettings,
         removeWord,
+        editWord,
         submitDailyPrompt,
         recordPracticeAttempt: (correct) => updateStats(correct, 'practice'),
         recordFlashcardAttempt: (correct) => updateStats(correct, 'flashcard'),

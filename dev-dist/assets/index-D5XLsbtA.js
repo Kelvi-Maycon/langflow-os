@@ -19290,6 +19290,24 @@ var LayoutDashboard = createLucideIcon("layout-dashboard", [
 		key: "ldoo1y"
 	}]
 ]);
+var Library = createLucideIcon("library", [
+	["path", {
+		d: "m16 6 4 14",
+		key: "ji33uf"
+	}],
+	["path", {
+		d: "M12 6v14",
+		key: "1n7gus"
+	}],
+	["path", {
+		d: "M8 8v12",
+		key: "1gg7y9"
+	}],
+	["path", {
+		d: "M4 4v16",
+		key: "6qkkli"
+	}]
+]);
 var Link$1 = createLucideIcon("link", [["path", {
 	d: "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71",
 	key: "1cjeqo"
@@ -19297,6 +19315,32 @@ var Link$1 = createLucideIcon("link", [["path", {
 	d: "M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71",
 	key: "19qd67"
 }]]);
+var List = createLucideIcon("list", [
+	["path", {
+		d: "M3 5h.01",
+		key: "18ugdj"
+	}],
+	["path", {
+		d: "M3 12h.01",
+		key: "nlz23k"
+	}],
+	["path", {
+		d: "M3 19h.01",
+		key: "noohij"
+	}],
+	["path", {
+		d: "M8 5h13",
+		key: "1pao27"
+	}],
+	["path", {
+		d: "M8 12h13",
+		key: "1za7za"
+	}],
+	["path", {
+		d: "M8 19h13",
+		key: "m83p4d"
+	}]
+]);
 var LoaderCircle = createLucideIcon("loader-circle", [["path", {
 	d: "M21 12a9 9 0 1 1-6.219-8.56",
 	key: "13zald"
@@ -19417,6 +19461,10 @@ var PenTool = createLucideIcon("pen-tool", [
 		key: "xmgehs"
 	}]
 ]);
+var Pen = createLucideIcon("pen", [["path", {
+	d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+	key: "1a8usu"
+}]]);
 var Play = createLucideIcon("play", [["path", {
 	d: "M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z",
 	key: "10ikf1"
@@ -25292,7 +25340,7 @@ var hideOthers = function(originalTarget, parentNode, markerName) {
 var DIALOG_NAME = "Dialog";
 var [createDialogContext, createDialogScope] = createContextScope(DIALOG_NAME);
 var [DialogProvider, useDialogContext] = createDialogContext(DIALOG_NAME);
-var Dialog = (props) => {
+var Dialog$1 = (props) => {
 	const { __scopeDialog, children, open: openProp, defaultOpen, onOpenChange, modal = true } = props;
 	const triggerRef = import_react.useRef(null);
 	const contentRef = import_react.useRef(null);
@@ -25316,9 +25364,9 @@ var Dialog = (props) => {
 		children
 	});
 };
-Dialog.displayName = DIALOG_NAME;
+Dialog$1.displayName = DIALOG_NAME;
 var TRIGGER_NAME$3 = "DialogTrigger";
-var DialogTrigger = import_react.forwardRef((props, forwardedRef) => {
+var DialogTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...triggerProps } = props;
 	const context = useDialogContext(TRIGGER_NAME$3, __scopeDialog);
 	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
@@ -25333,10 +25381,10 @@ var DialogTrigger = import_react.forwardRef((props, forwardedRef) => {
 		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
 	});
 });
-DialogTrigger.displayName = TRIGGER_NAME$3;
+DialogTrigger$1.displayName = TRIGGER_NAME$3;
 var PORTAL_NAME$2 = "DialogPortal";
 var [PortalProvider$1, usePortalContext$1] = createDialogContext(PORTAL_NAME$2, { forceMount: void 0 });
-var DialogPortal = (props) => {
+var DialogPortal$1 = (props) => {
 	const { __scopeDialog, forceMount, children, container } = props;
 	const context = useDialogContext(PORTAL_NAME$2, __scopeDialog);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalProvider$1, {
@@ -25352,9 +25400,9 @@ var DialogPortal = (props) => {
 		}))
 	});
 };
-DialogPortal.displayName = PORTAL_NAME$2;
+DialogPortal$1.displayName = PORTAL_NAME$2;
 var OVERLAY_NAME = "DialogOverlay";
-var DialogOverlay = import_react.forwardRef((props, forwardedRef) => {
+var DialogOverlay$1 = import_react.forwardRef((props, forwardedRef) => {
 	const portalContext = usePortalContext$1(OVERLAY_NAME, props.__scopeDialog);
 	const { forceMount = portalContext.forceMount, ...overlayProps } = props;
 	const context = useDialogContext(OVERLAY_NAME, props.__scopeDialog);
@@ -25366,7 +25414,7 @@ var DialogOverlay = import_react.forwardRef((props, forwardedRef) => {
 		})
 	}) : null;
 });
-DialogOverlay.displayName = OVERLAY_NAME;
+DialogOverlay$1.displayName = OVERLAY_NAME;
 var Slot$3 = /* @__PURE__ */ createSlot("DialogOverlay.RemoveScroll");
 var DialogOverlayImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...overlayProps } = props;
@@ -25387,7 +25435,7 @@ var DialogOverlayImpl = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 var CONTENT_NAME$3 = "DialogContent";
-var DialogContent = import_react.forwardRef((props, forwardedRef) => {
+var DialogContent$1 = import_react.forwardRef((props, forwardedRef) => {
 	const portalContext = usePortalContext$1(CONTENT_NAME$3, props.__scopeDialog);
 	const { forceMount = portalContext.forceMount, ...contentProps } = props;
 	const context = useDialogContext(CONTENT_NAME$3, props.__scopeDialog);
@@ -25402,7 +25450,7 @@ var DialogContent = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-DialogContent.displayName = CONTENT_NAME$3;
+DialogContent$1.displayName = CONTENT_NAME$3;
 var DialogContentModal = import_react.forwardRef((props, forwardedRef) => {
 	const context = useDialogContext(CONTENT_NAME$3, props.__scopeDialog);
 	const contentRef = import_react.useRef(null);
@@ -25486,7 +25534,7 @@ var DialogContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	})] })] });
 });
 var TITLE_NAME = "DialogTitle";
-var DialogTitle = import_react.forwardRef((props, forwardedRef) => {
+var DialogTitle$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...titleProps } = props;
 	const context = useDialogContext(TITLE_NAME, __scopeDialog);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.h2, {
@@ -25495,9 +25543,9 @@ var DialogTitle = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-DialogTitle.displayName = TITLE_NAME;
+DialogTitle$1.displayName = TITLE_NAME;
 var DESCRIPTION_NAME = "DialogDescription";
-var DialogDescription = import_react.forwardRef((props, forwardedRef) => {
+var DialogDescription$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...descriptionProps } = props;
 	const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.p, {
@@ -25506,9 +25554,9 @@ var DialogDescription = import_react.forwardRef((props, forwardedRef) => {
 		ref: forwardedRef
 	});
 });
-DialogDescription.displayName = DESCRIPTION_NAME;
+DialogDescription$1.displayName = DESCRIPTION_NAME;
 var CLOSE_NAME$1 = "DialogClose";
-var DialogClose = import_react.forwardRef((props, forwardedRef) => {
+var DialogClose$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeDialog, ...closeProps } = props;
 	const context = useDialogContext(CLOSE_NAME$1, __scopeDialog);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
@@ -25518,7 +25566,7 @@ var DialogClose = import_react.forwardRef((props, forwardedRef) => {
 		onClick: composeEventHandlers(props.onClick, () => context.onOpenChange(false))
 	});
 });
-DialogClose.displayName = CLOSE_NAME$1;
+DialogClose$1.displayName = CLOSE_NAME$1;
 function getState$2(open) {
 	return open ? "open" : "closed";
 }
@@ -25557,14 +25605,14 @@ var DescriptionWarning = ({ contentRef, descriptionId }) => {
 	]);
 	return null;
 };
-var Root$5 = Dialog;
-var Trigger$3 = DialogTrigger;
-var Portal$3 = DialogPortal;
-var Overlay = DialogOverlay;
-var Content$1 = DialogContent;
-var Title = DialogTitle;
-var Description = DialogDescription;
-var Close = DialogClose;
+var Root$5 = Dialog$1;
+var Trigger$3 = DialogTrigger$1;
+var Portal$3 = DialogPortal$1;
+var Overlay = DialogOverlay$1;
+var Content$1 = DialogContent$1;
+var Title = DialogTitle$1;
+var Description = DialogDescription$1;
+var Close = DialogClose$1;
 var Sheet = Root$5;
 var SheetTrigger = Trigger$3;
 var SheetPortal = Portal$3;
@@ -26427,6 +26475,12 @@ function StoreProvider({ children }) {
 		}));
 	};
 	const removeWord = (id) => setWords((prev) => prev.filter((w) => w.id !== id));
+	const editWord = (id, data) => {
+		setWords((prev) => prev.map((w) => w.id === id ? {
+			...w,
+			...data
+		} : w));
+	};
 	const updateSettings = (newSettings) => setSettings((prev) => ({
 		...prev,
 		...newSettings
@@ -26527,6 +26581,7 @@ function StoreProvider({ children }) {
 		reviewWord,
 		updateSettings,
 		removeWord,
+		editWord,
 		submitDailyPrompt,
 		recordPracticeAttempt: (correct) => updateStats(correct, "practice"),
 		recordFlashcardAttempt: (correct) => updateStats(correct, "flashcard"),
@@ -26934,6 +26989,11 @@ var mainNav = [
 		icon: BookOpen
 	},
 	{
+		path: "/vocabulary",
+		label: "Vocabulário",
+		icon: Library
+	},
+	{
 		path: "/practice",
 		label: "Prática Rápida",
 		icon: Zap,
@@ -27068,7 +27128,7 @@ function Layout() {
 var Input = import_react.forwardRef(({ className, type, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 		type,
-		className: cn("flex h-12 w-full rounded-xl border border-input bg-background/50 px-4 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50 transition-all shadow-sm", className),
+		className: cn("flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50", className),
 		ref,
 		...props
 	});
@@ -51097,16 +51157,16 @@ function makeContentId(baseId, value) {
 	return `${baseId}-content-${value}`;
 }
 var Root2$1 = Tabs$1;
-var List = TabsList$1;
+var List$1 = TabsList$1;
 var Trigger$1 = TabsTrigger$1;
 var Content = TabsContent$1;
 var Tabs = Root2$1;
-var TabsList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(List, {
+var TabsList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(List$1, {
 	ref,
 	className: cn("inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground", className),
 	...props
 }));
-TabsList.displayName = List.displayName;
+TabsList.displayName = List$1.displayName;
 var TabsTrigger = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trigger$1, {
 	ref,
 	className: cn("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm", className),
@@ -54423,10 +54483,184 @@ const CEFRLists = {
 		}
 	]
 };
+var Table = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	className: "relative w-full overflow-auto",
+	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("table", {
+		ref,
+		className: cn("w-full caption-bottom text-sm", className),
+		...props
+	})
+}));
+Table.displayName = "Table";
+var TableHeader = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", {
+	ref,
+	className: cn("[&_tr]:border-b", className),
+	...props
+}));
+TableHeader.displayName = "TableHeader";
+var TableBody = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", {
+	ref,
+	className: cn("[&_tr:last-child]:border-0", className),
+	...props
+}));
+TableBody.displayName = "TableBody";
+var TableFooter = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tfoot", {
+	ref,
+	className: cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className),
+	...props
+}));
+TableFooter.displayName = "TableFooter";
+var TableRow = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tr", {
+	ref,
+	className: cn("border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted", className),
+	...props
+}));
+TableRow.displayName = "TableRow";
+var TableHead = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+	ref,
+	className: cn("h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0", className),
+	...props
+}));
+TableHead.displayName = "TableHead";
+var TableCell = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+	ref,
+	className: cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className),
+	...props
+}));
+TableCell.displayName = "TableCell";
+var TableCaption = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("caption", {
+	ref,
+	className: cn("mt-4 text-sm text-muted-foreground", className),
+	...props
+}));
+TableCaption.displayName = "TableCaption";
+var Dialog = Root$5;
+var DialogTrigger = Trigger$3;
+var DialogPortal = Portal$3;
+var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
+	ref,
+	className: cn("fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
+	...props
+}));
+DialogOverlay.displayName = Overlay.displayName;
+var DialogContent = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$1, {
+	ref,
+	className: cn("fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg overflow-y-auto max-h-screen", className),
+	...props,
+	children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Close, {
+		className: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+			className: "sr-only",
+			children: "Close"
+		})]
+	})]
+})] }));
+DialogContent.displayName = Content$1.displayName;
+var DialogHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	className: cn("flex flex-col space-y-1.5 text-center sm:text-left", className),
+	...props
+});
+DialogHeader.displayName = "DialogHeader";
+var DialogFooter = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	className: cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className),
+	...props
+});
+DialogFooter.displayName = "DialogFooter";
+var DialogTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Title, {
+	ref,
+	className: cn("text-lg font-semibold leading-none tracking-tight", className),
+	...props
+}));
+DialogTitle.displayName = Title.displayName;
+var DialogDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Description, {
+	ref,
+	className: cn("text-sm text-muted-foreground", className),
+	...props
+}));
+DialogDescription.displayName = Description.displayName;
+function EditWordDialog({ wordEntry }) {
+	const { editWord } = useStore();
+	const { toast: toast$2 } = useToast();
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const [wordText, setWordText] = (0, import_react.useState)(wordEntry.word);
+	const [translation, setTranslation] = (0, import_react.useState)(wordEntry.translation);
+	const [context, setContext] = (0, import_react.useState)(wordEntry.contextSentence);
+	const handleSave = () => {
+		if (!wordText.trim() || !translation.trim()) {
+			toast$2({
+				title: "Erro",
+				description: "Palavra e tradução são obrigatórios.",
+				variant: "destructive"
+			});
+			return;
+		}
+		editWord(wordEntry.id, {
+			word: wordText,
+			translation,
+			contextSentence: context
+		});
+		setOpen(false);
+		toast$2({
+			title: "Palavra atualizada",
+			description: "As alterações foram salvas com sucesso."
+		});
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+				variant: "ghost",
+				size: "icon",
+				className: "hover:bg-primary/10 hover:text-primary transition-colors h-8 w-8",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pen, { className: "w-4 h-4" })
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Editar Palavra" }) }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-4 py-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Palavra (Inglês)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							value: wordText,
+							onChange: (e) => setWordText(e.target.value)
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tradução" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+							value: translation,
+							onChange: (e) => setTranslation(e.target.value)
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Frase de Contexto" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+							value: context,
+							onChange: (e) => setContext(e.target.value),
+							className: "resize-none"
+						})]
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogFooter, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+				variant: "outline",
+				onClick: () => setOpen(false),
+				children: "Cancelar"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+				onClick: handleSave,
+				children: "Salvar"
+			})] })
+		] })]
+	});
+}
 function Vocabulary() {
-	const { addWord, words } = useStore();
+	const { addWord, removeWord, words } = useStore();
 	const { toast: toast$2 } = useToast();
 	const [bulkText, setBulkText] = (0, import_react.useState)("");
+	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
 	const handleBulkUpload = () => {
 		const lines = bulkText.split("\n").map((l) => l.trim()).filter(Boolean);
 		if (!lines.length) return;
@@ -54468,47 +54702,158 @@ function Vocabulary() {
 			description: `${added} palavras do nível ${level} adicionadas.`
 		});
 	};
+	const filteredWords = words.filter((w) => w.word.toLowerCase().includes(searchTerm.toLowerCase()) || w.translation.toLowerCase().includes(searchTerm.toLowerCase()));
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-8 animate-fade-in-up max-w-4xl mx-auto pb-12 pt-4",
+		className: "space-y-8 animate-fade-in-up max-w-5xl mx-auto pb-12 pt-4",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
 			className: "text-4xl font-bold tracking-tight text-foreground flex items-center gap-3",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-10 h-10 text-primary" }), "Gerenciamento de Vocabulário"]
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Library, { className: "w-10 h-10 text-primary" }), "Gerenciamento de Vocabulário"]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 			className: "text-muted-foreground mt-2 text-lg",
-			children: "Importe novas palavras em lote ou utilize nossas listas curadas por nível CEFR."
+			children: "Gerencie suas palavras salvas, importe listas ou utilize coleções CEFR."
 		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
-			defaultValue: "bulk",
+			defaultValue: "list",
 			className: "w-full",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
-					className: "grid w-full grid-cols-2 h-14 rounded-2xl p-1 bg-secondary/50",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
-						value: "bulk",
-						className: "rounded-xl text-base data-[state=active]:shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { className: "w-5 h-5 mr-2" }), " Upload em Lote"]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
-						value: "cefr",
-						className: "rounded-xl text-base data-[state=active]:shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Database, { className: "w-5 h-5 mr-2" }), " Listas CEFR (Sementes)"]
-					})]
+					className: "grid w-full grid-cols-1 md:grid-cols-3 h-auto md:h-14 rounded-2xl p-1 bg-secondary/50 gap-1 md:gap-0",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+							value: "list",
+							className: "rounded-xl text-base data-[state=active]:shadow-sm h-10 md:h-auto",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(List, { className: "w-5 h-5 mr-2" }), " Meu Vocabulário"]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+							value: "bulk",
+							className: "rounded-xl text-base data-[state=active]:shadow-sm h-10 md:h-auto",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { className: "w-5 h-5 mr-2" }), " Upload em Lote"]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+							value: "cefr",
+							className: "rounded-xl text-base data-[state=active]:shadow-sm h-10 md:h-auto",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Database, { className: "w-5 h-5 mr-2" }), " Listas CEFR"]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "list",
+					className: "mt-6",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "border-border shadow-sm rounded-[24px] overflow-hidden",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+							className: "pb-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Palavras Salvas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Visualize e edite as palavras que você capturou durante suas leituras." })]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex justify-between items-center mb-6 gap-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "relative flex-1 max-w-md",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									placeholder: "Buscar por palavra ou tradução...",
+									value: searchTerm,
+									onChange: (e) => setSearchTerm(e.target.value),
+									className: "pl-9 h-11 bg-background rounded-xl border-border/60 shadow-sm"
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "text-sm font-medium text-muted-foreground bg-secondary/50 px-4 py-2 rounded-full border border-border/50",
+								children: [
+									filteredWords.length,
+									" palavra",
+									filteredWords.length === 1 ? "" : "s"
+								]
+							})]
+						}), filteredWords.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-center py-16 px-4 bg-secondary/20 rounded-2xl border border-dashed border-border/50",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Library, { className: "w-12 h-12 text-muted-foreground/30 mx-auto mb-3" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+									className: "text-lg font-semibold text-foreground",
+									children: "Nenhuma palavra encontrada"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-sm text-muted-foreground mt-1",
+									children: "Capture palavras novas no Leitor ou importe uma lista."
+								})
+							]
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "border border-border/60 rounded-xl overflow-hidden bg-background",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, {
+								className: "bg-secondary/40",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+									className: "hover:bg-transparent",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+											className: "w-[20%] font-semibold",
+											children: "Palavra"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+											className: "w-[25%] font-semibold",
+											children: "Tradução"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+											className: "font-semibold",
+											children: "Contexto Original"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+											className: "text-right font-semibold",
+											children: "Ações"
+										})
+									]
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: filteredWords.map((w) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+								className: "group",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "font-bold text-foreground",
+										children: w.word
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "text-muted-foreground font-medium",
+										children: w.translation
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
+										className: "text-muted-foreground text-sm max-w-[300px] truncate",
+										title: w.contextSentence,
+										children: [
+											"\"",
+											w.contextSentence,
+											"\""
+										]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+										className: "text-right",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex justify-end gap-1 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(EditWordDialog, { wordEntry: w }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+												variant: "ghost",
+												size: "icon",
+												className: "text-destructive hover:bg-destructive/10 h-8 w-8",
+												onClick: () => removeWord(w.id),
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "w-4 h-4" })
+											})]
+										})
+									})
+								]
+							}, w.id)) })] })
+						})] })]
+					})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
 					value: "bulk",
 					className: "mt-6",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "border-border shadow-sm",
+						className: "border-border shadow-sm rounded-[24px]",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Upload em Lote" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Cole uma lista de palavras e traduções (separadas por vírgula), uma por linha. Exemplo: \"apple, maçã\"" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
 							className: "space-y-4",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
 								value: bulkText,
 								onChange: (e) => setBulkText(e.target.value),
 								placeholder: "apple, maçã\ncar, carro\nhouse, casa",
-								className: "min-h-[250px] font-mono text-base p-4"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								className: "min-h-[250px] font-mono text-base p-6 rounded-2xl bg-secondary/30"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 								onClick: handleBulkUpload,
 								size: "lg",
-								className: "w-full h-14 text-lg rounded-xl shadow-md",
-								children: "Importar Palavras"
+								className: "w-full h-14 text-lg rounded-xl shadow-md gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { className: "w-5 h-5" }), " Importar Palavras"]
 							})]
 						})]
 					})
@@ -54517,11 +54862,11 @@ function Vocabulary() {
 					value: "cefr",
 					className: "mt-6",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "border-border shadow-sm",
+						className: "border-border shadow-sm rounded-[24px]",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Listas CEFR" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Adicione palavras essenciais baseadas no Quadro Europeu Comum de Referência." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "grid grid-cols-1 md:grid-cols-2 gap-4",
 							children: Object.keys(CEFRLists).map((level) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-								className: "bg-secondary/20 border-border/50 shadow-sm transition-all hover:bg-secondary/40",
+								className: "bg-secondary/20 border-border/50 shadow-sm transition-all hover:bg-secondary/40 rounded-2xl",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
 									className: "pb-3",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
@@ -54533,7 +54878,7 @@ function Vocabulary() {
 									})]
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 									variant: "outline",
-									className: "w-full h-12",
+									className: "w-full h-12 rounded-xl border-primary/20 hover:bg-primary/10 hover:text-primary transition-colors",
 									onClick: () => handleSeedCEFR(level),
 									children: "Adicionar ao meu vocabulário"
 								}) })]
@@ -55134,4 +55479,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-DP3H8pD9.js.map
+//# sourceMappingURL=index-D5XLsbtA.js.map
