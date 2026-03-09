@@ -19585,6 +19585,40 @@ var Settings$1 = createLucideIcon("settings", [["path", {
 	r: "3",
 	key: "1v7zrd"
 }]]);
+var Share2 = createLucideIcon("share-2", [
+	["circle", {
+		cx: "18",
+		cy: "5",
+		r: "3",
+		key: "gq8acd"
+	}],
+	["circle", {
+		cx: "6",
+		cy: "12",
+		r: "3",
+		key: "w7nqdw"
+	}],
+	["circle", {
+		cx: "18",
+		cy: "19",
+		r: "3",
+		key: "1xt0gg"
+	}],
+	["line", {
+		x1: "8.59",
+		x2: "15.42",
+		y1: "13.51",
+		y2: "17.49",
+		key: "47mynk"
+	}],
+	["line", {
+		x1: "15.41",
+		x2: "8.59",
+		y1: "6.51",
+		y2: "10.49",
+		key: "1n3mei"
+	}]
+]);
 var ShieldCheck = createLucideIcon("shield-check", [["path", {
 	d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
 	key: "oel41y"
@@ -50933,9 +50967,43 @@ function DailyPromptWidget() {
 		})]
 	});
 }
+function useShareProgress() {
+	const { toast: toast$2 } = useToast();
+	const { stats } = useStore();
+	const { current } = getLevelTier(stats.xp);
+	const share = async (customText) => {
+		const text = customText || `I just reached Level ${current.name} in Langflow! My current streak is ${stats.streak} days. #LangflowLearning`;
+		const fallbackCopy = async () => {
+			try {
+				await navigator.clipboard.writeText(text);
+				toast$2({
+					title: "Copiado!",
+					description: "Progresso copiado para a área de transferência."
+				});
+			} catch (err) {
+				toast$2({
+					title: "Erro ao copiar",
+					description: "Não foi possível copiar o texto.",
+					variant: "destructive"
+				});
+			}
+		};
+		if (navigator.share) try {
+			await navigator.share({
+				title: "Langflow Progress",
+				text
+			});
+		} catch (err) {
+			if (err.name !== "AbortError") await fallbackCopy();
+		}
+		else await fallbackCopy();
+	};
+	return { share };
+}
 function LevelProgressWidget() {
 	const { stats } = useStore();
 	const { current, next } = getLevelTier(stats.xp);
+	const { share } = useShareProgress();
 	const progress = next ? (stats.xp - current.threshold) / (next.threshold - current.threshold) * 100 : 100;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 		className: "p-6 md:p-8 bg-gradient-to-br from-card to-primary/5 border-border shadow-sm rounded-[32px] hover:shadow-md transition-all duration-300 group",
@@ -50954,17 +51022,28 @@ function LevelProgressWidget() {
 					children: current.name
 				})] })]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "md:text-right flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-					className: "text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-primary to-pink-500 flex items-center gap-1.5 tracking-tighter",
-					children: [
-						stats.xp,
-						" ",
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-6 h-6 text-pink-500 fill-current" })
-					]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-xs text-muted-foreground font-bold uppercase tracking-widest mt-1",
-					children: "XP Total"
+				className: "flex flex-row items-center justify-between w-full md:w-auto gap-4 md:gap-8",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					onClick: () => share(),
+					variant: "outline",
+					className: "rounded-lg text-primary border-primary/30 bg-primary/5 hover:bg-primary/10 shadow-sm transition-all h-10",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Share2, { className: "w-4 h-4 sm:mr-2" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "hidden sm:inline font-bold",
+						children: "Compartilhar"
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col items-end",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: "text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-primary to-pink-500 flex items-center gap-1.5 tracking-tighter",
+						children: [
+							stats.xp,
+							" ",
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-6 h-6 text-pink-500 fill-current" })
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xs text-muted-foreground font-bold uppercase tracking-widest mt-1",
+						children: "XP Total"
+					})]
 				})]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -50993,23 +51072,34 @@ var iconMap = {
 };
 function AchievementsList() {
 	const { stats } = useStore();
+	const { share } = useShareProgress();
 	const achievements = stats.achievements || [];
 	const unlockedCount = achievements.filter((a$1) => a$1.unlocked).length;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 		className: "space-y-6",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-			className: "flex items-center justify-between",
+			className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
 				className: "text-2xl font-bold text-foreground tracking-tight",
 				children: "Conquistas & Emblemas"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-				className: "bg-secondary text-foreground font-bold text-sm px-4 py-1.5 rounded-full border border-border/60 shadow-sm",
-				children: [
-					unlockedCount,
-					" / ",
-					achievements.length,
-					" Desbloqueados"
-				]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					onClick: () => share(),
+					className: "rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm transition-all",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Share2, { className: "w-4 h-4 mr-2" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-bold",
+						children: "Compartilhar"
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "bg-secondary text-foreground font-bold text-sm px-4 py-2 rounded-full border border-border/60 shadow-sm hidden md:inline-block",
+					children: [
+						unlockedCount,
+						" / ",
+						achievements.length,
+						" Desbloqueados"
+					]
+				})]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "grid grid-cols-2 md:grid-cols-4 gap-4",
@@ -51092,6 +51182,7 @@ function GamificationWatcher() {
 }
 function LearningStatsCentral() {
 	const { words, stats } = useStore();
+	const { share } = useShareProgress();
 	const totalWords = words.length;
 	const streak = stats.streak;
 	const masteredWords = words.filter((w) => w.status === "mastered").length;
@@ -51217,8 +51308,16 @@ function LearningStatsCentral() {
 							})
 						] })]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full border border-primary/20 whitespace-nowrap self-start sm:self-auto flex items-center gap-1.5 shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "w-2 h-2 rounded-full bg-primary animate-pulse" }), "Desbloqueado"]
+						className: "flex items-center gap-3 self-start sm:self-auto",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full border border-primary/20 whitespace-nowrap flex items-center gap-1.5 shadow-sm",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "w-2 h-2 rounded-full bg-primary animate-pulse" }), "Desbloqueado"]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							onClick: () => share(`I just unlocked the ${latestAchievement.title} badge in Langflow! My current streak is ${streak} days. #LangflowLearning`),
+							className: "p-2 text-primary bg-card border border-border shadow-sm hover:bg-primary/10 hover:border-primary/30 rounded-lg transition-all active:scale-95",
+							title: "Compartilhar Conquista",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Share2, { className: "w-4 h-4" })
+						})]
 					})]
 				})
 			]
@@ -55966,4 +56065,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index--fAvHm_9.js.map
+//# sourceMappingURL=index-CXfMtZg3.js.map

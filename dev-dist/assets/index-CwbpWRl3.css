@@ -5098,6 +5098,10 @@ body::selection{
     top: auto;
   }
 
+  .sm\:mr-2{
+    margin-right: 0.5rem;
+  }
+
   .sm\:mt-0{
     margin-top: 0px;
   }
@@ -5191,6 +5195,10 @@ body::selection{
     display: block;
   }
 
+  .md\:inline-block{
+    display: inline-block;
+  }
+
   .md\:flex{
     display: flex;
   }
@@ -5239,28 +5247,20 @@ body::selection{
     flex-direction: row;
   }
 
-  .md\:flex-col{
-    flex-direction: column;
-  }
-
   .md\:items-start{
     align-items: flex-start;
-  }
-
-  .md\:items-end{
-    align-items: flex-end;
   }
 
   .md\:items-center{
     align-items: center;
   }
 
-  .md\:justify-center{
-    justify-content: center;
-  }
-
   .md\:gap-0{
     gap: 0px;
+  }
+
+  .md\:gap-8{
+    gap: 2rem;
   }
 
   .md\:p-10{
@@ -5273,10 +5273,6 @@ body::selection{
 
   .md\:p-8{
     padding: 2rem;
-  }
-
-  .md\:text-right{
-    text-align: right;
   }
 
   .md\:text-2xl{

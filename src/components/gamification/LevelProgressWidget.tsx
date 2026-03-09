@@ -1,12 +1,15 @@
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
+import { Button } from '@/components/ui/button'
 import { useStore } from '@/store/main'
-import { Shield, Zap } from 'lucide-react'
+import { Shield, Zap, Share2 } from 'lucide-react'
 import { getLevelTier } from '@/lib/gamification'
+import { useShareProgress } from '@/hooks/use-share-progress'
 
 export function LevelProgressWidget() {
   const { stats } = useStore()
   const { current, next } = getLevelTier(stats.xp)
+  const { share } = useShareProgress()
 
   const progress = next
     ? ((stats.xp - current.threshold) / (next.threshold - current.threshold)) * 100
@@ -27,13 +30,24 @@ export function LevelProgressWidget() {
           </div>
         </div>
 
-        <div className="md:text-right flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center">
-          <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-primary to-pink-500 flex items-center gap-1.5 tracking-tighter">
-            {stats.xp} <Zap className="w-6 h-6 text-pink-500 fill-current" />
-          </p>
-          <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest mt-1">
-            XP Total
-          </p>
+        <div className="flex flex-row items-center justify-between w-full md:w-auto gap-4 md:gap-8">
+          <Button
+            onClick={() => share()}
+            variant="outline"
+            className="rounded-lg text-primary border-primary/30 bg-primary/5 hover:bg-primary/10 shadow-sm transition-all h-10"
+          >
+            <Share2 className="w-4 h-4 sm:mr-2" />
+            <span className="hidden sm:inline font-bold">Compartilhar</span>
+          </Button>
+
+          <div className="flex flex-col items-end">
+            <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-primary to-pink-500 flex items-center gap-1.5 tracking-tighter">
+              {stats.xp} <Zap className="w-6 h-6 text-pink-500 fill-current" />
+            </p>
+            <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest mt-1">
+              XP Total
+            </p>
+          </div>
         </div>
       </div>
 

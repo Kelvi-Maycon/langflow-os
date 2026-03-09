@@ -1,10 +1,12 @@
 import { Card } from '@/components/ui/card'
 import { useStore } from '@/store/main'
-import { BookOpen, Flame, Trophy, CalendarPlus, Star } from 'lucide-react'
+import { BookOpen, Flame, Trophy, CalendarPlus, Star, Share2 } from 'lucide-react'
 import { useMemo } from 'react'
+import { useShareProgress } from '@/hooks/use-share-progress'
 
 export function LearningStatsCentral() {
   const { words, stats } = useStore()
+  const { share } = useShareProgress()
 
   const totalWords = words.length
   const streak = stats.streak
@@ -23,7 +25,6 @@ export function LearningStatsCentral() {
 
   return (
     <Card className="p-6 md:p-8 bg-card border-border shadow-sm rounded-[32px] overflow-hidden relative group transition-all duration-300 hover:shadow-md">
-      {/* Decorative background */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary/10 transition-colors duration-700" />
 
       <div className="relative z-10">
@@ -102,9 +103,22 @@ export function LearningStatsCentral() {
                 </p>
               </div>
             </div>
-            <div className="px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full border border-primary/20 whitespace-nowrap self-start sm:self-auto flex items-center gap-1.5 shadow-sm">
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              Desbloqueado
+            <div className="flex items-center gap-3 self-start sm:self-auto">
+              <div className="px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full border border-primary/20 whitespace-nowrap flex items-center gap-1.5 shadow-sm">
+                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                Desbloqueado
+              </div>
+              <button
+                onClick={() =>
+                  share(
+                    `I just unlocked the ${latestAchievement.title} badge in Langflow! My current streak is ${streak} days. #LangflowLearning`,
+                  )
+                }
+                className="p-2 text-primary bg-card border border-border shadow-sm hover:bg-primary/10 hover:border-primary/30 rounded-lg transition-all active:scale-95"
+                title="Compartilhar Conquista"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
             </div>
           </div>
         )}

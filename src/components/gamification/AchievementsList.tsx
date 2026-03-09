@@ -1,8 +1,10 @@
 import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useStore } from '@/store/main'
-import { Star, Flame, Brain, BookOpen, Trophy, Zap, Lock } from 'lucide-react'
+import { Star, Flame, Brain, BookOpen, Trophy, Zap, Lock, Share2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useShareProgress } from '@/hooks/use-share-progress'
 
 const iconMap: Record<string, any> = {
   star: Star,
@@ -15,16 +17,26 @@ const iconMap: Record<string, any> = {
 
 export function AchievementsList() {
   const { stats } = useStore()
+  const { share } = useShareProgress()
   const achievements = stats.achievements || []
   const unlockedCount = achievements.filter((a) => a.unlocked).length
 
   return (
     <section className="space-y-6">
-      <header className="flex items-center justify-between">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h3 className="text-2xl font-bold text-foreground tracking-tight">Conquistas & Emblemas</h3>
-        <span className="bg-secondary text-foreground font-bold text-sm px-4 py-1.5 rounded-full border border-border/60 shadow-sm">
-          {unlockedCount} / {achievements.length} Desbloqueados
-        </span>
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={() => share()}
+            className="rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm transition-all"
+          >
+            <Share2 className="w-4 h-4 mr-2" />
+            <span className="font-bold">Compartilhar</span>
+          </Button>
+          <span className="bg-secondary text-foreground font-bold text-sm px-4 py-2 rounded-full border border-border/60 shadow-sm hidden md:inline-block">
+            {unlockedCount} / {achievements.length} Desbloqueados
+          </span>
+        </div>
       </header>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
