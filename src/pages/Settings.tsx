@@ -66,11 +66,10 @@ export default function Settings() {
       const perm = await Notification.requestPermission()
       if (perm !== 'granted') {
         toast({
-          title: 'Permissão Negada',
-          description: 'Você precisa permitir notificações no navegador para ativar este recurso.',
-          variant: 'destructive',
+          title: 'Notificações do Navegador Bloqueadas',
+          description: 'Você receberá os lembretes apenas dentro do aplicativo.',
+          variant: 'default',
         })
-        return
       }
     }
     setLocalSettings((prev) => ({ ...prev, [key]: checked }))
@@ -122,6 +121,7 @@ export default function Settings() {
         'langflow_config',
         'langflow_settings',
         'langflow_stats',
+        'langflow_notifications',
       ]
       keysToRemove.forEach((k) => localStorage.removeItem(k))
       window.location.reload()
@@ -133,6 +133,7 @@ export default function Settings() {
       langflow_words: JSON.parse(localStorage.getItem('langflow_words') || '[]'),
       langflow_config: JSON.parse(localStorage.getItem('langflow_config') || '{}'),
       langflow_stats: JSON.parse(localStorage.getItem('langflow_stats') || '{}'),
+      langflow_notifications: JSON.parse(localStorage.getItem('langflow_notifications') || '[]'),
     }
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
@@ -158,6 +159,11 @@ export default function Settings() {
           localStorage.setItem('langflow_config', JSON.stringify(data.langflow_config))
         if (data.langflow_stats)
           localStorage.setItem('langflow_stats', JSON.stringify(data.langflow_stats))
+        if (data.langflow_notifications)
+          localStorage.setItem(
+            'langflow_notifications',
+            JSON.stringify(data.langflow_notifications),
+          )
         toast({
           title: 'Importação Concluída',
           description: 'Recarregando a aplicação com os novos dados...',

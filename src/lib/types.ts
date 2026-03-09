@@ -78,8 +78,17 @@ export interface UserStats {
   dailyPromptsHistory?: DailyPromptEntry[]
 }
 
+export interface AppNotification {
+  id: string
+  title: string
+  body: string
+  date: number
+  read: boolean
+}
+
 export interface AppState {
   words: WordEntry[]
   settings: UserSettings
   stats: UserStats
+  notifications: AppNotification[]
 }

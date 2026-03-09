@@ -19486,6 +19486,15 @@ var Settings2 = createLucideIcon("settings-2", [
 		key: "dfmy0x"
 	}]
 ]);
+var Settings$1 = createLucideIcon("settings", [["path", {
+	d: "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915",
+	key: "1i5ecw"
+}], ["circle", {
+	cx: "12",
+	cy: "12",
+	r: "3",
+	key: "1v7zrd"
+}]]);
 var ShieldCheck = createLucideIcon("shield-check", [["path", {
 	d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
 	key: "oel41y"
@@ -25702,7 +25711,7 @@ function createSlot$1(ownerName) {
 	Slot2.displayName = `${ownerName}.Slot`;
 	return Slot2;
 }
-var Slot$2 = /* @__PURE__ */ createSlot$1("Slot");
+var Slot$1 = /* @__PURE__ */ createSlot$1("Slot");
 /* @__NO_SIDE_EFFECTS__ */
 function createSlotClone(ownerName) {
 	const SlotClone = import_react.forwardRef((props, forwardedRef) => {
@@ -25812,7 +25821,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$18({ inst: {
+			cachedValue = useState$19({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -25849,7 +25858,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$39 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$18 = React$39.useState, useEffect$13 = React$39.useEffect, useLayoutEffect$1 = React$39.useLayoutEffect, useDebugValue = React$39.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$39 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$19 = React$39.useState, useEffect$13 = React$39.useEffect, useLayoutEffect$1 = React$39.useLayoutEffect, useDebugValue = React$39.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$39.useSyncExternalStore ? React$39.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -25977,186 +25986,6 @@ var AvatarFallback = import_react.forwardRef(({ className, ...props }, ref) => /
 	...props
 }));
 AvatarFallback.displayName = Fallback.displayName;
-var mainNav = [
-	{
-		path: "/",
-		label: "Dashboard",
-		icon: LayoutDashboard
-	},
-	{
-		path: "/reader",
-		label: "Biblioteca",
-		icon: BookOpen
-	},
-	{
-		path: "/practice",
-		label: "Prática Rápida",
-		icon: Zap,
-		badge: "HOT"
-	},
-	{
-		path: "/flashcards",
-		label: "Revisão",
-		icon: BrainCircuit
-	},
-	{
-		path: "/evolution",
-		label: "Evolução",
-		icon: TrendingUp
-	}
-];
-function SidebarContent() {
-	const location = useLocation();
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col h-full bg-sidebar border-r border-border text-sidebar-foreground w-full",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "p-6 flex items-center gap-3 font-bold text-xl tracking-tight mb-4",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "w-8 h-8 rounded-lg bg-primary shadow-sm flex items-center justify-center",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-5 h-5 text-primary-foreground fill-current" })
-				}), "LangFlow"]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex-1 overflow-y-auto px-4 space-y-8",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-					className: "text-[10px] font-bold text-sidebar-foreground/50 tracking-widest uppercase mb-3 px-4",
-					children: "Menu Principal"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
-					className: "space-y-1",
-					children: mainNav.map((item) => {
-						const Icon$2 = item.icon;
-						const isActive = location.pathname === item.path;
-						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
-							to: item.path,
-							className: cn("flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group", isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-sm" : "hover:bg-sidebar-accent/50 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:scale-[1.02]"),
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: cn("w-5 h-5 transition-transform group-hover:scale-110", isActive && "text-primary") }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "text-sm",
-									children: item.label
-								}),
-								item.badge && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "ml-auto bg-pink-500 text-white text-[9px] px-2 py-0.5 rounded-sm font-bold shadow-[0_0_10px_rgba(236,72,153,0.3)]",
-									children: item.badge
-								})
-							]
-						}, item.path);
-					})
-				})] })
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "p-4 mt-auto",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
-					to: "/settings",
-					className: "flex items-center gap-3 px-4 py-3 rounded-2xl bg-secondary/50 border border-border hover:bg-secondary transition-colors",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
-						className: "w-10 h-10 border-2 border-background shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=1" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: "BS" })]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-sm font-bold text-foreground leading-tight",
-							children: "Bruno Silva"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-[10px] font-bold text-muted-foreground tracking-wider",
-							children: "PLANO PRO"
-						})]
-					})]
-				})
-			})
-		]
-	});
-}
-function Layout() {
-	const [mobileMenuOpen, setMobileMenuOpen] = (0, import_react.useState)(false);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex h-screen w-full bg-background overflow-hidden flex-col md:flex-row font-sans",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-				className: "md:hidden flex items-center justify-between p-4 bg-sidebar border-b border-border z-10 shrink-0",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-2 font-bold text-lg tracking-tight text-sidebar-foreground",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "w-6 h-6 rounded bg-primary flex items-center justify-center shadow-sm",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-4 h-4 text-primary-foreground fill-current" })
-					}), "LangFlow"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Sheet, {
-					open: mobileMenuOpen,
-					onOpenChange: setMobileMenuOpen,
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetTrigger, {
-						asChild: true,
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							className: "p-2 text-muted-foreground hover:text-foreground",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Menu, { className: "w-6 h-6" })
-						})
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetContent, {
-						side: "left",
-						className: "p-0 bg-sidebar border-r-border w-[280px]",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetTitle, {
-							className: "sr-only",
-							children: "Menu Principal"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, {})]
-					})]
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("aside", {
-				className: "hidden md:flex flex-col w-[260px] shrink-0 z-10",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, {})
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
-				className: "flex-1 overflow-y-auto relative bg-background",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "max-w-[1400px] mx-auto w-full p-4 md:p-8 lg:px-12",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
-				})
-			})
-		]
-	});
-}
-var Input = import_react.forwardRef(({ className, type, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-		type,
-		className: cn("flex h-12 w-full rounded-xl border border-input bg-background/50 px-4 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50 transition-all shadow-sm", className),
-		ref,
-		...props
-	});
-});
-Input.displayName = "Input";
-var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-all duration-250 ease-out active:scale-[0.98] active:shadow-[0_0_15px_rgba(108,63,197,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", {
-	variants: {
-		variant: {
-			default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md",
-			destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-			outline: "border border-input bg-background text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground",
-			secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-			ghost: "text-foreground hover:bg-accent hover:text-accent-foreground",
-			link: "text-primary underline-offset-4 hover:underline"
-		},
-		size: {
-			default: "h-10 px-4 py-2",
-			sm: "h-9 px-3 text-xs",
-			lg: "h-12 px-8 text-base",
-			icon: "h-10 w-10"
-		}
-	},
-	defaultVariants: {
-		variant: "default",
-		size: "default"
-	}
-});
-var Button = import_react.forwardRef(({ className, variant, size: size$3, asChild = false, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "button", {
-		className: cn(buttonVariants({
-			variant,
-			size: size$3,
-			className
-		})),
-		ref,
-		...props
-	});
-});
-Button.displayName = "Button";
 function calculateSM2(quality, repetitions, previousInterval, previousEaseFactor, multiplier = 1) {
 	let interval = 0;
 	let easeFactor = previousEaseFactor + (.1 - (5 - quality) * (.08 + (5 - quality) * .02));
@@ -26181,12 +26010,10 @@ function getNextReviewDate(intervalDays) {
 	date$1.setDate(date$1.getDate() + intervalDays);
 	return date$1.getTime();
 }
-function useNotificationEngine(settings, stats, words) {
+function useNotificationEngine(settings, stats, words, onNotification) {
 	(0, import_react.useEffect)(() => {
 		if (!settings.dailyPromptReminder && !settings.studySessionReminder) return;
-		if (!("Notification" in window)) return;
 		const checkAndNotify = () => {
-			if (Notification.permission !== "granted") return;
 			const now$2 = /* @__PURE__ */ new Date();
 			const currentHour = now$2.getHours();
 			const currentMinute = now$2.getMinutes();
@@ -26197,14 +26024,20 @@ function useNotificationEngine(settings, stats, words) {
 				let notified = false;
 				if (settings.dailyPromptReminder) {
 					if (!(stats.dailyPromptsHistory || []).some((h) => h.date === todayStr)) {
-						new Notification("Daily Prompt Disponível! ✍️", { body: "Seu desafio diário de escrita está te esperando. Mantenha sua consistência!" });
+						const title = "Daily Prompt Disponível! ✍️";
+						const body = "Seu desafio diário de escrita está te esperando. Mantenha sua consistência!";
+						if ("Notification" in window && Notification.permission === "granted") new Notification(title, { body });
+						if (onNotification) onNotification(title, body);
 						notified = true;
 					}
 				}
 				if (!notified && settings.studySessionReminder) {
 					const pendingReviews = words.filter((w) => w.nextReviewDate <= Date.now() && w.status !== "learning");
 					if (pendingReviews.length > 0) {
-						new Notification("Hora da Revisão! 🧠", { body: `Você tem ${pendingReviews.length} palavras prontas para revisão no seu SRS.` });
+						const title = "Hora da Revisão! 🧠";
+						const body = `Você tem ${pendingReviews.length} palavras prontas para revisão no seu SRS.`;
+						if ("Notification" in window && Notification.permission === "granted") new Notification(title, { body });
+						if (onNotification) onNotification(title, body);
 						notified = true;
 					}
 				}
@@ -26219,7 +26052,8 @@ function useNotificationEngine(settings, stats, words) {
 		settings.studySessionReminder,
 		settings.preferredStudyTime,
 		stats.dailyPromptsHistory,
-		words
+		words,
+		onNotification
 	]);
 }
 var defaultSettings = {
@@ -26442,7 +26276,16 @@ function StoreProvider({ children }) {
 		}
 		return parsed;
 	});
-	useNotificationEngine(settings, stats, words);
+	const [notifications, setNotifications] = (0, import_react.useState)(() => {
+		const saved = localStorage.getItem("langflow_notifications");
+		return saved ? JSON.parse(saved) : [{
+			id: "welcome-notification",
+			title: "Bem-vindo ao LangFlow! 👋",
+			body: "Configure suas preferências de estudo e ative os lembretes para manter a constância.",
+			date: Date.now(),
+			read: false
+		}];
+	});
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem("langflow_words", JSON.stringify(words));
 	}, [words]);
@@ -26452,6 +26295,34 @@ function StoreProvider({ children }) {
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem("langflow_stats", JSON.stringify(stats));
 	}, [stats]);
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem("langflow_notifications", JSON.stringify(notifications));
+	}, [notifications]);
+	const addNotification = import_react.useCallback((title, body) => {
+		setNotifications((prev) => [{
+			id: crypto.randomUUID(),
+			title,
+			body,
+			date: Date.now(),
+			read: false
+		}, ...prev].slice(0, 50));
+	}, []);
+	const markNotificationAsRead = (id) => {
+		setNotifications((prev) => prev.map((n) => n.id === id ? {
+			...n,
+			read: true
+		} : n));
+	};
+	const markAllNotificationsAsRead = () => {
+		setNotifications((prev) => prev.map((n) => ({
+			...n,
+			read: true
+		})));
+	};
+	const clearNotifications = () => {
+		setNotifications([]);
+	};
+	useNotificationEngine(settings, stats, words, addNotification);
 	(0, import_react.useEffect)(() => {
 		const { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = stats;
 		const levels = [
@@ -26624,6 +26495,7 @@ function StoreProvider({ children }) {
 		words,
 		settings,
 		stats,
+		notifications,
 		addWord,
 		updateWordStatus,
 		reviewWord,
@@ -26631,7 +26503,11 @@ function StoreProvider({ children }) {
 		removeWord,
 		submitDailyPrompt,
 		recordPracticeAttempt: (correct) => updateStats(correct, "practice"),
-		recordFlashcardAttempt: (correct) => updateStats(correct, "flashcard")
+		recordFlashcardAttempt: (correct) => updateStats(correct, "flashcard"),
+		addNotification,
+		markNotificationAsRead,
+		markAllNotificationsAsRead,
+		clearNotifications
 	} }, children);
 }
 const useStore = () => {
@@ -26639,6 +26515,538 @@ const useStore = () => {
 	if (!ctx) throw new Error("useStore must be used within StoreProvider");
 	return ctx;
 };
+var POPOVER_NAME = "Popover";
+var [createPopoverContext, createPopoverScope] = createContextScope(POPOVER_NAME, [createPopperScope]);
+var usePopperScope$1 = createPopperScope();
+var [PopoverProvider, usePopoverContext] = createPopoverContext(POPOVER_NAME);
+var Popover$1 = (props) => {
+	const { __scopePopover, children, open: openProp, defaultOpen, onOpenChange, modal = false } = props;
+	const popperScope = usePopperScope$1(__scopePopover);
+	const triggerRef = import_react.useRef(null);
+	const [hasCustomAnchor, setHasCustomAnchor] = import_react.useState(false);
+	const [open, setOpen] = useControllableState({
+		prop: openProp,
+		defaultProp: defaultOpen ?? false,
+		onChange: onOpenChange,
+		caller: POPOVER_NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+		...popperScope,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverProvider, {
+			scope: __scopePopover,
+			contentId: useId(),
+			triggerRef,
+			open,
+			onOpenChange: setOpen,
+			onOpenToggle: import_react.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen]),
+			hasCustomAnchor,
+			onCustomAnchorAdd: import_react.useCallback(() => setHasCustomAnchor(true), []),
+			onCustomAnchorRemove: import_react.useCallback(() => setHasCustomAnchor(false), []),
+			modal,
+			children
+		})
+	});
+};
+Popover$1.displayName = POPOVER_NAME;
+var ANCHOR_NAME = "PopoverAnchor";
+var PopoverAnchor = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopePopover, ...anchorProps } = props;
+	const context = usePopoverContext(ANCHOR_NAME, __scopePopover);
+	const popperScope = usePopperScope$1(__scopePopover);
+	const { onCustomAnchorAdd, onCustomAnchorRemove } = context;
+	import_react.useEffect(() => {
+		onCustomAnchorAdd();
+		return () => onCustomAnchorRemove();
+	}, [onCustomAnchorAdd, onCustomAnchorRemove]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Anchor, {
+		...popperScope,
+		...anchorProps,
+		ref: forwardedRef
+	});
+});
+PopoverAnchor.displayName = ANCHOR_NAME;
+var TRIGGER_NAME$2 = "PopoverTrigger";
+var PopoverTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopePopover, ...triggerProps } = props;
+	const context = usePopoverContext(TRIGGER_NAME$2, __scopePopover);
+	const popperScope = usePopperScope$1(__scopePopover);
+	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
+	const trigger = /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
+		type: "button",
+		"aria-haspopup": "dialog",
+		"aria-expanded": context.open,
+		"aria-controls": context.contentId,
+		"data-state": getState$1(context.open),
+		...triggerProps,
+		ref: composedTriggerRef,
+		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
+	});
+	return context.hasCustomAnchor ? trigger : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Anchor, {
+		asChild: true,
+		...popperScope,
+		children: trigger
+	});
+});
+PopoverTrigger$1.displayName = TRIGGER_NAME$2;
+var PORTAL_NAME$1 = "PopoverPortal";
+var [PortalProvider, usePortalContext] = createPopoverContext(PORTAL_NAME$1, { forceMount: void 0 });
+var PopoverPortal = (props) => {
+	const { __scopePopover, forceMount, children, container } = props;
+	const context = usePopoverContext(PORTAL_NAME$1, __scopePopover);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalProvider, {
+		scope: __scopePopover,
+		forceMount,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+			present: forceMount || context.open,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal, {
+				asChild: true,
+				container,
+				children
+			})
+		})
+	});
+};
+PopoverPortal.displayName = PORTAL_NAME$1;
+var CONTENT_NAME$2 = "PopoverContent";
+var PopoverContent$1 = import_react.forwardRef((props, forwardedRef) => {
+	const portalContext = usePortalContext(CONTENT_NAME$2, props.__scopePopover);
+	const { forceMount = portalContext.forceMount, ...contentProps } = props;
+	const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+		present: forceMount || context.open,
+		children: context.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentModal, {
+			...contentProps,
+			ref: forwardedRef
+		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentNonModal, {
+			...contentProps,
+			ref: forwardedRef
+		})
+	});
+});
+PopoverContent$1.displayName = CONTENT_NAME$2;
+var Slot$2 = /* @__PURE__ */ createSlot("PopoverContent.RemoveScroll");
+var PopoverContentModal = import_react.forwardRef((props, forwardedRef) => {
+	const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
+	const contentRef = import_react.useRef(null);
+	const composedRefs = useComposedRefs(forwardedRef, contentRef);
+	const isRightClickOutsideRef = import_react.useRef(false);
+	import_react.useEffect(() => {
+		const content = contentRef.current;
+		if (content) return hideOthers(content);
+	}, []);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Combination_default, {
+		as: Slot$2,
+		allowPinchZoom: true,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentImpl, {
+			...props,
+			ref: composedRefs,
+			trapFocus: context.open,
+			disableOutsidePointerEvents: true,
+			onCloseAutoFocus: composeEventHandlers(props.onCloseAutoFocus, (event) => {
+				event.preventDefault();
+				if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus();
+			}),
+			onPointerDownOutside: composeEventHandlers(props.onPointerDownOutside, (event) => {
+				const originalEvent = event.detail.originalEvent;
+				const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true;
+				isRightClickOutsideRef.current = originalEvent.button === 2 || ctrlLeftClick;
+			}, { checkForDefaultPrevented: false }),
+			onFocusOutside: composeEventHandlers(props.onFocusOutside, (event) => event.preventDefault(), { checkForDefaultPrevented: false })
+		})
+	});
+});
+var PopoverContentNonModal = import_react.forwardRef((props, forwardedRef) => {
+	const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
+	const hasInteractedOutsideRef = import_react.useRef(false);
+	const hasPointerDownOutsideRef = import_react.useRef(false);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentImpl, {
+		...props,
+		ref: forwardedRef,
+		trapFocus: false,
+		disableOutsidePointerEvents: false,
+		onCloseAutoFocus: (event) => {
+			props.onCloseAutoFocus?.(event);
+			if (!event.defaultPrevented) {
+				if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus();
+				event.preventDefault();
+			}
+			hasInteractedOutsideRef.current = false;
+			hasPointerDownOutsideRef.current = false;
+		},
+		onInteractOutside: (event) => {
+			props.onInteractOutside?.(event);
+			if (!event.defaultPrevented) {
+				hasInteractedOutsideRef.current = true;
+				if (event.detail.originalEvent.type === "pointerdown") hasPointerDownOutsideRef.current = true;
+			}
+			const target = event.target;
+			if (context.triggerRef.current?.contains(target)) event.preventDefault();
+			if (event.detail.originalEvent.type === "focusin" && hasPointerDownOutsideRef.current) event.preventDefault();
+		}
+	});
+});
+var PopoverContentImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopePopover, trapFocus, onOpenAutoFocus, onCloseAutoFocus, disableOutsidePointerEvents, onEscapeKeyDown, onPointerDownOutside, onFocusOutside, onInteractOutside, ...contentProps } = props;
+	const context = usePopoverContext(CONTENT_NAME$2, __scopePopover);
+	const popperScope = usePopperScope$1(__scopePopover);
+	useFocusGuards();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusScope, {
+		asChild: true,
+		loop: true,
+		trapped: trapFocus,
+		onMountAutoFocus: onOpenAutoFocus,
+		onUnmountAutoFocus: onCloseAutoFocus,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DismissableLayer, {
+			asChild: true,
+			disableOutsidePointerEvents,
+			onInteractOutside,
+			onEscapeKeyDown,
+			onPointerDownOutside,
+			onFocusOutside,
+			onDismiss: () => context.onOpenChange(false),
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$2, {
+				"data-state": getState$1(context.open),
+				role: "dialog",
+				id: context.contentId,
+				...popperScope,
+				...contentProps,
+				ref: forwardedRef,
+				style: {
+					...contentProps.style,
+					"--radix-popover-content-transform-origin": "var(--radix-popper-transform-origin)",
+					"--radix-popover-content-available-width": "var(--radix-popper-available-width)",
+					"--radix-popover-content-available-height": "var(--radix-popper-available-height)",
+					"--radix-popover-trigger-width": "var(--radix-popper-anchor-width)",
+					"--radix-popover-trigger-height": "var(--radix-popper-anchor-height)"
+				}
+			})
+		})
+	});
+});
+var CLOSE_NAME = "PopoverClose";
+var PopoverClose = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopePopover, ...closeProps } = props;
+	const context = usePopoverContext(CLOSE_NAME, __scopePopover);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
+		type: "button",
+		...closeProps,
+		ref: forwardedRef,
+		onClick: composeEventHandlers(props.onClick, () => context.onOpenChange(false))
+	});
+});
+PopoverClose.displayName = CLOSE_NAME;
+var ARROW_NAME$1 = "PopoverArrow";
+var PopoverArrow = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopePopover, ...arrowProps } = props;
+	const popperScope = usePopperScope$1(__scopePopover);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Arrow, {
+		...popperScope,
+		...arrowProps,
+		ref: forwardedRef
+	});
+});
+PopoverArrow.displayName = ARROW_NAME$1;
+function getState$1(open) {
+	return open ? "open" : "closed";
+}
+var Root2$2 = Popover$1;
+var Trigger$2 = PopoverTrigger$1;
+var Portal$2 = PopoverPortal;
+var Content2$1 = PopoverContent$1;
+var Popover = Root2$2;
+var PopoverTrigger = Trigger$2;
+var PopoverContent = import_react.forwardRef(({ className, align = "center", sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$2, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$1, {
+	ref,
+	align,
+	sideOffset,
+	className: cn("z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2", className),
+	...props
+}) }));
+PopoverContent.displayName = Content2$1.displayName;
+var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-all duration-250 ease-out active:scale-[0.98] active:shadow-[0_0_15px_rgba(108,63,197,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", {
+	variants: {
+		variant: {
+			default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md",
+			destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+			outline: "border border-input bg-background text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground",
+			secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+			ghost: "text-foreground hover:bg-accent hover:text-accent-foreground",
+			link: "text-primary underline-offset-4 hover:underline"
+		},
+		size: {
+			default: "h-10 px-4 py-2",
+			sm: "h-9 px-3 text-xs",
+			lg: "h-12 px-8 text-base",
+			icon: "h-10 w-10"
+		}
+	},
+	defaultVariants: {
+		variant: "default",
+		size: "default"
+	}
+});
+var Button = import_react.forwardRef(({ className, variant, size: size$3, asChild = false, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$1 : "button", {
+		className: cn(buttonVariants({
+			variant,
+			size: size$3,
+			className
+		})),
+		ref,
+		...props
+	});
+});
+Button.displayName = "Button";
+function NotificationsPopover() {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const { notifications, markNotificationAsRead, markAllNotificationsAsRead, clearNotifications } = useStore();
+	const unreadCount = notifications.filter((n) => !n.read).length;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, {
+		open,
+		onOpenChange: setOpen,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
+			asChild: true,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				variant: "ghost",
+				size: "icon",
+				className: "relative h-10 w-10 rounded-full hover:bg-muted/50",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-[1.2rem] w-[1.2rem] text-muted-foreground transition-colors" }), unreadCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute top-2 right-2.5 h-2 w-2 rounded-full bg-destructive border-[1.5px] border-background" })]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PopoverContent, {
+			className: "w-[320px] p-0 shadow-xl border-border/50 rounded-2xl md:mr-4",
+			align: "end",
+			sideOffset: 8,
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between px-4 py-3 border-b border-border/50",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+						className: "font-semibold text-sm tracking-tight",
+						children: "Notificações"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-1",
+						children: [unreadCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "icon",
+							className: "h-7 w-7 rounded-full",
+							onClick: markAllNotificationsAsRead,
+							title: "Marcar todas como lidas",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4 text-muted-foreground" })
+						}), notifications.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							variant: "ghost",
+							size: "icon",
+							className: "h-7 w-7 rounded-full hover:text-destructive",
+							onClick: clearNotifications,
+							title: "Limpar todas",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "h-4 w-4 text-muted-foreground" })
+						})]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "h-[320px] overflow-y-auto",
+					children: notifications.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col items-center justify-center h-full text-muted-foreground gap-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-6 w-6 opacity-40" })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-sm",
+							children: "Nenhuma notificação nova"
+						})]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "flex flex-col",
+						children: notifications.map((notification) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							onClick: () => {
+								if (!notification.read) markNotificationAsRead(notification.id);
+							},
+							className: cn("flex flex-col items-start gap-1 p-4 text-left transition-colors hover:bg-muted/50 border-b border-border/50 last:border-0", !notification.read ? "bg-primary/5" : "bg-transparent"),
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between w-full gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: cn("font-medium text-sm leading-tight", !notification.read && "text-primary"),
+									children: notification.title
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-[10px] text-muted-foreground shrink-0 whitespace-nowrap font-medium",
+									children: new Intl.DateTimeFormat("pt-BR", {
+										hour: "2-digit",
+										minute: "2-digit"
+									}).format(new Date(notification.date))
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-muted-foreground text-xs leading-relaxed",
+								children: notification.body
+							})]
+						}, notification.id))
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "p-2 border-t border-border/50 bg-muted/10",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						asChild: true,
+						variant: "ghost",
+						className: "w-full text-xs h-9 justify-center gap-2 rounded-xl",
+						onClick: () => setOpen(false),
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+							to: "/settings",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings$1, { className: "h-3.5 w-3.5" }), "Configurar Notificações"]
+						})
+					})
+				})
+			]
+		})]
+	});
+}
+var mainNav = [
+	{
+		path: "/",
+		label: "Dashboard",
+		icon: LayoutDashboard
+	},
+	{
+		path: "/reader",
+		label: "Biblioteca",
+		icon: BookOpen
+	},
+	{
+		path: "/practice",
+		label: "Prática Rápida",
+		icon: Zap,
+		badge: "HOT"
+	},
+	{
+		path: "/flashcards",
+		label: "Revisão",
+		icon: BrainCircuit
+	},
+	{
+		path: "/evolution",
+		label: "Evolução",
+		icon: TrendingUp
+	}
+];
+function SidebarContent() {
+	const location = useLocation();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex flex-col h-full bg-sidebar border-r border-border text-sidebar-foreground w-full",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "p-6 flex items-center gap-3 font-bold text-xl tracking-tight mb-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "w-8 h-8 rounded-lg bg-primary shadow-sm flex items-center justify-center",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-5 h-5 text-primary-foreground fill-current" })
+				}), "LangFlow"]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex-1 overflow-y-auto px-4 space-y-8",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+					className: "text-[10px] font-bold text-sidebar-foreground/50 tracking-widest uppercase mb-3 px-4",
+					children: "Menu Principal"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
+					className: "space-y-1",
+					children: mainNav.map((item) => {
+						const Icon$2 = item.icon;
+						const isActive = location.pathname === item.path;
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+							to: item.path,
+							className: cn("flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group", isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-sm" : "hover:bg-sidebar-accent/50 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:scale-[1.02]"),
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: cn("w-5 h-5 transition-transform group-hover:scale-110", isActive && "text-primary") }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm",
+									children: item.label
+								}),
+								item.badge && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "ml-auto bg-pink-500 text-white text-[9px] px-2 py-0.5 rounded-sm font-bold shadow-[0_0_10px_rgba(236,72,153,0.3)]",
+									children: item.badge
+								})
+							]
+						}, item.path);
+					})
+				})] })
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "p-4 mt-auto",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+					to: "/settings",
+					className: "flex items-center gap-3 px-4 py-3 rounded-2xl bg-secondary/50 border border-border hover:bg-secondary transition-colors",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+						className: "w-10 h-10 border-2 border-background shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=1" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: "BS" })]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-sm font-bold text-foreground leading-tight",
+							children: "Bruno Silva"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-[10px] font-bold text-muted-foreground tracking-wider",
+							children: "PLANO PRO"
+						})]
+					})]
+				})
+			})
+		]
+	});
+}
+function Layout() {
+	const [mobileMenuOpen, setMobileMenuOpen] = (0, import_react.useState)(false);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex h-screen w-full bg-background overflow-hidden flex-col md:flex-row font-sans",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+				className: "md:hidden flex items-center justify-between p-4 bg-sidebar border-b border-border z-10 shrink-0",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-2 font-bold text-lg tracking-tight text-sidebar-foreground",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "w-6 h-6 rounded bg-primary flex items-center justify-center shadow-sm",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-4 h-4 text-primary-foreground fill-current" })
+					}), "LangFlow"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-1",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationsPopover, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Sheet, {
+						open: mobileMenuOpen,
+						onOpenChange: setMobileMenuOpen,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetTrigger, {
+							asChild: true,
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								className: "p-2 text-muted-foreground hover:text-foreground",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Menu, { className: "w-6 h-6" })
+							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetContent, {
+							side: "left",
+							className: "p-0 bg-sidebar border-r-border w-[280px]",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetTitle, {
+								className: "sr-only",
+								children: "Menu Principal"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, {})]
+						})]
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("aside", {
+				className: "hidden md:flex flex-col w-[260px] shrink-0 z-10",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, {})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
+				className: "flex-1 overflow-y-auto relative bg-background",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
+					className: "hidden md:flex items-center justify-end px-8 h-16 border-b border-border/50 bg-background/90 backdrop-blur sticky top-0 z-30",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationsPopover, {})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "max-w-[1400px] mx-auto w-full p-4 md:p-8 lg:px-12",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
+				})]
+			})
+		]
+	});
+}
+var Input = import_react.forwardRef(({ className, type, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+		type,
+		className: cn("flex h-12 w-full rounded-xl border border-input bg-background/50 px-4 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50 transition-all shadow-sm", className),
+		ref,
+		...props
+	});
+});
+Input.displayName = "Input";
 const LEVEL_TIERS = [
 	{
 		name: "Iniciante",
@@ -50354,254 +50762,6 @@ function Index() {
 		]
 	});
 }
-var POPOVER_NAME = "Popover";
-var [createPopoverContext, createPopoverScope] = createContextScope(POPOVER_NAME, [createPopperScope]);
-var usePopperScope$1 = createPopperScope();
-var [PopoverProvider, usePopoverContext] = createPopoverContext(POPOVER_NAME);
-var Popover$1 = (props) => {
-	const { __scopePopover, children, open: openProp, defaultOpen, onOpenChange, modal = false } = props;
-	const popperScope = usePopperScope$1(__scopePopover);
-	const triggerRef = import_react.useRef(null);
-	const [hasCustomAnchor, setHasCustomAnchor] = import_react.useState(false);
-	const [open, setOpen] = useControllableState({
-		prop: openProp,
-		defaultProp: defaultOpen ?? false,
-		onChange: onOpenChange,
-		caller: POPOVER_NAME
-	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
-		...popperScope,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverProvider, {
-			scope: __scopePopover,
-			contentId: useId(),
-			triggerRef,
-			open,
-			onOpenChange: setOpen,
-			onOpenToggle: import_react.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen]),
-			hasCustomAnchor,
-			onCustomAnchorAdd: import_react.useCallback(() => setHasCustomAnchor(true), []),
-			onCustomAnchorRemove: import_react.useCallback(() => setHasCustomAnchor(false), []),
-			modal,
-			children
-		})
-	});
-};
-Popover$1.displayName = POPOVER_NAME;
-var ANCHOR_NAME = "PopoverAnchor";
-var PopoverAnchor = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopePopover, ...anchorProps } = props;
-	const context = usePopoverContext(ANCHOR_NAME, __scopePopover);
-	const popperScope = usePopperScope$1(__scopePopover);
-	const { onCustomAnchorAdd, onCustomAnchorRemove } = context;
-	import_react.useEffect(() => {
-		onCustomAnchorAdd();
-		return () => onCustomAnchorRemove();
-	}, [onCustomAnchorAdd, onCustomAnchorRemove]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Anchor, {
-		...popperScope,
-		...anchorProps,
-		ref: forwardedRef
-	});
-});
-PopoverAnchor.displayName = ANCHOR_NAME;
-var TRIGGER_NAME$2 = "PopoverTrigger";
-var PopoverTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopePopover, ...triggerProps } = props;
-	const context = usePopoverContext(TRIGGER_NAME$2, __scopePopover);
-	const popperScope = usePopperScope$1(__scopePopover);
-	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
-	const trigger = /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
-		type: "button",
-		"aria-haspopup": "dialog",
-		"aria-expanded": context.open,
-		"aria-controls": context.contentId,
-		"data-state": getState$1(context.open),
-		...triggerProps,
-		ref: composedTriggerRef,
-		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
-	});
-	return context.hasCustomAnchor ? trigger : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Anchor, {
-		asChild: true,
-		...popperScope,
-		children: trigger
-	});
-});
-PopoverTrigger$1.displayName = TRIGGER_NAME$2;
-var PORTAL_NAME$1 = "PopoverPortal";
-var [PortalProvider, usePortalContext] = createPopoverContext(PORTAL_NAME$1, { forceMount: void 0 });
-var PopoverPortal = (props) => {
-	const { __scopePopover, forceMount, children, container } = props;
-	const context = usePopoverContext(PORTAL_NAME$1, __scopePopover);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalProvider, {
-		scope: __scopePopover,
-		forceMount,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
-			present: forceMount || context.open,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal, {
-				asChild: true,
-				container,
-				children
-			})
-		})
-	});
-};
-PopoverPortal.displayName = PORTAL_NAME$1;
-var CONTENT_NAME$2 = "PopoverContent";
-var PopoverContent$1 = import_react.forwardRef((props, forwardedRef) => {
-	const portalContext = usePortalContext(CONTENT_NAME$2, props.__scopePopover);
-	const { forceMount = portalContext.forceMount, ...contentProps } = props;
-	const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
-		present: forceMount || context.open,
-		children: context.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentModal, {
-			...contentProps,
-			ref: forwardedRef
-		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentNonModal, {
-			...contentProps,
-			ref: forwardedRef
-		})
-	});
-});
-PopoverContent$1.displayName = CONTENT_NAME$2;
-var Slot$1 = /* @__PURE__ */ createSlot("PopoverContent.RemoveScroll");
-var PopoverContentModal = import_react.forwardRef((props, forwardedRef) => {
-	const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
-	const contentRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, contentRef);
-	const isRightClickOutsideRef = import_react.useRef(false);
-	import_react.useEffect(() => {
-		const content = contentRef.current;
-		if (content) return hideOthers(content);
-	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Combination_default, {
-		as: Slot$1,
-		allowPinchZoom: true,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentImpl, {
-			...props,
-			ref: composedRefs,
-			trapFocus: context.open,
-			disableOutsidePointerEvents: true,
-			onCloseAutoFocus: composeEventHandlers(props.onCloseAutoFocus, (event) => {
-				event.preventDefault();
-				if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus();
-			}),
-			onPointerDownOutside: composeEventHandlers(props.onPointerDownOutside, (event) => {
-				const originalEvent = event.detail.originalEvent;
-				const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true;
-				isRightClickOutsideRef.current = originalEvent.button === 2 || ctrlLeftClick;
-			}, { checkForDefaultPrevented: false }),
-			onFocusOutside: composeEventHandlers(props.onFocusOutside, (event) => event.preventDefault(), { checkForDefaultPrevented: false })
-		})
-	});
-});
-var PopoverContentNonModal = import_react.forwardRef((props, forwardedRef) => {
-	const context = usePopoverContext(CONTENT_NAME$2, props.__scopePopover);
-	const hasInteractedOutsideRef = import_react.useRef(false);
-	const hasPointerDownOutsideRef = import_react.useRef(false);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentImpl, {
-		...props,
-		ref: forwardedRef,
-		trapFocus: false,
-		disableOutsidePointerEvents: false,
-		onCloseAutoFocus: (event) => {
-			props.onCloseAutoFocus?.(event);
-			if (!event.defaultPrevented) {
-				if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus();
-				event.preventDefault();
-			}
-			hasInteractedOutsideRef.current = false;
-			hasPointerDownOutsideRef.current = false;
-		},
-		onInteractOutside: (event) => {
-			props.onInteractOutside?.(event);
-			if (!event.defaultPrevented) {
-				hasInteractedOutsideRef.current = true;
-				if (event.detail.originalEvent.type === "pointerdown") hasPointerDownOutsideRef.current = true;
-			}
-			const target = event.target;
-			if (context.triggerRef.current?.contains(target)) event.preventDefault();
-			if (event.detail.originalEvent.type === "focusin" && hasPointerDownOutsideRef.current) event.preventDefault();
-		}
-	});
-});
-var PopoverContentImpl = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopePopover, trapFocus, onOpenAutoFocus, onCloseAutoFocus, disableOutsidePointerEvents, onEscapeKeyDown, onPointerDownOutside, onFocusOutside, onInteractOutside, ...contentProps } = props;
-	const context = usePopoverContext(CONTENT_NAME$2, __scopePopover);
-	const popperScope = usePopperScope$1(__scopePopover);
-	useFocusGuards();
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusScope, {
-		asChild: true,
-		loop: true,
-		trapped: trapFocus,
-		onMountAutoFocus: onOpenAutoFocus,
-		onUnmountAutoFocus: onCloseAutoFocus,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DismissableLayer, {
-			asChild: true,
-			disableOutsidePointerEvents,
-			onInteractOutside,
-			onEscapeKeyDown,
-			onPointerDownOutside,
-			onFocusOutside,
-			onDismiss: () => context.onOpenChange(false),
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$2, {
-				"data-state": getState$1(context.open),
-				role: "dialog",
-				id: context.contentId,
-				...popperScope,
-				...contentProps,
-				ref: forwardedRef,
-				style: {
-					...contentProps.style,
-					"--radix-popover-content-transform-origin": "var(--radix-popper-transform-origin)",
-					"--radix-popover-content-available-width": "var(--radix-popper-available-width)",
-					"--radix-popover-content-available-height": "var(--radix-popper-available-height)",
-					"--radix-popover-trigger-width": "var(--radix-popper-anchor-width)",
-					"--radix-popover-trigger-height": "var(--radix-popper-anchor-height)"
-				}
-			})
-		})
-	});
-});
-var CLOSE_NAME = "PopoverClose";
-var PopoverClose = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopePopover, ...closeProps } = props;
-	const context = usePopoverContext(CLOSE_NAME, __scopePopover);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.button, {
-		type: "button",
-		...closeProps,
-		ref: forwardedRef,
-		onClick: composeEventHandlers(props.onClick, () => context.onOpenChange(false))
-	});
-});
-PopoverClose.displayName = CLOSE_NAME;
-var ARROW_NAME$1 = "PopoverArrow";
-var PopoverArrow = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopePopover, ...arrowProps } = props;
-	const popperScope = usePopperScope$1(__scopePopover);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Arrow, {
-		...popperScope,
-		...arrowProps,
-		ref: forwardedRef
-	});
-});
-PopoverArrow.displayName = ARROW_NAME$1;
-function getState$1(open) {
-	return open ? "open" : "closed";
-}
-var Root2$2 = Popover$1;
-var Trigger$2 = PopoverTrigger$1;
-var Portal$2 = PopoverPortal;
-var Content2$1 = PopoverContent$1;
-var Popover = Root2$2;
-var PopoverTrigger = Trigger$2;
-var PopoverContent = import_react.forwardRef(({ className, align = "center", sideOffset = 4, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$2, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content2$1, {
-	ref,
-	align,
-	sideOffset,
-	className: cn("z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2", className),
-	...props
-}) }));
-PopoverContent.displayName = Content2$1.displayName;
 var mockDictionary = {
 	the: {
 		translation: "o, a, os, as",
@@ -53589,14 +53749,11 @@ function Settings() {
 	};
 	const handleNotificationChange = async (key, checked) => {
 		if (checked && "Notification" in window && Notification.permission !== "granted") {
-			if (await Notification.requestPermission() !== "granted") {
-				toast$2({
-					title: "Permissão Negada",
-					description: "Você precisa permitir notificações no navegador para ativar este recurso.",
-					variant: "destructive"
-				});
-				return;
-			}
+			if (await Notification.requestPermission() !== "granted") toast$2({
+				title: "Notificações do Navegador Bloqueadas",
+				description: "Você receberá os lembretes apenas dentro do aplicativo.",
+				variant: "default"
+			});
 		}
 		setLocalSettings((prev) => ({
 			...prev,
@@ -53646,7 +53803,8 @@ function Settings() {
 				"langflow_words",
 				"langflow_config",
 				"langflow_settings",
-				"langflow_stats"
+				"langflow_stats",
+				"langflow_notifications"
 			].forEach((k$1) => localStorage.removeItem(k$1));
 			window.location.reload();
 		}
@@ -53655,7 +53813,8 @@ function Settings() {
 		const data = {
 			langflow_words: JSON.parse(localStorage.getItem("langflow_words") || "[]"),
 			langflow_config: JSON.parse(localStorage.getItem("langflow_config") || "{}"),
-			langflow_stats: JSON.parse(localStorage.getItem("langflow_stats") || "{}")
+			langflow_stats: JSON.parse(localStorage.getItem("langflow_stats") || "{}"),
+			langflow_notifications: JSON.parse(localStorage.getItem("langflow_notifications") || "[]")
 		};
 		const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
 		const url = URL.createObjectURL(blob);
@@ -53677,6 +53836,7 @@ function Settings() {
 				if (data.langflow_words) localStorage.setItem("langflow_words", JSON.stringify(data.langflow_words));
 				if (data.langflow_config) localStorage.setItem("langflow_config", JSON.stringify(data.langflow_config));
 				if (data.langflow_stats) localStorage.setItem("langflow_stats", JSON.stringify(data.langflow_stats));
+				if (data.langflow_notifications) localStorage.setItem("langflow_notifications", JSON.stringify(data.langflow_notifications));
 				toast$2({
 					title: "Importação Concluída",
 					description: "Recarregando a aplicação com os novos dados...",
@@ -54859,4 +55019,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BbpxV7yS.js.map
+//# sourceMappingURL=index-DKBVJQ7g.js.map

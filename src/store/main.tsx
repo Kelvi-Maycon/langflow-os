@@ -7,6 +7,7 @@ import {
   UserStats,
   DailyMission,
   Achievement,
+  AppNotification,
 } from '@/lib/types'
 import { calculateSM2, getNextReviewDate } from '@/lib/sm2'
 import { useNotificationEngine } from '@/hooks/use-notifications'
@@ -25,6 +26,10 @@ interface StoreContextType extends AppState {
   recordPracticeAttempt: (correct: boolean) => void
   recordFlashcardAttempt: (correct: boolean) => void
   submitDailyPrompt: (response: string, prompt: string, targetWord: string) => boolean
+  addNotification: (title: string, body: string) => void
+  markNotificationAsRead: (id: string) => void
+  markAllNotificationsAsRead: () => void
+  clearNotifications: () => void
 }
 
 const defaultSettings: UserSettings = {
@@ -257,7 +262,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return parsed
   })
 
-  useNotificationEngine(settings, stats, words)
+  const [notifications, setNotifications] = useState<AppNotification[]>(() => {
+    const saved = localStorage.getItem('langflow_notifications')
+    return saved
+      ? JSON.parse(saved)
+      : [
+          {
+            id: 'welcome-notification',
+            title: 'Bem-vindo ao LangFlow! 👋',
+            body: 'Configure suas preferências de estudo e ative os lembretes para manter a constância.',
+            date: Date.now(),
+            read: false,
+          },
+        ]
+  })
 
   useEffect(() => {
     localStorage.setItem('langflow_words', JSON.stringify(words))
@@ -270,6 +288,33 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem('langflow_stats', JSON.stringify(stats))
   }, [stats])
+
+  useEffect(() => {
+    localStorage.setItem('langflow_notifications', JSON.stringify(notifications))
+  }, [notifications])
+
+  const addNotification = React.useCallback((title: string, body: string) => {
+    setNotifications((prev) =>
+      [{ id: crypto.randomUUID(), title, body, date: Date.now(), read: false }, ...prev].slice(
+        0,
+        50,
+      ),
+    )
+  }, [])
+
+  const markNotificationAsRead = (id: string) => {
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)))
+  }
+
+  const markAllNotificationsAsRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
+  }
+
+  const clearNotifications = () => {
+    setNotifications([])
+  }
+
+  useNotificationEngine(settings, stats, words, addNotification)
 
   useEffect(() => {
     const { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = stats
@@ -450,6 +495,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         words,
         settings,
         stats,
+        notifications,
         addWord,
         updateWordStatus,
         reviewWord,
@@ -458,6 +504,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         submitDailyPrompt,
         recordPracticeAttempt: (correct) => updateStats(correct, 'practice'),
         recordFlashcardAttempt: (correct) => updateStats(correct, 'flashcard'),
+        addNotification,
+        markNotificationAsRead,
+        markAllNotificationsAsRead,
+        clearNotifications,
       },
     },
     children,

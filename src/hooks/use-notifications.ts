@@ -5,15 +5,12 @@ export function useNotificationEngine(
   settings: UserSettings,
   stats: UserStats,
   words: WordEntry[],
+  onNotification?: (title: string, body: string) => void,
 ) {
   useEffect(() => {
     if (!settings.dailyPromptReminder && !settings.studySessionReminder) return
 
-    if (!('Notification' in window)) return
-
     const checkAndNotify = () => {
-      if (Notification.permission !== 'granted') return
-
       const now = new Date()
       const currentHour = now.getHours()
       const currentMinute = now.getMinutes()
@@ -35,9 +32,14 @@ export function useNotificationEngine(
           const promptHistory = stats.dailyPromptsHistory || []
           const didPromptToday = promptHistory.some((h) => h.date === todayStr)
           if (!didPromptToday) {
-            new Notification('Daily Prompt Disponível! ✍️', {
-              body: 'Seu desafio diário de escrita está te esperando. Mantenha sua consistência!',
-            })
+            const title = 'Daily Prompt Disponível! ✍️'
+            const body =
+              'Seu desafio diário de escrita está te esperando. Mantenha sua consistência!'
+
+            if ('Notification' in window && Notification.permission === 'granted') {
+              new Notification(title, { body })
+            }
+            if (onNotification) onNotification(title, body)
             notified = true
           }
         }
@@ -47,9 +49,13 @@ export function useNotificationEngine(
             (w) => w.nextReviewDate <= Date.now() && w.status !== 'learning',
           )
           if (pendingReviews.length > 0) {
-            new Notification('Hora da Revisão! 🧠', {
-              body: `Você tem ${pendingReviews.length} palavras prontas para revisão no seu SRS.`,
-            })
+            const title = 'Hora da Revisão! 🧠'
+            const body = `Você tem ${pendingReviews.length} palavras prontas para revisão no seu SRS.`
+
+            if ('Notification' in window && Notification.permission === 'granted') {
+              new Notification(title, { body })
+            }
+            if (onNotification) onNotification(title, body)
             notified = true
           }
         }
@@ -70,5 +76,6 @@ export function useNotificationEngine(
     settings.preferredStudyTime,
     stats.dailyPromptsHistory,
     words,
+    onNotification,
   ])
 }

@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { NotificationsPopover } from '@/components/NotificationsPopover'
 
 const mainNav = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -98,17 +99,20 @@ export default function Layout() {
           </div>
           LangFlow
         </div>
-        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-          <SheetTrigger asChild>
-            <button className="p-2 text-muted-foreground hover:text-foreground">
-              <Menu className="w-6 h-6" />
-            </button>
-          </SheetTrigger>
-          <SheetContent side="left" className="p-0 bg-sidebar border-r-border w-[280px]">
-            <SheetTitle className="sr-only">Menu Principal</SheetTitle>
-            <SidebarContent />
-          </SheetContent>
-        </Sheet>
+        <div className="flex items-center gap-1">
+          <NotificationsPopover />
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <button className="p-2 text-muted-foreground hover:text-foreground">
+                <Menu className="w-6 h-6" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 bg-sidebar border-r-border w-[280px]">
+              <SheetTitle className="sr-only">Menu Principal</SheetTitle>
+              <SidebarContent />
+            </SheetContent>
+          </Sheet>
+        </div>
       </header>
 
       {/* Desktop Sidebar */}
@@ -118,6 +122,9 @@ export default function Layout() {
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto relative bg-background">
+        <header className="hidden md:flex items-center justify-end px-8 h-16 border-b border-border/50 bg-background/90 backdrop-blur sticky top-0 z-30">
+          <NotificationsPopover />
+        </header>
         <div className="max-w-[1400px] mx-auto w-full p-4 md:p-8 lg:px-12">
           <Outlet />
         </div>
