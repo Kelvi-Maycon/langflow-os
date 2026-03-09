@@ -9,6 +9,7 @@ import {
   Achievement,
 } from '@/lib/types'
 import { calculateSM2, getNextReviewDate } from '@/lib/sm2'
+import { useNotificationEngine } from '@/hooks/use-notifications'
 
 interface StoreContextType extends AppState {
   addWord: (
@@ -34,6 +35,9 @@ const defaultSettings: UserSettings = {
   srsMultiplier: 1.2,
   complexity: 'intermediate',
   aiModel: 'gpt-4o-mini',
+  dailyPromptReminder: false,
+  studySessionReminder: false,
+  preferredStudyTime: '18:00',
 }
 
 const getMockActivityHistory = () =>
@@ -252,6 +256,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
     return parsed
   })
+
+  useNotificationEngine(settings, stats, words)
 
   useEffect(() => {
     localStorage.setItem('langflow_words', JSON.stringify(words))

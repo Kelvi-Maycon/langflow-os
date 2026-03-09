@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useStore } from '@/store/main'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from '@/components/ui/card'
+import { UserSettings } from '@/lib/types'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import {
@@ -19,7 +13,19 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { Trash2, HardDrive, Download, Save, PlugZap, Loader2, Upload } from 'lucide-react'
+import { Switch } from '@/components/ui/switch'
+import {
+  Trash2,
+  HardDrive,
+  Download,
+  Save,
+  PlugZap,
+  Loader2,
+  Upload,
+  Bell,
+  Clock,
+  Check,
+} from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 
 export default function Settings() {
@@ -53,6 +59,21 @@ export default function Settings() {
   const handleLevelChange = (val: string) => {
     const defaults = levelDefaults[val]
     setLocalSettings((prev) => ({ ...prev, level: val as any, ...defaults }))
+  }
+
+  const handleNotificationChange = async (key: keyof UserSettings, checked: boolean) => {
+    if (checked && 'Notification' in window && Notification.permission !== 'granted') {
+      const perm = await Notification.requestPermission()
+      if (perm !== 'granted') {
+        toast({
+          title: 'Permissão Negada',
+          description: 'Você precisa permitir notificações no navegador para ativar este recurso.',
+          variant: 'destructive',
+        })
+        return
+      }
+    }
+    setLocalSettings((prev) => ({ ...prev, [key]: checked }))
   }
 
   const handleSave = () => {
@@ -309,6 +330,66 @@ export default function Settings() {
             </div>
           </CardContent>
         </Card>
+
+        <Card className="flex flex-col md:col-span-2 border-primary/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bell className="w-5 h-5 text-primary" />
+              Notificações e Lembretes
+            </CardTitle>
+            <CardDescription>
+              Configure como e quando você quer ser lembrado de estudar.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between space-x-2">
+                <div className="space-y-0.5">
+                  <Label className="text-base">Daily Prompt</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Alerta diário para o desafio de escrita.
+                  </p>
+                </div>
+                <Switch
+                  checked={localSettings?.dailyPromptReminder || false}
+                  onCheckedChange={(c) => handleNotificationChange('dailyPromptReminder', c)}
+                />
+              </div>
+
+              <div className="flex items-center justify-between space-x-2">
+                <div className="space-y-0.5">
+                  <Label className="text-base">Sessão de Estudo (SRS)</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Avisos de revisões pendentes no sistema.
+                  </p>
+                </div>
+                <Switch
+                  checked={localSettings?.studySessionReminder || false}
+                  onCheckedChange={(c) => handleNotificationChange('studySessionReminder', c)}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3 bg-secondary/30 p-5 rounded-2xl border border-border/50">
+              <Label className="text-base">Horário Preferido para Estudo</Label>
+              <p className="text-sm text-muted-foreground mb-4">
+                Enviaremos lembretes inteligentes a partir deste horário, caso você ainda não tenha
+                completado suas tarefas.
+              </p>
+              <div className="relative">
+                <Clock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                <Input
+                  type="time"
+                  value={localSettings?.preferredStudyTime || '18:00'}
+                  onChange={(e) =>
+                    setLocalSettings((prev) => ({ ...prev, preferredStudyTime: e.target.value }))
+                  }
+                  className="pl-10 h-12 bg-background shadow-sm"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="flex justify-end pt-4 pb-8 border-b border-border/60">
@@ -336,7 +417,7 @@ export default function Settings() {
                 {formatBytes(storageUsage?.bytes)} / 5 MB
               </span>
             </div>
-            <Progress value={storageUsage?.percentage ?? 0} className="h-3" />
+            <Progress value={storageUsage?.percentage ?? 0} className="h-3 bg-destructive/20" />
             <p className="text-xs text-muted-foreground">
               {(storageUsage?.percentage ?? 0).toFixed(1)}% utilizado no navegador.
             </p>
@@ -377,24 +458,5 @@ export default function Settings() {
         </CardContent>
       </Card>
     </div>
-  )
-}
-
-function Check(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
   )
 }

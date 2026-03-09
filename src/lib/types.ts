@@ -21,6 +21,9 @@ export interface UserSettings {
   srsMultiplier: number
   complexity: string
   aiModel?: string
+  dailyPromptReminder?: boolean
+  studySessionReminder?: boolean
+  preferredStudyTime?: string
 }
 
 export interface ActivityEntry {

@@ -817,6 +817,10 @@ body::selection{
   top: 0.625rem;
 }
 
+.top-3{
+  top: 0.75rem;
+}
+
 .top-3\.5{
   top: 0.875rem;
 }
@@ -1804,10 +1808,22 @@ body::selection{
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
+.space-x-2 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .space-x-4 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
   margin-right: calc(1rem * var(--tw-space-x-reverse));
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
 }
 
 .space-y-1 > :not([hidden]) ~ :not([hidden]){
@@ -2269,6 +2285,10 @@ body::selection{
   background-color: hsl(var(--destructive) / 0.1);
 }
 
+.bg-destructive\/20{
+  background-color: hsl(var(--destructive) / 0.2);
+}
+
 .bg-destructive\/5{
   background-color: hsl(var(--destructive) / 0.05);
 }
@@ -2698,6 +2718,10 @@ body::selection{
 
 .pb-8{
   padding-bottom: 2rem;
+}
+
+.pl-10{
+  padding-left: 2.5rem;
 }
 
 .pl-12{
@@ -4886,6 +4910,10 @@ body::selection{
 
   .md\:absolute{
     position: absolute;
+  }
+
+  .md\:col-span-2{
+    grid-column: span 2 / span 2;
   }
 
   .md\:block{
