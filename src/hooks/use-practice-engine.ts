@@ -6,10 +6,13 @@ export interface Block {
   text: string
 }
 
+export type ExerciseType = 'builder' | 'cloze' | 'transform'
+
 export function usePracticeEngine(currentWord: WordEntry | undefined, settings: UserSettings) {
-  const [practiceData, setPracticeData] = useState<{ pt: string; en: string } | null>(null)
+  const [practiceData, setPracticeData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [shuffledBlocks, setShuffledBlocks] = useState<Block[]>([])
+  const [exerciseType, setExerciseType] = useState<ExerciseType>('builder')
   const fetchedId = useRef<string | null>(null)
 
   useEffect(() => {
@@ -17,36 +20,56 @@ export function usePracticeEngine(currentWord: WordEntry | undefined, settings: 
     fetchedId.current = currentWord.id
     setIsLoading(true)
 
+    let type: ExerciseType = 'builder'
+    if (currentWord.status === 'srs') {
+      const types: ExerciseType[] = ['cloze', 'transform', 'builder']
+      type = types[Math.floor(Math.random() * types.length)]
+    }
+    setExerciseType(type)
+
     const fetchPractice = async () => {
       let result = null
       if (!settings.apiKey) {
         setTimeout(() => {
-          result = {
-            pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
-            en: `I saw a ${currentWord.word} today.`,
+          if (type === 'cloze') {
+            result = {
+              pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
+              en: `I saw a ${currentWord.word} today.`,
+              word: currentWord.word,
+            }
+          } else if (type === 'transform') {
+            result = {
+              instruction: 'Change to past tense',
+              original: `I see a ${currentWord.word} today.`,
+              transformed: `I saw a ${currentWord.word} today.`,
+              pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
+            }
+          } else {
+            result = {
+              pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
+              en: `I saw a ${currentWord.word} today.`,
+            }
           }
-          setupBlocks(result)
+          setupData(result, type)
         }, 800)
         return
       }
 
       try {
+        let systemPrompt = ''
+        if (type === 'builder')
+          systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || 'intermediate'}. Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`
+        else if (type === 'cloze')
+          systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || 'intermediate'}. Crie uma frase com a palavra "${currentWord.word}". Retorne JSON: {"pt": "frase pt", "en": "frase completa em ingles", "word": "${currentWord.word}"}`
+        else if (type === 'transform')
+          systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || 'intermediate'}. Crie uma frase simples usando a palavra "${currentWord.word}", uma instrução de transformação gramatical em inglês (ex: 'Change to negative', 'Change to past tense'), e a frase transformada. Retorne JSON: {"instruction": "instrução", "original": "frase original", "transformed": "frase transformada", "pt": "tradução da frase transformada"}`
+
         const payload =
           settings.aiProvider === 'gemini'
             ? {
-                url: `https://generativelanguage.googleapis.com/v1beta/models/${
-                  settings.aiModel || 'gemini-1.5-flash'
-                }:generateContent?key=${settings.apiKey}`,
+                url: `https://generativelanguage.googleapis.com/v1beta/models/${settings.aiModel || 'gemini-1.5-flash'}:generateContent?key=${settings.apiKey}`,
                 body: {
-                  contents: [
-                    {
-                      parts: [
-                        {
-                          text: `Você é professor de inglês. Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`,
-                        },
-                      ],
-                    },
-                  ],
+                  contents: [{ parts: [{ text: systemPrompt }] }],
                   generationConfig: { responseMimeType: 'application/json' },
                 },
               }
@@ -61,13 +84,9 @@ export function usePracticeEngine(currentWord: WordEntry | undefined, settings: 
                   messages: [
                     {
                       role: 'system',
-                      content:
-                        'Você é professor de inglês. Crie frase focada na palavra alvo. Retorne JSON: {"pt": "frase pt", "en": "frase en"}',
+                      content: 'You are an english teacher. Always return valid JSON.',
                     },
-                    {
-                      role: 'user',
-                      content: `Palavra: "${currentWord.word}"\nContexto: "${currentWord.contextSentence}"`,
-                    },
+                    { role: 'user', content: systemPrompt },
                   ],
                   response_format: { type: 'json_object' },
                 },
@@ -86,23 +105,39 @@ export function usePracticeEngine(currentWord: WordEntry | undefined, settings: 
             : data.choices[0].message.content,
         )
       } catch (err) {
-        result = {
-          pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
-          en: `I saw a ${currentWord.word} today.`,
-        }
+        if (type === 'cloze')
+          result = {
+            pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
+            en: `I saw a ${currentWord.word} today.`,
+            word: currentWord.word,
+          }
+        else if (type === 'transform')
+          result = {
+            instruction: 'Change to past tense',
+            original: `I see a ${currentWord.word} today.`,
+            transformed: `I saw a ${currentWord.word} today.`,
+            pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
+          }
+        else
+          result = {
+            pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
+            en: `I saw a ${currentWord.word} today.`,
+          }
       }
-      setupBlocks(result)
+      setupData(result, type)
     }
 
-    const setupBlocks = (data: { pt: string; en: string }) => {
+    const setupData = (data: any, type: ExerciseType) => {
       setPracticeData(data)
-      const words = data.en.split(' ').filter(Boolean)
-      const blocks: Block[] = words.map((text, i) => ({ id: i, text }))
-      setShuffledBlocks([...blocks].sort(() => Math.random() - 0.5))
+      if (type === 'builder') {
+        const words = data.en.split(' ').filter(Boolean)
+        const blocks: Block[] = words.map((text: string, i: number) => ({ id: i, text }))
+        setShuffledBlocks([...blocks].sort(() => Math.random() - 0.5))
+      }
       setIsLoading(false)
     }
     fetchPractice()
   }, [currentWord, settings])
 
-  return { practiceData, isLoading, shuffledBlocks }
+  return { practiceData, isLoading, shuffledBlocks, exerciseType }
 }

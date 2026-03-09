@@ -8,6 +8,7 @@ import Reader from './pages/Reader'
 import Practice from './pages/Practice'
 import Flashcards from './pages/Flashcards'
 import Settings from './pages/Settings'
+import Vocabulary from './pages/Vocabulary'
 import NotFound from './pages/NotFound'
 import { StoreProvider } from './store/main'
 
@@ -24,7 +25,7 @@ const App = () => (
             <Route path="/practice" element={<Practice />} />
             <Route path="/flashcards" element={<Flashcards />} />
             <Route path="/settings" element={<Settings />} />
-            {/* Redirect obsolete builder route gracefully */}
+            <Route path="/vocabulary" element={<Vocabulary />} />
             <Route path="/builder" element={<Navigate to="/practice" replace />} />
           </Route>
           <Route path="*" element={<NotFound />} />

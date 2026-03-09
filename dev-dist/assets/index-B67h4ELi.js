@@ -1109,7 +1109,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			return dispatcher;
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$33 = require_react(), Internals = {
+		var React$34 = require_react(), Internals = {
 			d: {
 				f: noop$2,
 				r: function() {
@@ -1125,7 +1125,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			},
 			p: 0,
 			findDOMNode: null
-		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$33.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$34.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
 		exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
 		exports.createPortal = function(children, container) {
@@ -2365,7 +2365,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			"number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
 		}
 		function validateOptionProps(element, props) {
-			props.value ?? ("object" === typeof props.children && null !== props.children ? React$33.Children.forEach(props.children, function(child) {
+			props.value ?? ("object" === typeof props.children && null !== props.children ? React$34.Children.forEach(props.children, function(child) {
 				null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = !0, console.error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."));
 			}) : null == props.dangerouslySetInnerHTML || didWarnInvalidInnerHTML || (didWarnInvalidInnerHTML = !0, console.error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.")));
 			null == props.selected || didWarnSelectedSetOnOption || (console.error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>."), didWarnSelectedSetOnOption = !0);
@@ -12656,10 +12656,10 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			container[internalContainerInstanceKey] && (container._reactRootContainer ? console.error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.") : console.error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it."));
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var Scheduler = require_scheduler(), React$33 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
+		var Scheduler = require_scheduler(), React$34 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
 		var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
 		var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$33.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$34.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
 			pending: !1,
 			data: null,
 			method: null,
@@ -15281,7 +15281,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			}
 		};
 		(function() {
-			var isomorphicReactPackageVersion = React$33.version;
+			var isomorphicReactPackageVersion = React$34.version;
 			if ("19.2.4" !== isomorphicReactPackageVersion) throw Error("Incompatible React versions: The \"react\" and \"react-dom\" packages must have the exact same version. Instead got:\n  - react:      " + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.4\nLearn more: https://react.dev/warnings/version-mismatch"));
 		})();
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
@@ -17604,15 +17604,15 @@ var require_react_jsx_runtime_development = /* @__PURE__ */ __commonJSMin(((expo
 		function isValidElement$7(object) {
 			return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
 		}
-		var React$33 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$33.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+		var React$34 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$34.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
 			return null;
 		};
-		React$33 = { react_stack_bottom_frame: function(callStackForError) {
+		React$34 = { react_stack_bottom_frame: function(callStackForError) {
 			return callStackForError();
 		} };
 		var specialPropKeyWarningShown;
 		var didWarnAboutElementRef = {};
-		var unknownOwnerDebugStack = React$33.react_stack_bottom_frame.bind(React$33, UnknownOwner)();
+		var unknownOwnerDebugStack = React$34.react_stack_bottom_frame.bind(React$34, UnknownOwner)();
 		var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
 		var didWarnAboutKeySpread = {};
 		exports.Fragment = REACT_FRAGMENT_TYPE;
@@ -19131,6 +19131,23 @@ var CircleX = createLucideIcon("circle-x", [
 	["path", {
 		d: "m9 9 6 6",
 		key: "z0biqf"
+	}]
+]);
+var Database = createLucideIcon("database", [
+	["ellipse", {
+		cx: "12",
+		cy: "5",
+		rx: "9",
+		ry: "3",
+		key: "msslwz"
+	}],
+	["path", {
+		d: "M3 5V19A9 3 0 0 0 21 19V5",
+		key: "1wlel7"
+	}],
+	["path", {
+		d: "M3 12A9 3 0 0 0 21 12",
+		key: "mv7ke4"
 	}]
 ]);
 var Download = createLucideIcon("download", [
@@ -25711,13 +25728,13 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return x$2 === y$1 && (0 !== x$2 || 1 / x$2 === 1 / y$1) || x$2 !== x$2 && y$1 !== y$1;
 		}
 		function useSyncExternalStore$2(subscribe$1, getSnapshot) {
-			didWarnOld18Alpha || void 0 === React$33.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
+			didWarnOld18Alpha || void 0 === React$34.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
 			var value = getSnapshot();
 			if (!didWarnUncachedGetSnapshot) {
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$15({ inst: {
+			cachedValue = useState$18({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -25731,7 +25748,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$10(function() {
+			useEffect$11(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -25754,8 +25771,8 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$33 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$15 = React$33.useState, useEffect$10 = React$33.useEffect, useLayoutEffect$1 = React$33.useLayoutEffect, useDebugValue = React$33.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-		exports.useSyncExternalStore = void 0 !== React$33.useSyncExternalStore ? React$33.useSyncExternalStore : shim;
+		var React$34 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$18 = React$34.useState, useEffect$11 = React$34.useEffect, useLayoutEffect$1 = React$34.useLayoutEffect, useDebugValue = React$34.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		exports.useSyncExternalStore = void 0 !== React$34.useSyncExternalStore ? React$34.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
 }));
@@ -50495,28 +50512,54 @@ function usePracticeEngine(currentWord, settings) {
 	const [practiceData, setPracticeData] = (0, import_react.useState)(null);
 	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
 	const [shuffledBlocks, setShuffledBlocks] = (0, import_react.useState)([]);
+	const [exerciseType, setExerciseType] = (0, import_react.useState)("builder");
 	const fetchedId = (0, import_react.useRef)(null);
 	(0, import_react.useEffect)(() => {
 		if (!currentWord || fetchedId.current === currentWord.id) return;
 		fetchedId.current = currentWord.id;
 		setIsLoading(true);
+		let type = "builder";
+		if (currentWord.status === "srs") {
+			const types = [
+				"cloze",
+				"transform",
+				"builder"
+			];
+			type = types[Math.floor(Math.random() * types.length)];
+		}
+		setExerciseType(type);
 		const fetchPractice = async () => {
 			let result = null;
 			if (!settings.apiKey) {
 				setTimeout(() => {
-					result = {
+					if (type === "cloze") result = {
+						pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
+						en: `I saw a ${currentWord.word} today.`,
+						word: currentWord.word
+					};
+					else if (type === "transform") result = {
+						instruction: "Change to past tense",
+						original: `I see a ${currentWord.word} today.`,
+						transformed: `I saw a ${currentWord.word} today.`,
+						pt: `Eu vi um(a) ${currentWord.translation} hoje.`
+					};
+					else result = {
 						pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
 						en: `I saw a ${currentWord.word} today.`
 					};
-					setupBlocks(result);
+					setupData(result, type);
 				}, 800);
 				return;
 			}
 			try {
+				let systemPrompt = "";
+				if (type === "builder") systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || "intermediate"}. Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`;
+				else if (type === "cloze") systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || "intermediate"}. Crie uma frase com a palavra "${currentWord.word}". Retorne JSON: {"pt": "frase pt", "en": "frase completa em ingles", "word": "${currentWord.word}"}`;
+				else if (type === "transform") systemPrompt = `Você é professor de inglês. Nível: ${settings.complexity || "intermediate"}. Crie uma frase simples usando a palavra "${currentWord.word}", uma instrução de transformação gramatical em inglês (ex: 'Change to negative', 'Change to past tense'), e a frase transformada. Retorne JSON: {"instruction": "instrução", "original": "frase original", "transformed": "frase transformada", "pt": "tradução da frase transformada"}`;
 				const payload = settings.aiProvider === "gemini" ? {
 					url: `https://generativelanguage.googleapis.com/v1beta/models/${settings.aiModel || "gemini-1.5-flash"}:generateContent?key=${settings.apiKey}`,
 					body: {
-						contents: [{ parts: [{ text: `Você é professor de inglês. Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}` }] }],
+						contents: [{ parts: [{ text: systemPrompt }] }],
 						generationConfig: { responseMimeType: "application/json" }
 					}
 				} : {
@@ -50529,10 +50572,10 @@ function usePracticeEngine(currentWord, settings) {
 						model: settings.aiModel || "gpt-4o-mini",
 						messages: [{
 							role: "system",
-							content: "Você é professor de inglês. Crie frase focada na palavra alvo. Retorne JSON: {\"pt\": \"frase pt\", \"en\": \"frase en\"}"
+							content: "You are an english teacher. Always return valid JSON."
 						}, {
 							role: "user",
-							content: `Palavra: "${currentWord.word}"\nContexto: "${currentWord.contextSentence}"`
+							content: systemPrompt
 						}],
 						response_format: { type: "json_object" }
 					}
@@ -50545,16 +50588,27 @@ function usePracticeEngine(currentWord, settings) {
 				if (data.error) throw new Error(data.error.message);
 				result = JSON.parse(settings.aiProvider === "gemini" ? data.candidates[0].content.parts[0].text : data.choices[0].message.content);
 			} catch (err) {
-				result = {
+				if (type === "cloze") result = {
+					pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
+					en: `I saw a ${currentWord.word} today.`,
+					word: currentWord.word
+				};
+				else if (type === "transform") result = {
+					instruction: "Change to past tense",
+					original: `I see a ${currentWord.word} today.`,
+					transformed: `I saw a ${currentWord.word} today.`,
+					pt: `Eu vi um(a) ${currentWord.translation} hoje.`
+				};
+				else result = {
 					pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
 					en: `I saw a ${currentWord.word} today.`
 				};
 			}
-			setupBlocks(result);
+			setupData(result, type);
 		};
-		const setupBlocks = (data) => {
+		const setupData = (data, type$1) => {
 			setPracticeData(data);
-			setShuffledBlocks([...data.en.split(" ").filter(Boolean).map((text, i) => ({
+			if (type$1 === "builder") setShuffledBlocks([...data.en.split(" ").filter(Boolean).map((text, i) => ({
 				id: i,
 				text
 			}))].sort(() => Math.random() - .5));
@@ -50565,132 +50619,117 @@ function usePracticeEngine(currentWord, settings) {
 	return {
 		practiceData,
 		isLoading,
-		shuffledBlocks
+		shuffledBlocks,
+		exerciseType
 	};
+}
+function UserProgress() {
+	const { stats } = useStore();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+		className: "w-full max-w-md bg-gradient-to-br from-primary/10 to-secondary/30 border-primary/20 shadow-sm animate-fade-in-up",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+			className: "p-6 grid grid-cols-3 gap-4 text-center",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col items-center space-y-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "p-3 bg-orange-500/20 rounded-full",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Flame, { className: "w-6 h-6 text-orange-500" })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-3xl font-bold text-foreground",
+							children: stats.streak
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs text-muted-foreground uppercase tracking-wider font-semibold",
+							children: "Ofensiva"
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col items-center space-y-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "p-3 bg-yellow-500/20 rounded-full",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Star, { className: "w-6 h-6 text-yellow-500" })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-3xl font-bold text-foreground",
+							children: stats.xp
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs text-muted-foreground uppercase tracking-wider font-semibold",
+							children: "XP Total"
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col items-center space-y-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "p-3 bg-blue-500/20 rounded-full",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "w-6 h-6 text-blue-500" })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-3xl font-bold text-foreground",
+							children: stats.practiceCorrect
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs text-muted-foreground uppercase tracking-wider font-semibold",
+							children: "Acertos"
+						})
+					]
+				})
+			]
+		})
+	});
 }
 function PracticeEmpty() {
 	const navigate = useNavigate();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-6",
+		className: "flex flex-col items-center justify-center h-[70vh] text-center animate-fade-in space-y-8",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "w-32 h-32 bg-primary/10 rounded-full flex items-center justify-center mb-2 border border-primary/20 shadow-sm",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-16 h-16 text-primary" })
+				className: "w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center border border-primary/20 shadow-sm",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-12 h-12 text-primary" })
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-4xl font-bold text-foreground tracking-tight",
-				children: "Sessão Concluída!"
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+					className: "text-4xl font-bold text-foreground tracking-tight",
+					children: "Sessão Concluída!"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-muted-foreground max-w-md text-lg mx-auto",
+					children: "Você completou todas as palavras na fila de prática de hoje. Bom trabalho!"
+				})]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground max-w-md text-xl",
-				children: "Você completou todas as palavras na fila de prática. Vá para a Biblioteca capturar novos termos."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				size: "lg",
-				className: "mt-4 text-base h-14 px-8 rounded-xl",
-				onClick: () => navigate("/reader"),
-				children: ["Ir para a Biblioteca ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "ml-2 w-5 h-5" })]
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserProgress, {}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex gap-4 pt-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					size: "lg",
+					className: "text-base h-14 px-8 rounded-xl shadow-md",
+					onClick: () => navigate("/reader"),
+					children: ["Ler e Capturar ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "ml-2 w-5 h-5" })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					variant: "outline",
+					size: "lg",
+					className: "text-base h-14 px-8 rounded-xl",
+					onClick: () => navigate("/vocabulary"),
+					children: ["Gerenciar Vocabulário ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "ml-2 w-5 h-5" })]
+				})]
 			})
 		]
 	});
 }
-function Practice() {
-	const { words, reviewWord, settings, recordPracticeAttempt } = useStore();
-	const { toast: toast$2 } = useToast();
-	const [reviewedIds, setReviewedIds] = (0, import_react.useState)(/* @__PURE__ */ new Set());
-	const queue = (0, import_react.useMemo)(() => {
-		const now$2 = Date.now();
-		const reviews = words.filter((w) => w.status === "srs" && w.nextReviewDate <= now$2 && !reviewedIds.has(w.id));
-		const builders = words.filter((w) => w.status === "builder" && !reviewedIds.has(w.id));
-		return [...reviews.sort((a$1, b$1) => a$1.nextReviewDate - b$1.nextReviewDate), ...builders];
-	}, [words, reviewedIds]);
-	const currentWord = queue[0];
-	const [initialQueueSize, setInitialQueueSize] = (0, import_react.useState)(0);
-	(0, import_react.useEffect)(() => {
-		const currentTotal = queue.length + reviewedIds.size;
-		if (currentTotal > initialQueueSize) setInitialQueueSize(currentTotal);
-	}, [
-		queue.length,
-		reviewedIds.size,
-		initialQueueSize
-	]);
-	const { practiceData, isLoading, shuffledBlocks } = usePracticeEngine(currentWord, settings);
-	const [selectedIndices, setSelectedIndices] = (0, import_react.useState)([]);
-	const [attempts, setAttempts] = (0, import_react.useState)(0);
-	const [status, setStatus] = (0, import_react.useState)("idle");
-	const [feedback, setFeedback] = (0, import_react.useState)([]);
+function PracticeBuilder({ shuffledBlocks, selectedIndices, setSelectedIndices, status, feedback }) {
 	const [draggedId, setDraggedId] = (0, import_react.useState)(null);
 	const [dragTarget, setDragTarget] = (0, import_react.useState)(null);
-	(0, import_react.useEffect)(() => {
-		if (currentWord) {
-			setSelectedIndices([]);
-			setAttempts(0);
-			setStatus("idle");
-			setFeedback([]);
-			setDraggedId(null);
-			setDragTarget(null);
-		}
-	}, [currentWord?.id]);
 	const handleBlockClick = (id) => {
 		if (status !== "idle" && status !== "checking") return;
 		if (selectedIndices.includes(id)) setSelectedIndices((prev) => prev.filter((x$2) => x$2 !== id));
 		else setSelectedIndices((prev) => [...prev, id]);
-		if (status === "checking") setStatus("idle");
-	};
-	const checkAnswer = () => {
-		if (!practiceData) return;
-		const targetWords = practiceData.en.split(" ").filter(Boolean);
-		if (selectedIndices.length !== targetWords.length) {
-			toast$2({
-				title: "Faltam blocos",
-				description: "Utilize todas as palavras.",
-				variant: "destructive"
-			});
-			return;
-		}
-		let isCorrect = true;
-		setFeedback(selectedIndices.map((id, i) => {
-			const correct = shuffledBlocks.find((b$1) => b$1.id === id).text.toLowerCase().replace(/[.,!?]/g, "") === targetWords[i].toLowerCase().replace(/[.,!?]/g, "");
-			if (!correct) isCorrect = false;
-			return correct;
-		}));
-		if (isCorrect) {
-			setStatus("correct");
-			recordPracticeAttempt(true);
-		} else {
-			const newAttempts = attempts + 1;
-			setAttempts(newAttempts);
-			if (newAttempts >= 3) {
-				setStatus("incorrect");
-				recordPracticeAttempt(false);
-			} else {
-				setStatus("checking");
-				setTimeout(() => {
-					setStatus("idle");
-					setFeedback([]);
-				}, 1500);
-			}
-		}
-	};
-	const handleRate = (quality) => {
-		if (!currentWord) return;
-		reviewWord(currentWord.id, quality);
-		setReviewedIds((prev) => {
-			const next = new Set(prev);
-			next.add(currentWord.id);
-			return next;
-		});
-	};
-	const getPredictedInterval = (quality) => {
-		if (!currentWord) return 0;
-		const { interval } = calculateSM2(quality, currentWord.repetitions, currentWord.interval, currentWord.easeFactor, settings.srsMultiplier);
-		return interval;
-	};
-	const formatInterval = (days) => {
-		if (days === 0) return "<1d";
-		if (days < 30) return `${days}d`;
-		if (days < 365) return `${Math.round(days / 30)}m`;
-		return `${Math.round(days / 365)}a`;
 	};
 	const onDragStart = (e, id) => {
 		if (status === "correct" || status === "incorrect") {
@@ -50724,28 +50763,374 @@ function Practice() {
 			else base = cn(base, "bg-background border-border text-foreground hover:bg-secondary");
 			if (dragTarget === id) base = cn(base, "ring-2 ring-primary ring-offset-2 border-primary");
 		} else if (selectedIndices.includes(id)) base = cn(base, "bg-secondary/50 text-transparent border-transparent shadow-none scale-95 pointer-events-none");
-		else base = cn(base, "bg-card border-border hover:bg-secondary text-foreground hover:-translate-y-1 shadow-sm hover:shadow-md");
+		else base = cn(base, "bg-card border-border hover:bg-secondary text-foreground hover:-translate-y-1 shadow-sm");
 		return cn(base, draggedId === id && "opacity-50");
 	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex-1 flex flex-col justify-end space-y-6",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			onDragOver: (e) => e.preventDefault(),
+			onDrop: (e) => {
+				e.preventDefault();
+				setDragTarget(null);
+				if (draggedId !== null && !selectedIndices.includes(draggedId)) setSelectedIndices([...selectedIndices, draggedId]);
+				setDraggedId(null);
+			},
+			className: cn("min-h-[100px] p-6 rounded-3xl border-2 flex flex-wrap gap-3 items-center transition-colors", selectedIndices.length === 0 ? "border-dashed border-border/80 bg-secondary/20" : "border-solid border-primary/30 bg-primary/5"),
+			children: [selectedIndices.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				className: "text-muted-foreground/60 italic px-2 font-medium w-full text-center",
+				children: "Arraste ou clique nos blocos abaixo para inseri-los aqui..."
+			}), selectedIndices.map((id, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+				draggable: true,
+				onDragStart: (e) => onDragStart(e, id),
+				onDragOver: (e) => {
+					e.preventDefault();
+					if (draggedId !== id) setDragTarget(id);
+				},
+				onDragLeave: () => setDragTarget(null),
+				onDrop: (e) => onDropBlock(e, id),
+				onClick: () => handleBlockClick(id),
+				className: getBlockClass(id, true, i),
+				children: shuffledBlocks.find((b$1) => b$1.id === id)?.text
+			}, id))]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			onDragOver: (e) => e.preventDefault(),
+			onDrop: (e) => {
+				e.preventDefault();
+				setDragTarget(null);
+				if (draggedId !== null && selectedIndices.includes(draggedId)) setSelectedIndices((prev) => prev.filter((id) => id !== draggedId));
+				setDraggedId(null);
+			},
+			className: "flex flex-wrap justify-center gap-3 py-6 min-h-[100px]",
+			children: shuffledBlocks.map((block) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+				draggable: !selectedIndices.includes(block.id),
+				onDragStart: (e) => onDragStart(e, block.id),
+				onClick: () => handleBlockClick(block.id),
+				disabled: selectedIndices.includes(block.id) || status === "correct" || status === "incorrect",
+				className: getBlockClass(block.id, false),
+				children: block.text
+			}, block.id))
+		})]
+	});
+}
+function PracticeCloze({ practiceData, textInput, setTextInput, status, onEnter }) {
+	const parts = practiceData.en.split(new RegExp(`\\b(${practiceData.word})\\b`, "gi"));
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex-1 flex flex-col items-center justify-center space-y-8 animate-fade-in",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-xl md:text-2xl text-muted-foreground text-center font-medium",
+			children: practiceData.pt
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "text-2xl md:text-4xl font-medium text-center leading-[3.5rem] text-foreground",
+			children: parts.map((part, i) => {
+				if (part.toLowerCase() === practiceData.word.toLowerCase()) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+					type: "text",
+					value: textInput,
+					onChange: (e) => setTextInput(e.target.value),
+					onKeyDown: (e) => e.key === "Enter" && onEnter(),
+					disabled: status === "correct" || status === "incorrect",
+					autoFocus: true,
+					className: cn("mx-2 inline-block w-36 md:w-48 border-b-4 border-primary bg-transparent text-center focus:outline-none focus:border-primary/80 transition-colors placeholder:text-muted-foreground/30", status === "checking" && "border-destructive text-destructive", status === "correct" && "border-success text-success", status === "incorrect" && "border-destructive text-destructive"),
+					placeholder: "____"
+				}, i);
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: part }, i);
+			})
+		})]
+	});
+}
+function PracticeTransform({ practiceData, textInput, setTextInput, status, onEnter }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex-1 flex flex-col justify-center space-y-8 max-w-xl mx-auto w-full animate-fade-in",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "bg-primary/10 p-5 rounded-2xl border border-primary/20 text-center animate-fade-in-up shadow-sm",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-xs uppercase tracking-widest text-primary font-bold mb-2",
+					children: "Transform Instruction"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-2xl font-semibold text-foreground",
+					children: practiceData.instruction
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "text-center space-y-3 mb-6",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-3xl font-medium text-foreground",
+					children: practiceData.original
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-lg text-muted-foreground font-medium",
+					children: practiceData.pt
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+				value: textInput,
+				onChange: (e) => setTextInput(e.target.value),
+				disabled: status === "correct" || status === "incorrect",
+				placeholder: "Type the transformed sentence here...",
+				className: cn("h-16 text-xl text-center rounded-2xl shadow-sm border-2 transition-all duration-300 placeholder:text-muted-foreground/50", status === "checking" && "border-destructive focus-visible:ring-destructive text-destructive", status === "correct" && "border-success focus-visible:ring-success text-success", status === "incorrect" && "border-destructive focus-visible:ring-destructive text-destructive", status === "idle" && "border-border focus-visible:border-primary"),
+				onKeyDown: (e) => e.key === "Enter" && onEnter(),
+				autoFocus: true
+			})
+		]
+	});
+}
+function PracticeFooter({ status, currentWord, practiceData, exerciseType, selectedIndicesLength = 0, textInputLength = 0, checkAnswer, handleRate }) {
+	const { settings } = useStore();
+	const getPredictedInterval = (quality) => {
+		if (!currentWord) return 0;
+		const { interval } = calculateSM2(quality, currentWord.repetitions, currentWord.interval, currentWord.easeFactor, settings.srsMultiplier);
+		return interval;
+	};
+	const formatInterval = (days) => {
+		if (days === 0) return "<1d";
+		if (days < 30) return `${days}d`;
+		if (days < 365) return `${Math.round(days / 30)}m`;
+		return `${Math.round(days / 365)}a`;
+	};
+	const isBtnDisabled = exerciseType === "builder" ? selectedIndicesLength === 0 : textInputLength === 0;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "pt-4 border-t border-border mt-auto w-full",
+		children: [
+			status === "incorrect" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "text-destructive flex items-start gap-4 bg-destructive/10 border border-destructive/20 p-5 rounded-2xl animate-fade-in-up mb-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleX, { className: "w-6 h-6 shrink-0 mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "font-bold text-lg",
+					children: "Tentativas esgotadas"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "text-base opacity-90",
+					children: [
+						"A resposta correta era:",
+						" ",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+							className: "font-semibold",
+							children: exerciseType === "transform" ? practiceData.transformed : exerciseType === "cloze" ? practiceData.word : practiceData.en
+						})
+					]
+				})] })]
+			}),
+			status === "correct" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "text-success-foreground flex items-center gap-4 bg-success/10 border border-success/20 p-5 rounded-2xl animate-fade-in-up mb-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-7 h-7 shrink-0 text-success" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "font-bold text-lg text-success",
+					children: "Excelente! Construção perfeita."
+				})]
+			}),
+			status === "correct" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col gap-3 w-full animate-fade-in pt-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-center text-sm text-muted-foreground font-medium mb-1",
+					children: "Avalie sua facilidade de lembrar:"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 md:grid-cols-4 gap-3 w-full",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							onClick: () => handleRate(1),
+							variant: "outline",
+							className: "h-16 flex-col gap-1 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-bold text-base",
+								children: "Errei"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs opacity-80 font-medium",
+								children: formatInterval(getPredictedInterval(1))
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							onClick: () => handleRate(3),
+							variant: "outline",
+							className: "h-16 flex-col gap-1 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-bold text-base",
+								children: "Difícil"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs opacity-80 font-medium",
+								children: formatInterval(getPredictedInterval(3))
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							onClick: () => handleRate(4),
+							variant: "outline",
+							className: "h-16 flex-col gap-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-bold text-base",
+								children: "Bom"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs opacity-80 font-medium",
+								children: formatInterval(getPredictedInterval(4))
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							onClick: () => handleRate(5),
+							variant: "outline",
+							className: "h-16 flex-col gap-1 border-success text-success hover:bg-success hover:text-success-foreground",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-bold text-base",
+								children: "Fácil"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs opacity-80 font-medium",
+								children: formatInterval(getPredictedInterval(5))
+							})]
+						})
+					]
+				})]
+			}) : status === "incorrect" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				onClick: () => handleRate(1),
+				size: "lg",
+				className: "w-full h-16 text-lg rounded-2xl shadow-md bg-primary hover:bg-primary/90 text-primary-foreground animate-fade-in",
+				children: ["Continuar ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-6 h-6 ml-2" })]
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+				onClick: checkAnswer,
+				size: "lg",
+				className: "w-full h-16 text-lg rounded-2xl shadow-md",
+				disabled: isBtnDisabled,
+				children: "Verificar Resposta"
+			})
+		]
+	});
+}
+function PracticeContent({ currentWord, practiceData, shuffledBlocks, exerciseType, onNext }) {
+	const { recordPracticeAttempt, reviewWord } = useStore();
+	const { toast: toast$2 } = useToast();
+	const [selectedIndices, setSelectedIndices] = (0, import_react.useState)([]);
+	const [textInput, setTextInput] = (0, import_react.useState)("");
+	const [attempts, setAttempts] = (0, import_react.useState)(0);
+	const [status, setStatus] = (0, import_react.useState)("idle");
+	const [feedback, setFeedback] = (0, import_react.useState)([]);
+	(0, import_react.useEffect)(() => {
+		setSelectedIndices([]);
+		setTextInput("");
+		setAttempts(0);
+		setStatus("idle");
+		setFeedback([]);
+	}, [currentWord.id, exerciseType]);
+	const checkAnswer = () => {
+		if (!practiceData) return;
+		if (exerciseType === "builder") {
+			const targetWords = practiceData.en.split(" ").filter(Boolean);
+			if (selectedIndices.length !== targetWords.length) {
+				toast$2({
+					title: "Faltam blocos",
+					description: "Utilize todas as palavras.",
+					variant: "destructive"
+				});
+				return;
+			}
+			let isCorrect = true;
+			setFeedback(selectedIndices.map((id, i) => {
+				const correct = shuffledBlocks.find((b$1) => b$1.id === id).text.toLowerCase().replace(/[.,!?]/g, "") === targetWords[i].toLowerCase().replace(/[.,!?]/g, "");
+				if (!correct) isCorrect = false;
+				return correct;
+			}));
+			handleResult(isCorrect);
+		} else if (exerciseType === "cloze") {
+			const targetWord = practiceData.word.toLowerCase().trim();
+			handleResult(textInput.toLowerCase().trim() === targetWord);
+		} else if (exerciseType === "transform") {
+			const targetSentence = practiceData.transformed.toLowerCase().replace(/[.,!?]/g, "").trim();
+			handleResult(textInput.toLowerCase().replace(/[.,!?]/g, "").trim() === targetSentence);
+		}
+	};
+	const handleResult = (isCorrect) => {
+		if (isCorrect) {
+			setStatus("correct");
+			recordPracticeAttempt(true);
+		} else {
+			const newAttempts = attempts + 1;
+			setAttempts(newAttempts);
+			if (newAttempts >= 3) {
+				setStatus("incorrect");
+				recordPracticeAttempt(false);
+			} else {
+				setStatus("checking");
+				setTimeout(() => setStatus("idle"), 1500);
+			}
+		}
+	};
+	const handleRate = (quality) => {
+		reviewWord(currentWord.id, quality);
+		onNext(currentWord.id);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex-1 flex flex-col h-full z-10",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "mb-8 text-center flex-shrink-0",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: cn("px-4 py-1.5 rounded-full font-bold text-sm border uppercase tracking-wider inline-block mb-6", currentWord.status === "srs" ? "bg-orange-500/10 text-orange-500 border-orange-500/20" : "bg-primary/10 text-primary border-primary/20"),
+					children: currentWord.status === "srs" ? exerciseType === "transform" ? "Transformação de Frase" : exerciseType === "cloze" ? "Preencha a Lacuna" : "Revisão da Frase" : "Construa a frase"
+				}), exerciseType === "builder" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-3xl md:text-4xl font-medium text-foreground leading-tight",
+					children: practiceData.pt
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex-1 flex flex-col min-h-0",
+				children: [
+					exerciseType === "builder" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeBuilder, {
+						shuffledBlocks,
+						selectedIndices,
+						setSelectedIndices,
+						status,
+						feedback
+					}),
+					exerciseType === "cloze" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeCloze, {
+						practiceData,
+						textInput,
+						setTextInput,
+						status,
+						onEnter: checkAnswer
+					}),
+					exerciseType === "transform" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeTransform, {
+						practiceData,
+						textInput,
+						setTextInput,
+						status,
+						onEnter: checkAnswer
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex-shrink-0 mt-6",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeFooter, {
+					status,
+					currentWord,
+					practiceData,
+					exerciseType,
+					selectedIndicesLength: selectedIndices.length,
+					textInputLength: textInput.trim().length,
+					checkAnswer,
+					handleRate
+				})
+			})
+		]
+	});
+}
+function Practice() {
+	const { words, settings } = useStore();
+	const [reviewedIds, setReviewedIds] = (0, import_react.useState)(/* @__PURE__ */ new Set());
+	const queue = (0, import_react.useMemo)(() => {
+		const now$2 = Date.now();
+		const reviews = words.filter((w) => w.status === "srs" && w.nextReviewDate <= now$2 && !reviewedIds.has(w.id));
+		const builders = words.filter((w) => w.status === "builder" && !reviewedIds.has(w.id));
+		return [...reviews.sort((a$1, b$1) => a$1.nextReviewDate - b$1.nextReviewDate), ...builders];
+	}, [words, reviewedIds]);
+	const currentWord = queue[0];
+	const [initialQueueSize, setInitialQueueSize] = (0, import_react.useState)(0);
+	(0, import_react.useEffect)(() => {
+		const total = queue.length + reviewedIds.size;
+		if (total > initialQueueSize) setInitialQueueSize(total);
+	}, [queue.length, reviewedIds.size]);
+	const { practiceData, isLoading, shuffledBlocks, exerciseType } = usePracticeEngine(currentWord, settings);
 	if (!queue.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeEmpty, {});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in max-w-3xl mx-auto h-full flex flex-col pt-4",
+		className: "space-y-6 animate-fade-in max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col pt-4",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-			className: "flex justify-between items-end mb-4",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+			className: "flex justify-between items-end mb-2 flex-shrink-0",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 				className: "text-3xl font-bold tracking-tight text-foreground flex items-center gap-3",
 				children: currentWord.status === "srs" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "w-8 h-8 text-orange-500" }), " Revisão Espaçada"] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-8 h-8 text-primary" }), " Sentence Builder"] })
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-2 text-lg flex items-center gap-2",
-				children: currentWord.status === "srs" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "bg-orange-500/10 text-orange-500 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider border border-orange-500/20",
-					children: "Revisão"
-				}), "Relembre como formar esta frase."] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider border border-primary/20",
-					children: "Novo"
-				}), "Arraste os blocos para montar a frase."] })
-			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "text-sm font-medium bg-card px-4 py-2 rounded-full border border-border shadow-sm text-foreground",
+			}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "text-sm font-medium bg-card px-4 py-2 rounded-full border shadow-sm",
 				children: [
 					reviewedIds.size + 1,
 					" de ",
@@ -50753,170 +51138,19 @@ function Practice() {
 				]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
-			className: "flex-1 p-8 md:p-12 flex flex-col border-2 border-border/50 shadow-sm bg-card/80 backdrop-blur-sm relative overflow-hidden",
+			className: "flex-1 p-6 md:p-10 flex flex-col border-2 shadow-sm bg-card/80 backdrop-blur-sm relative overflow-hidden min-h-0",
 			children: isLoading || !practiceData ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex-1 flex flex-col items-center justify-center gap-4",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "w-10 h-10 animate-spin text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-muted-foreground font-medium text-lg animate-pulse",
+					className: "text-muted-foreground font-medium animate-pulse",
 					children: "Gerando exercício ideal com IA..."
 				})]
-			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex-1 flex flex-col h-full z-10",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mb-8 text-center",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: cn("px-4 py-1.5 rounded-full font-bold text-sm border uppercase tracking-wider inline-block mb-6", currentWord.status === "srs" ? "bg-orange-500/10 text-orange-500 border-orange-500/20" : "bg-primary/10 text-primary border-primary/20"),
-						children: currentWord.status === "srs" ? "Revisão da Frase" : "Construa a frase"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-3xl md:text-4xl font-medium text-foreground leading-tight",
-						children: practiceData.pt
-					})]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex-1 flex flex-col justify-end space-y-6",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							onDragOver: (e) => e.preventDefault(),
-							onDrop: (e) => {
-								e.preventDefault();
-								setDragTarget(null);
-								if (draggedId !== null && !selectedIndices.includes(draggedId)) setSelectedIndices([...selectedIndices, draggedId]);
-								setDraggedId(null);
-							},
-							className: cn("min-h-[100px] p-6 rounded-3xl border-2 flex flex-wrap gap-3 items-center transition-colors", selectedIndices.length === 0 ? "border-dashed border-border/80 bg-secondary/20" : "border-solid border-primary/30 bg-primary/5"),
-							children: [selectedIndices.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-muted-foreground/60 italic px-2 font-medium w-full text-center",
-								children: "Arraste ou clique nos blocos abaixo para inseri-los aqui..."
-							}), selectedIndices.map((id, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								draggable: true,
-								onDragStart: (e) => onDragStart(e, id),
-								onDragOver: (e) => {
-									e.preventDefault();
-									if (draggedId !== id) setDragTarget(id);
-								},
-								onDragLeave: () => setDragTarget(null),
-								onDrop: (e) => onDropBlock(e, id),
-								onClick: () => handleBlockClick(id),
-								className: getBlockClass(id, true, i),
-								children: shuffledBlocks.find((b$1) => b$1.id === id)?.text
-							}, id))]
-						}),
-						status === "incorrect" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "text-destructive flex items-start gap-4 bg-destructive/10 border border-destructive/20 p-5 rounded-2xl animate-fade-in-up",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleX, { className: "w-6 h-6 shrink-0 mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "font-bold text-lg",
-								children: "Tentativas esgotadas"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-								className: "text-base opacity-90",
-								children: [
-									"A frase correta era:",
-									" ",
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
-										className: "font-semibold",
-										children: practiceData.en
-									})
-								]
-							})] })]
-						}),
-						status === "correct" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "text-success-foreground flex items-center gap-4 bg-success/10 border border-success/20 p-5 rounded-2xl animate-fade-in-up",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-7 h-7 shrink-0 text-success" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "font-bold text-lg text-success",
-								children: "Excelente! Construção perfeita."
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							onDragOver: (e) => e.preventDefault(),
-							onDrop: (e) => {
-								e.preventDefault();
-								setDragTarget(null);
-								if (draggedId !== null && selectedIndices.includes(draggedId)) setSelectedIndices((prev) => prev.filter((id) => id !== draggedId));
-								setDraggedId(null);
-							},
-							className: "flex flex-wrap justify-center gap-3 py-6 min-h-[100px]",
-							children: shuffledBlocks.map((block) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								draggable: !selectedIndices.includes(block.id),
-								onDragStart: (e) => onDragStart(e, block.id),
-								onClick: () => handleBlockClick(block.id),
-								disabled: selectedIndices.includes(block.id) || status === "correct" || status === "incorrect",
-								className: getBlockClass(block.id, false),
-								children: block.text
-							}, block.id))
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "pt-4 border-t border-border mt-auto",
-							children: status === "correct" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex flex-col gap-3 w-full animate-fade-in pt-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "text-center text-sm text-muted-foreground font-medium mb-1",
-									children: "Avalie sua facilidade de lembrar:"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "grid grid-cols-2 md:grid-cols-4 gap-3 w-full",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-											onClick: () => handleRate(1),
-											variant: "outline",
-											className: "h-16 flex-col gap-1 border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "font-bold text-base",
-												children: "Errei"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-xs opacity-80 font-medium",
-												children: formatInterval(getPredictedInterval(1))
-											})]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-											onClick: () => handleRate(3),
-											variant: "outline",
-											className: "h-16 flex-col gap-1 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition-all",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "font-bold text-base",
-												children: "Difícil"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-xs opacity-80 font-medium",
-												children: formatInterval(getPredictedInterval(3))
-											})]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-											onClick: () => handleRate(4),
-											variant: "outline",
-											className: "h-16 flex-col gap-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "font-bold text-base",
-												children: "Bom"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-xs opacity-80 font-medium",
-												children: formatInterval(getPredictedInterval(4))
-											})]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-											onClick: () => handleRate(5),
-											variant: "outline",
-											className: "h-16 flex-col gap-1 border-success text-success hover:bg-success hover:text-success-foreground transition-all",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "font-bold text-base",
-												children: "Fácil"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-xs opacity-80 font-medium",
-												children: formatInterval(getPredictedInterval(5))
-											})]
-										})
-									]
-								})]
-							}) : status === "incorrect" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-								onClick: () => handleRate(1),
-								size: "lg",
-								className: "w-full h-16 text-lg rounded-2xl shadow-md bg-primary hover:bg-primary/90 text-primary-foreground animate-fade-in",
-								children: ["Continuar ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-6 h-6 ml-2" })]
-							}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-								onClick: checkAnswer,
-								size: "lg",
-								className: "w-full h-16 text-lg rounded-2xl shadow-md",
-								disabled: selectedIndices.length === 0,
-								children: "Verificar Resposta"
-							})
-						})
-					]
-				})]
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeContent, {
+				currentWord,
+				practiceData,
+				shuffledBlocks,
+				exerciseType,
+				onNext: (id) => setReviewedIds(new Set(reviewedIds).add(id))
 			})
 		})]
 	});
@@ -51528,6 +51762,245 @@ function Check(props) {
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M20 6 9 17l-5-5" })
 	});
 }
+const CEFRLists = {
+	A1: [
+		{
+			word: "hello",
+			translation: "olá",
+			contextSentence: "Hello, how are you?"
+		},
+		{
+			word: "goodbye",
+			translation: "adeus",
+			contextSentence: "Goodbye, see you later."
+		},
+		{
+			word: "water",
+			translation: "água",
+			contextSentence: "I drink water every day."
+		},
+		{
+			word: "food",
+			translation: "comida",
+			contextSentence: "This food is delicious."
+		},
+		{
+			word: "friend",
+			translation: "amigo",
+			contextSentence: "He is my best friend."
+		}
+	],
+	A2: [
+		{
+			word: "experience",
+			translation: "experiência",
+			contextSentence: "It was a great experience."
+		},
+		{
+			word: "journey",
+			translation: "jornada",
+			contextSentence: "The journey takes two hours."
+		},
+		{
+			word: "weather",
+			translation: "clima",
+			contextSentence: "The weather is nice today."
+		},
+		{
+			word: "suggest",
+			translation: "sugerir",
+			contextSentence: "I suggest we go home now."
+		}
+	],
+	B1: [
+		{
+			word: "advantage",
+			translation: "vantagem",
+			contextSentence: "There is one big advantage."
+		},
+		{
+			word: "development",
+			translation: "desenvolvimento",
+			contextSentence: "Software development is hard."
+		},
+		{
+			word: "environment",
+			translation: "meio ambiente",
+			contextSentence: "We must protect the environment."
+		},
+		{
+			word: "opportunity",
+			translation: "oportunidade",
+			contextSentence: "This is a great opportunity."
+		}
+	],
+	B2: [
+		{
+			word: "inevitable",
+			translation: "inevitável",
+			contextSentence: "Change is completely inevitable."
+		},
+		{
+			word: "consequence",
+			translation: "consequência",
+			contextSentence: "You must face the consequence."
+		},
+		{
+			word: "sustainable",
+			translation: "sustentável",
+			contextSentence: "We need sustainable solutions."
+		},
+		{
+			word: "crucial",
+			translation: "crucial",
+			contextSentence: "It is crucial to understand this."
+		}
+	],
+	C1: [
+		{
+			word: "ubiquitous",
+			translation: "onipresente",
+			contextSentence: "Smartphones are ubiquitous today."
+		},
+		{
+			word: "ephemeral",
+			translation: "efêmero",
+			contextSentence: "Fame is often ephemeral."
+		},
+		{
+			word: "pragmatic",
+			translation: "pragmático",
+			contextSentence: "He took a pragmatic approach."
+		},
+		{
+			word: "meticulous",
+			translation: "meticuloso",
+			contextSentence: "She is a meticulous researcher."
+		}
+	]
+};
+function Vocabulary() {
+	const { addWord, words } = useStore();
+	const { toast: toast$2 } = useToast();
+	const [bulkText, setBulkText] = (0, import_react.useState)("");
+	const handleBulkUpload = () => {
+		const lines = bulkText.split("\n").map((l) => l.trim()).filter(Boolean);
+		if (!lines.length) return;
+		let added = 0;
+		lines.forEach((line) => {
+			const [word, translation] = line.split(",").map((s$1) => s$1.trim());
+			if (word && !words.find((w) => w.word.toLowerCase() === word.toLowerCase())) {
+				addWord({
+					word,
+					translation: translation || "N/A",
+					contextSentence: `This is a context sentence for ${word}.`,
+					status: "builder"
+				});
+				added++;
+			}
+		});
+		setBulkText("");
+		toast$2({
+			title: "Upload concluído",
+			description: `${added} palavras adicionadas com sucesso.`
+		});
+	};
+	const handleSeedCEFR = (level) => {
+		const list = CEFRLists[level] || [];
+		let added = 0;
+		list.forEach((item) => {
+			if (!words.find((w) => w.word.toLowerCase() === item.word.toLowerCase())) {
+				addWord({
+					word: item.word,
+					translation: item.translation,
+					contextSentence: item.contextSentence,
+					status: "builder"
+				});
+				added++;
+			}
+		});
+		toast$2({
+			title: "Semente concluída",
+			description: `${added} palavras do nível ${level} adicionadas.`
+		});
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "space-y-8 animate-fade-in-up max-w-4xl mx-auto pb-12 pt-4",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
+			className: "text-4xl font-bold tracking-tight text-foreground flex items-center gap-3",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-10 h-10 text-primary" }), "Gerenciamento de Vocabulário"]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-muted-foreground mt-2 text-lg",
+			children: "Importe novas palavras em lote ou utilize nossas listas curadas por nível CEFR."
+		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+			defaultValue: "bulk",
+			className: "w-full",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+					className: "grid w-full grid-cols-2 h-14 rounded-2xl p-1 bg-secondary/50",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+						value: "bulk",
+						className: "rounded-xl text-base data-[state=active]:shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { className: "w-5 h-5 mr-2" }), " Upload em Lote"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsTrigger, {
+						value: "cefr",
+						className: "rounded-xl text-base data-[state=active]:shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Database, { className: "w-5 h-5 mr-2" }), " Listas CEFR (Sementes)"]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "bulk",
+					className: "mt-6",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "border-border shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Upload em Lote" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Cole uma lista de palavras e traduções (separadas por vírgula), uma por linha. Exemplo: \"apple, maçã\"" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+							className: "space-y-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
+								value: bulkText,
+								onChange: (e) => setBulkText(e.target.value),
+								placeholder: "apple, maçã\ncar, carro\nhouse, casa",
+								className: "min-h-[250px] font-mono text-base p-4"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+								onClick: handleBulkUpload,
+								size: "lg",
+								className: "w-full h-14 text-lg rounded-xl shadow-md",
+								children: "Importar Palavras"
+							})]
+						})]
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					value: "cefr",
+					className: "mt-6",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+						className: "border-border shadow-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Listas CEFR" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Adicione palavras essenciais baseadas no Quadro Europeu Comum de Referência." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+							children: Object.keys(CEFRLists).map((level) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+								className: "bg-secondary/20 border-border/50 shadow-sm transition-all hover:bg-secondary/40",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
+									className: "pb-3",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+										className: "text-2xl text-primary",
+										children: ["Nível ", level]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardDescription, {
+										className: "text-sm font-medium",
+										children: [CEFRLists[level].length, " palavras disponíveis"]
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+									variant: "outline",
+									className: "w-full h-12",
+									onClick: () => handleSeedCEFR(level),
+									children: "Adicionar ao meu vocabulário"
+								}) })]
+							}, level))
+						}) })]
+					})
+				})
+			]
+		})]
+	});
+}
 var NotFound = () => {
 	const location = useLocation();
 	(0, import_react.useEffect)(() => {
@@ -51595,6 +52068,10 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, {})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+					path: "/vocabulary",
+					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Vocabulary, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
 					path: "/builder",
 					element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Navigate, {
 						to: "/practice",
@@ -51611,4 +52088,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-Bsqkku9v.js.map
+//# sourceMappingURL=index-B67h4ELi.js.map
