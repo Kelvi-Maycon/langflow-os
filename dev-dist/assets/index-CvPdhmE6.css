@@ -905,6 +905,11 @@ body::selection{
   margin-right: 0.875rem;
 }
 
+.mx-4{
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .mx-auto{
   margin-left: auto;
   margin-right: auto;
@@ -918,6 +923,15 @@ body::selection{
 .my-1{
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
+}
+
+.my-2{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.-ml-2{
+  margin-left: -0.5rem;
 }
 
 .-ml-4{
@@ -1437,14 +1451,6 @@ body::selection{
   width: 20%;
 }
 
-.w-\[260px\]{
-  width: 260px;
-}
-
-.w-\[280px\]{
-  width: 280px;
-}
-
 .w-\[320px\]{
   width: 320px;
 }
@@ -1857,12 +1863,6 @@ body::selection{
   margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
 }
 
-.space-y-1 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
-}
-
 .space-y-1\.5 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse: 0;
   margin-top: calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));
@@ -2262,10 +2262,6 @@ body::selection{
 
 .border-l-transparent{
   border-left-color: transparent;
-}
-
-.border-r-border{
-  border-right-color: hsl(var(--border));
 }
 
 .border-t-primary{
@@ -2831,6 +2827,10 @@ body::selection{
   padding-bottom: 0.5rem;
 }
 
+.pb-24{
+  padding-bottom: 6rem;
+}
+
 .pb-3{
   padding-bottom: 0.75rem;
 }
@@ -3239,10 +3239,6 @@ body::selection{
   color: hsl(var(--sidebar-foreground));
 }
 
-.text-sidebar-foreground\/50{
-  color: hsl(var(--sidebar-foreground) / 0.5);
-}
-
 .text-sidebar-foreground\/70{
   color: hsl(var(--sidebar-foreground) / 0.7);
 }
@@ -3291,6 +3287,10 @@ body::selection{
 
 .opacity-100{
   opacity: 1;
+}
+
+.opacity-20{
+  opacity: 0.2;
 }
 
 .opacity-40{
@@ -3751,6 +3751,36 @@ body::selection{
   color: hsl(var(--muted-foreground) / 0.5);
 }
 
+.before\:absolute::before{
+  content: var(--tw-content);
+  position: absolute;
+}
+
+.before\:bottom-\[-20px\]::before{
+  content: var(--tw-content);
+  bottom: -20px;
+}
+
+.before\:left-\[11px\]::before{
+  content: var(--tw-content);
+  left: 11px;
+}
+
+.before\:top-8::before{
+  content: var(--tw-content);
+  top: 2rem;
+}
+
+.before\:w-px::before{
+  content: var(--tw-content);
+  width: 1px;
+}
+
+.before\:bg-border::before{
+  content: var(--tw-content);
+  background-color: hsl(var(--border));
+}
+
 .after\:absolute::after{
   content: var(--tw-content);
   position: absolute;
@@ -3806,6 +3836,11 @@ body::selection{
   border-width: 0px;
 }
 
+.last\:before\:hidden:last-child::before{
+  content: var(--tw-content);
+  display: none;
+}
+
 .hover\:-translate-y-1:hover{
   --tw-translate-y: -0.25rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -3837,6 +3872,10 @@ body::selection{
 
 .hover\:border-primary\/40:hover{
   border-color: hsl(var(--primary) / 0.4);
+}
+
+.hover\:border-sidebar-border:hover{
+  border-color: hsl(var(--sidebar-border));
 }
 
 .hover\:bg-accent:hover{
@@ -4228,6 +4267,12 @@ body::selection{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.group\/log:hover .group-hover\/log\:scale-110{
+  --tw-scale-x: 1.1;
+  --tw-scale-y: 1.1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 .group:hover .group-hover\:scale-105{
   --tw-scale-x: 1.05;
   --tw-scale-y: 1.05;
@@ -4287,6 +4332,10 @@ body::selection{
 
 .group:hover .group-hover\:bg-warning\/30{
   background-color: hsl(var(--warning) / 0.3);
+}
+
+.group\/log:hover .group-hover\/log\:text-foreground{
+  color: hsl(var(--foreground));
 }
 
 .group:hover .group-hover\:text-blue-600{
@@ -5269,6 +5318,11 @@ body::selection{
 
   .md\:p-8{
     padding: 2rem;
+  }
+
+  .md\:px-6{
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 
   .md\:text-2xl{

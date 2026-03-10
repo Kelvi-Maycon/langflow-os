@@ -18097,7 +18097,7 @@ function handleAndDispatchCustomEvent$1(name, handler, detail, { discrete }) {
 	if (discrete) dispatchDiscreteCustomEvent(target, event);
 	else target.dispatchEvent(event);
 }
-var Root$8 = DismissableLayer;
+var Root$9 = DismissableLayer;
 var Branch = DismissableLayerBranch;
 var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
 var import_react_dom$5 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
@@ -18276,7 +18276,7 @@ var VISUALLY_HIDDEN_STYLES = Object.freeze({
 	whiteSpace: "nowrap",
 	wordWrap: "normal"
 });
-var NAME$2 = "VisuallyHidden";
+var NAME$3 = "VisuallyHidden";
 var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.span, {
 		...props,
@@ -18287,8 +18287,8 @@ var VisuallyHidden = import_react.forwardRef((props, forwardedRef) => {
 		}
 	});
 });
-VisuallyHidden.displayName = NAME$2;
-var Root$7 = VisuallyHidden;
+VisuallyHidden.displayName = NAME$3;
+var Root$8 = VisuallyHidden;
 var import_react_dom$4 = /* @__PURE__ */ __toESM(require_react_dom(), 1);
 var PROVIDER_NAME$1 = "ToastProvider";
 var [Collection$2, useCollection$2, createCollectionScope$2] = createCollection("Toast");
@@ -18587,7 +18587,7 @@ var ToastImpl = import_react.forwardRef((props, forwardedRef) => {
 		onClose: handleClose,
 		children: import_react_dom$4.createPortal(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Collection$2.ItemSlot, {
 			scope: __scopeToast,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$9, {
 				asChild: true,
 				onEscapeKeyDown: composeEventHandlers(onEscapeKeyDown, () => {
 					if (!context.isFocusedToastEscapeKeyDownRef.current) handleClose();
@@ -19391,20 +19391,6 @@ var Map$5 = createLucideIcon("map", [
 		key: "1uimfh"
 	}]
 ]);
-var Menu = createLucideIcon("menu", [
-	["path", {
-		d: "M4 5h16",
-		key: "1tepv9"
-	}],
-	["path", {
-		d: "M4 12h16",
-		key: "1lakjw"
-	}],
-	["path", {
-		d: "M4 19h16",
-		key: "1djgab"
-	}]
-]);
 var Mic = createLucideIcon("mic", [
 	["path", {
 		d: "M12 19v3",
@@ -19423,6 +19409,17 @@ var Mic = createLucideIcon("mic", [
 		key: "s6n7sd"
 	}]
 ]);
+var PanelLeft = createLucideIcon("panel-left", [["rect", {
+	width: "18",
+	height: "18",
+	x: "3",
+	y: "3",
+	rx: "2",
+	key: "afitv7"
+}], ["path", {
+	d: "M9 3v18",
+	key: "fh3hqa"
+}]]);
 var PartyPopper = createLucideIcon("party-popper", [
 	["path", {
 		d: "M5.8 11.3 2 22l10.7-3.79",
@@ -21588,10 +21585,10 @@ var Observer = class {
 			if (typeof id !== "string" && typeof id !== "number") return { unwrap };
 			else return Object.assign(id, { unwrap });
 		};
-		this.custom = (jsx$26, data) => {
+		this.custom = (jsx$27, data) => {
 			const id = (data == null ? void 0 : data.id) || toastsCounter++;
 			this.create({
-				jsx: jsx$26(id),
+				jsx: jsx$27(id),
 				id,
 				...data
 			});
@@ -23717,7 +23714,7 @@ var arrow = (options$1, deps) => ({
 	...arrow$1$1(options$1),
 	options: [options$1, deps]
 });
-var NAME$1 = "Arrow";
+var NAME$2 = "Arrow";
 var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { children, width = 10, height = 5, ...arrowProps } = props;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive.svg, {
@@ -23730,8 +23727,8 @@ var Arrow$1 = import_react.forwardRef((props, forwardedRef) => {
 		children: props.asChild ? children : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("polygon", { points: "0,0 30,0 15,10" })
 	});
 });
-Arrow$1.displayName = NAME$1;
-var Root$6 = Arrow$1;
+Arrow$1.displayName = NAME$2;
+var Root$7 = Arrow$1;
 function useSize(element) {
 	const [size$3, setSize] = import_react.useState(void 0);
 	useLayoutEffect2(() => {
@@ -23948,7 +23945,7 @@ var PopperArrow = import_react.forwardRef(function PopperArrow2(props, forwarded
 			}[contentContext.placedSide],
 			visibility: contentContext.shouldHideArrow ? "hidden" : void 0
 		},
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
 			...arrowProps,
 			ref: forwardedRef,
 			style: {
@@ -24330,7 +24327,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Slottable$1, { children }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VisuallyHiddenContentContextProvider, {
 				scope: __scopeTooltip,
 				isInside: true,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$7, {
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$8, {
 					id: context.contentId,
 					role: "tooltip",
 					children: ariaLabel || children
@@ -24495,6 +24492,222 @@ var TooltipContent = import_react.forwardRef(({ className, sideOffset = 4, ...pr
 	...props
 }));
 TooltipContent.displayName = Content2$3.displayName;
+var REACT_LAZY_TYPE = Symbol.for("react.lazy");
+var use = import_react[" use ".trim().toString()];
+function isPromiseLike(value) {
+	return typeof value === "object" && value !== null && "then" in value;
+}
+function isLazyComponent(element) {
+	return element != null && typeof element === "object" && "$$typeof" in element && element.$$typeof === REACT_LAZY_TYPE && "_payload" in element && isPromiseLike(element._payload);
+}
+/* @__NO_SIDE_EFFECTS__ */
+function createSlot$1(ownerName) {
+	const SlotClone = /* @__PURE__ */ createSlotClone(ownerName);
+	const Slot2 = import_react.forwardRef((props, forwardedRef) => {
+		let { children, ...slotProps } = props;
+		if (isLazyComponent(children) && typeof use === "function") children = use(children._payload);
+		const childrenArray = import_react.Children.toArray(children);
+		const slottable = childrenArray.find(isSlottable);
+		if (slottable) {
+			const newElement = slottable.props.children;
+			const newChildren = childrenArray.map((child) => {
+				if (child === slottable) {
+					if (import_react.Children.count(newElement) > 1) return import_react.Children.only(null);
+					return import_react.isValidElement(newElement) ? newElement.props.children : null;
+				} else return child;
+			});
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlotClone, {
+				...slotProps,
+				ref: forwardedRef,
+				children: import_react.isValidElement(newElement) ? import_react.cloneElement(newElement, void 0, newChildren) : null
+			});
+		}
+		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlotClone, {
+			...slotProps,
+			ref: forwardedRef,
+			children
+		});
+	});
+	Slot2.displayName = `${ownerName}.Slot`;
+	return Slot2;
+}
+var Slot$2 = /* @__PURE__ */ createSlot$1("Slot");
+/* @__NO_SIDE_EFFECTS__ */
+function createSlotClone(ownerName) {
+	const SlotClone = import_react.forwardRef((props, forwardedRef) => {
+		let { children, ...slotProps } = props;
+		if (isLazyComponent(children) && typeof use === "function") children = use(children._payload);
+		if (import_react.isValidElement(children)) {
+			const childrenRef = getElementRef(children);
+			const props2 = mergeProps(slotProps, children.props);
+			if (children.type !== import_react.Fragment) props2.ref = forwardedRef ? composeRefs(forwardedRef, childrenRef) : childrenRef;
+			return import_react.cloneElement(children, props2);
+		}
+		return import_react.Children.count(children) > 1 ? import_react.Children.only(null) : null;
+	});
+	SlotClone.displayName = `${ownerName}.SlotClone`;
+	return SlotClone;
+}
+var SLOTTABLE_IDENTIFIER = Symbol("radix.slottable");
+function isSlottable(child) {
+	return import_react.isValidElement(child) && typeof child.type === "function" && "__radixId" in child.type && child.type.__radixId === SLOTTABLE_IDENTIFIER;
+}
+function mergeProps(slotProps, childProps) {
+	const overrideProps = { ...childProps };
+	for (const propName in childProps) {
+		const slotPropValue = slotProps[propName];
+		const childPropValue = childProps[propName];
+		if (/^on[A-Z]/.test(propName)) {
+			if (slotPropValue && childPropValue) overrideProps[propName] = (...args) => {
+				const result = childPropValue(...args);
+				slotPropValue(...args);
+				return result;
+			};
+			else if (slotPropValue) overrideProps[propName] = slotPropValue;
+		} else if (propName === "style") overrideProps[propName] = {
+			...slotPropValue,
+			...childPropValue
+		};
+		else if (propName === "className") overrideProps[propName] = [slotPropValue, childPropValue].filter(Boolean).join(" ");
+	}
+	return {
+		...slotProps,
+		...overrideProps
+	};
+}
+function getElementRef(element) {
+	let getter = Object.getOwnPropertyDescriptor(element.props, "ref")?.get;
+	let mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
+	if (mayWarn) return element.ref;
+	getter = Object.getOwnPropertyDescriptor(element, "ref")?.get;
+	mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
+	if (mayWarn) return element.props.ref;
+	return element.props.ref || element.ref;
+}
+var MOBILE_BREAKPOINT = 768;
+function useIsMobile() {
+	const [isMobile, setIsMobile] = import_react.useState(void 0);
+	import_react.useEffect(() => {
+		const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+		const onChange = () => {
+			setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+		};
+		mql.addEventListener("change", onChange);
+		setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+		return () => mql.removeEventListener("change", onChange);
+	}, []);
+	return !!isMobile;
+}
+var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-all duration-250 ease-out active:scale-[0.98] active:shadow-[0_0_15px_rgba(108,63,197,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", {
+	variants: {
+		variant: {
+			default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md",
+			destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+			outline: "border border-input bg-background text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground",
+			secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+			ghost: "text-foreground hover:bg-accent hover:text-accent-foreground",
+			link: "text-primary underline-offset-4 hover:underline"
+		},
+		size: {
+			default: "h-10 px-4 py-2",
+			sm: "h-9 px-3 text-xs",
+			lg: "h-12 px-8 text-base",
+			icon: "h-10 w-10"
+		}
+	},
+	defaultVariants: {
+		variant: "default",
+		size: "default"
+	}
+});
+var Button = import_react.forwardRef(({ className, variant, size: size$3, asChild = false, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "button", {
+		className: cn(buttonVariants({
+			variant,
+			size: size$3,
+			className
+		})),
+		ref,
+		...props
+	});
+});
+Button.displayName = "Button";
+var Input = import_react.forwardRef(({ className, type, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+		type,
+		className: cn("flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50", className),
+		ref,
+		...props
+	});
+});
+Input.displayName = "Input";
+require_react_dom();
+var Primitive$1 = [
+	"a",
+	"button",
+	"div",
+	"form",
+	"h2",
+	"h3",
+	"img",
+	"input",
+	"label",
+	"li",
+	"nav",
+	"ol",
+	"p",
+	"select",
+	"span",
+	"svg",
+	"ul"
+].reduce((primitive, node) => {
+	const Slot$4 = /* @__PURE__ */ createSlot$1(`Primitive.${node}`);
+	const Node$1 = import_react.forwardRef((props, forwardedRef) => {
+		const { asChild, ...primitiveProps } = props;
+		const Comp = asChild ? Slot$4 : node;
+		if (typeof window !== "undefined") window[Symbol.for("radix-ui")] = true;
+		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Comp, {
+			...primitiveProps,
+			ref: forwardedRef
+		});
+	});
+	Node$1.displayName = `Primitive.${node}`;
+	return {
+		...primitive,
+		[node]: Node$1
+	};
+}, {});
+var NAME$1 = "Separator";
+var DEFAULT_ORIENTATION = "horizontal";
+var ORIENTATIONS = ["horizontal", "vertical"];
+var Separator$2 = import_react.forwardRef((props, forwardedRef) => {
+	const { decorative, orientation: orientationProp = DEFAULT_ORIENTATION, ...domProps } = props;
+	const orientation = isValidOrientation(orientationProp) ? orientationProp : DEFAULT_ORIENTATION;
+	const ariaOrientation = orientation === "vertical" ? orientation : void 0;
+	const semanticProps = decorative ? { role: "none" } : {
+		"aria-orientation": ariaOrientation,
+		role: "separator"
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+		"data-orientation": orientation,
+		...semanticProps,
+		...domProps,
+		ref: forwardedRef
+	});
+});
+Separator$2.displayName = NAME$1;
+function isValidOrientation(orientation) {
+	return ORIENTATIONS.includes(orientation);
+}
+var Root$6 = Separator$2;
+var Separator$1 = import_react.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$6, {
+	ref,
+	decorative,
+	orientation,
+	className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className),
+	...props
+}));
+Separator$1.displayName = Root$6.displayName;
 var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
 var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
 var EVENT_OPTIONS$1 = {
@@ -25674,7 +25887,6 @@ var Title = DialogTitle$1;
 var Description = DialogDescription$1;
 var Close = DialogClose$1;
 var Sheet = Root$5;
-var SheetTrigger = Trigger$3;
 var SheetPortal = Portal$3;
 var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
 	className: cn("fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
@@ -25726,6 +25938,373 @@ var SheetDescription = import_react.forwardRef(({ className, ...props }, ref) =>
 	...props
 }));
 SheetDescription.displayName = Description.displayName;
+function Skeleton({ className, ...props }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: cn("animate-pulse rounded-md bg-muted", className),
+		...props
+	});
+}
+var SIDEBAR_COOKIE_NAME = "sidebar_state";
+var SIDEBAR_COOKIE_MAX_AGE = 3600 * 24 * 7;
+var SIDEBAR_WIDTH = "16rem";
+var SIDEBAR_WIDTH_MOBILE = "18rem";
+var SIDEBAR_WIDTH_ICON = "3rem";
+var SIDEBAR_KEYBOARD_SHORTCUT = "b";
+var SidebarContext = import_react.createContext(null);
+function useSidebar() {
+	const context = import_react.useContext(SidebarContext);
+	if (!context) throw new Error("useSidebar must be used within a SidebarProvider.");
+	return context;
+}
+var SidebarProvider = import_react.forwardRef(({ defaultOpen = true, open: openProp, onOpenChange: setOpenProp, className, style, children, ...props }, ref) => {
+	const isMobile = useIsMobile();
+	const [openMobile, setOpenMobile] = import_react.useState(false);
+	const [_open, _setOpen] = import_react.useState(defaultOpen);
+	const open = openProp ?? _open;
+	const setOpen = import_react.useCallback((value) => {
+		const openState = typeof value === "function" ? value(open) : value;
+		if (setOpenProp) setOpenProp(openState);
+		else _setOpen(openState);
+		document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+	}, [setOpenProp, open]);
+	const toggleSidebar = import_react.useCallback(() => {
+		return isMobile ? setOpenMobile((open$1) => !open$1) : setOpen((open$1) => !open$1);
+	}, [
+		isMobile,
+		setOpen,
+		setOpenMobile
+	]);
+	import_react.useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (event.key === SIDEBAR_KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
+				event.preventDefault();
+				toggleSidebar();
+			}
+		};
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [toggleSidebar]);
+	const state = open ? "expanded" : "collapsed";
+	const contextValue = import_react.useMemo(() => ({
+		state,
+		open,
+		setOpen,
+		isMobile,
+		openMobile,
+		setOpenMobile,
+		toggleSidebar
+	}), [
+		state,
+		open,
+		setOpen,
+		isMobile,
+		openMobile,
+		setOpenMobile,
+		toggleSidebar
+	]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContext.Provider, {
+		value: contextValue,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipProvider, {
+			delayDuration: 0,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				style: {
+					"--sidebar-width": SIDEBAR_WIDTH,
+					"--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+					...style
+				},
+				className: cn("group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar", className),
+				ref,
+				...props,
+				children
+			})
+		})
+	});
+});
+SidebarProvider.displayName = "SidebarProvider";
+var Sidebar = import_react.forwardRef(({ side = "left", variant = "sidebar", collapsible = "offcanvas", className, children, ...props }, ref) => {
+	const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+	if (collapsible === "none") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: cn("flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground", className),
+		ref,
+		...props,
+		children
+	});
+	if (isMobile) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sheet, {
+		open: openMobile,
+		onOpenChange: setOpenMobile,
+		...props,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetContent, {
+			"data-sidebar": "sidebar",
+			"data-mobile": "true",
+			className: "w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden",
+			style: { "--sidebar-width": SIDEBAR_WIDTH_MOBILE },
+			side,
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetHeader, {
+				className: "sr-only",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetTitle, { children: "Sidebar" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetDescription, { children: "Displays the mobile sidebar." })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex h-full w-full flex-col",
+				children
+			})]
+		})
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		ref,
+		className: "group peer hidden text-sidebar-foreground md:block",
+		"data-state": state,
+		"data-collapsible": state === "collapsed" ? collapsible : "",
+		"data-variant": variant,
+		"data-side": side,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: cn("relative w-[--sidebar-width] bg-transparent transition-[width] duration-200 ease-linear", "group-data-[collapsible=offcanvas]:w-0", "group-data-[side=right]:rotate-180", variant === "floating" || variant === "inset" ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]" : "group-data-[collapsible=icon]:w-[--sidebar-width-icon]") }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: cn("fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-200 ease-linear md:flex", side === "left" ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]" : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]", variant === "floating" || variant === "inset" ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]" : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l", className),
+			...props,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				"data-sidebar": "sidebar",
+				className: "flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow",
+				children
+			})
+		})]
+	});
+});
+Sidebar.displayName = "Sidebar";
+var SidebarTrigger = import_react.forwardRef(({ className, onClick, ...props }, ref) => {
+	const { toggleSidebar } = useSidebar();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+		ref,
+		"data-sidebar": "trigger",
+		variant: "ghost",
+		size: "icon",
+		className: cn("h-7 w-7", className),
+		onClick: (event) => {
+			onClick?.(event);
+			toggleSidebar();
+		},
+		...props,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PanelLeft, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+			className: "sr-only",
+			children: "Toggle Sidebar"
+		})] })
+	});
+});
+SidebarTrigger.displayName = "SidebarTrigger";
+var SidebarRail = import_react.forwardRef(({ className, ...props }, ref) => {
+	const { toggleSidebar } = useSidebar();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+		ref,
+		"data-sidebar": "rail",
+		"aria-label": "Toggle Sidebar",
+		tabIndex: -1,
+		onClick: toggleSidebar,
+		title: "Toggle Sidebar",
+		className: cn("absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex", "[[data-side=left]_&]:cursor-w-resize [[data-side=right]_&]:cursor-e-resize", "[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize", "group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-sidebar", "[[data-side=left][data-collapsible=offcanvas]_&]:-right-2", "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2", className),
+		...props
+	});
+});
+SidebarRail.displayName = "SidebarRail";
+var SidebarInset = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+		ref,
+		className: cn("relative flex w-full flex-1 flex-col bg-background", "md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow", className),
+		...props
+	});
+});
+SidebarInset.displayName = "SidebarInset";
+var SidebarInput = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+		ref,
+		"data-sidebar": "input",
+		className: cn("h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring", className),
+		...props
+	});
+});
+SidebarInput.displayName = "SidebarInput";
+var SidebarHeader = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		ref,
+		"data-sidebar": "header",
+		className: cn("flex flex-col gap-2 p-2", className),
+		...props
+	});
+});
+SidebarHeader.displayName = "SidebarHeader";
+var SidebarFooter = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		ref,
+		"data-sidebar": "footer",
+		className: cn("flex flex-col gap-2 p-2", className),
+		...props
+	});
+});
+SidebarFooter.displayName = "SidebarFooter";
+var SidebarSeparator = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator$1, {
+		ref,
+		"data-sidebar": "separator",
+		className: cn("mx-2 w-auto bg-sidebar-border", className),
+		...props
+	});
+});
+SidebarSeparator.displayName = "SidebarSeparator";
+var SidebarContent = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		ref,
+		"data-sidebar": "content",
+		className: cn("flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden", className),
+		...props
+	});
+});
+SidebarContent.displayName = "SidebarContent";
+var SidebarGroup = import_react.forwardRef(({ className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		ref,
+		"data-sidebar": "group",
+		className: cn("relative flex w-full min-w-0 flex-col p-2", className),
+		...props
+	});
+});
+SidebarGroup.displayName = "SidebarGroup";
+var SidebarGroupLabel = import_react.forwardRef(({ className, asChild = false, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "div", {
+		ref,
+		"data-sidebar": "group-label",
+		className: cn("flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-none ring-sidebar-ring transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0", "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0", className),
+		...props
+	});
+});
+SidebarGroupLabel.displayName = "SidebarGroupLabel";
+var SidebarGroupAction = import_react.forwardRef(({ className, asChild = false, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "button", {
+		ref,
+		"data-sidebar": "group-action",
+		className: cn("absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0", "after:absolute after:-inset-2 after:md:hidden", "group-data-[collapsible=icon]:hidden", className),
+		...props
+	});
+});
+SidebarGroupAction.displayName = "SidebarGroupAction";
+var SidebarGroupContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	ref,
+	"data-sidebar": "group-content",
+	className: cn("w-full text-sm", className),
+	...props
+}));
+SidebarGroupContent.displayName = "SidebarGroupContent";
+var SidebarMenu = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+	ref,
+	"data-sidebar": "menu",
+	className: cn("flex w-full min-w-0 flex-col gap-1", className),
+	...props
+}));
+SidebarMenu.displayName = "SidebarMenu";
+var SidebarMenuItem = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
+	ref,
+	"data-sidebar": "menu-item",
+	className: cn("group/menu-item relative", className),
+	...props
+}));
+SidebarMenuItem.displayName = "SidebarMenuItem";
+var sidebarMenuButtonVariants = cva("peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0", {
+	variants: {
+		variant: {
+			default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+			outline: "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]"
+		},
+		size: {
+			default: "h-8 text-sm",
+			sm: "h-7 text-xs",
+			lg: "h-12 text-sm group-data-[collapsible=icon]:!p-0"
+		}
+	},
+	defaultVariants: {
+		variant: "default",
+		size: "default"
+	}
+});
+var SidebarMenuButton = import_react.forwardRef(({ asChild = false, isActive = false, variant = "default", size: size$3 = "default", tooltip, className, ...props }, ref) => {
+	const Comp = asChild ? Slot$2 : "button";
+	const { isMobile, state } = useSidebar();
+	const button = /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Comp, {
+		ref,
+		"data-sidebar": "menu-button",
+		"data-size": size$3,
+		"data-active": isActive,
+		className: cn(sidebarMenuButtonVariants({
+			variant,
+			size: size$3
+		}), className),
+		...props
+	});
+	if (!tooltip) return button;
+	if (typeof tooltip === "string") tooltip = { children: tooltip };
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tooltip, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipTrigger, {
+		asChild: true,
+		children: button
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContent, {
+		side: "right",
+		align: "center",
+		hidden: state !== "collapsed" || isMobile,
+		...tooltip
+	})] });
+});
+SidebarMenuButton.displayName = "SidebarMenuButton";
+var SidebarMenuAction = import_react.forwardRef(({ className, asChild = false, showOnHover = false, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "button", {
+		ref,
+		"data-sidebar": "menu-action",
+		className: cn("absolute right-1 top-1.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 peer-hover/menu-button:text-sidebar-accent-foreground [&>svg]:size-4 [&>svg]:shrink-0", "after:absolute after:-inset-2 after:md:hidden", "peer-data-[size=sm]/menu-button:top-1", "peer-data-[size=default]/menu-button:top-1.5", "peer-data-[size=lg]/menu-button:top-2.5", "group-data-[collapsible=icon]:hidden", showOnHover && "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0", className),
+		...props
+	});
+});
+SidebarMenuAction.displayName = "SidebarMenuAction";
+var SidebarMenuBadge = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	ref,
+	"data-sidebar": "menu-badge",
+	className: cn("pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums text-sidebar-foreground", "peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground", "peer-data-[size=sm]/menu-button:top-1", "peer-data-[size=default]/menu-button:top-1.5", "peer-data-[size=lg]/menu-button:top-2.5", "group-data-[collapsible=icon]:hidden", className),
+	...props
+}));
+SidebarMenuBadge.displayName = "SidebarMenuBadge";
+var SidebarMenuSkeleton = import_react.forwardRef(({ className, showIcon = false, ...props }, ref) => {
+	const width = import_react.useMemo(() => {
+		return `${Math.floor(Math.random() * 40) + 50}%`;
+	}, []);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		ref,
+		"data-sidebar": "menu-skeleton",
+		className: cn("flex h-8 items-center gap-2 rounded-md px-2", className),
+		...props,
+		children: [showIcon && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Skeleton, {
+			className: "size-4 rounded-md",
+			"data-sidebar": "menu-skeleton-icon"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Skeleton, {
+			className: "h-4 max-w-[--skeleton-width] flex-1",
+			"data-sidebar": "menu-skeleton-text",
+			style: { "--skeleton-width": width }
+		})]
+	});
+});
+SidebarMenuSkeleton.displayName = "SidebarMenuSkeleton";
+var SidebarMenuSub = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+	ref,
+	"data-sidebar": "menu-sub",
+	className: cn("mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5", "group-data-[collapsible=icon]:hidden", className),
+	...props
+}));
+SidebarMenuSub.displayName = "SidebarMenuSub";
+var SidebarMenuSubItem = import_react.forwardRef(({ ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
+	ref,
+	...props
+}));
+SidebarMenuSubItem.displayName = "SidebarMenuSubItem";
+var SidebarMenuSubButton = import_react.forwardRef(({ asChild = false, size: size$3 = "md", isActive, className, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$2 : "a", {
+		ref,
+		"data-sidebar": "menu-sub-button",
+		"data-size": size$3,
+		"data-active": isActive,
+		className: cn("flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground", "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground", size$3 === "sm" && "text-xs", size$3 === "md" && "text-sm", "group-data-[collapsible=icon]:hidden", className),
+		...props
+	});
+});
+SidebarMenuSubButton.displayName = "SidebarMenuSubButton";
 function createContextScope$1(scopeName, createContextScopeDeps = []) {
 	let defaultContexts = [];
 	function createContext3(rootComponentName, defaultContext) {
@@ -25789,134 +26368,6 @@ function composeContextScopes(...scopes) {
 	createScope.scopeName = baseScope.scopeName;
 	return createScope;
 }
-var REACT_LAZY_TYPE = Symbol.for("react.lazy");
-var use = import_react[" use ".trim().toString()];
-function isPromiseLike(value) {
-	return typeof value === "object" && value !== null && "then" in value;
-}
-function isLazyComponent(element) {
-	return element != null && typeof element === "object" && "$$typeof" in element && element.$$typeof === REACT_LAZY_TYPE && "_payload" in element && isPromiseLike(element._payload);
-}
-/* @__NO_SIDE_EFFECTS__ */
-function createSlot$1(ownerName) {
-	const SlotClone = /* @__PURE__ */ createSlotClone(ownerName);
-	const Slot2 = import_react.forwardRef((props, forwardedRef) => {
-		let { children, ...slotProps } = props;
-		if (isLazyComponent(children) && typeof use === "function") children = use(children._payload);
-		const childrenArray = import_react.Children.toArray(children);
-		const slottable = childrenArray.find(isSlottable);
-		if (slottable) {
-			const newElement = slottable.props.children;
-			const newChildren = childrenArray.map((child) => {
-				if (child === slottable) {
-					if (import_react.Children.count(newElement) > 1) return import_react.Children.only(null);
-					return import_react.isValidElement(newElement) ? newElement.props.children : null;
-				} else return child;
-			});
-			return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlotClone, {
-				...slotProps,
-				ref: forwardedRef,
-				children: import_react.isValidElement(newElement) ? import_react.cloneElement(newElement, void 0, newChildren) : null
-			});
-		}
-		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlotClone, {
-			...slotProps,
-			ref: forwardedRef,
-			children
-		});
-	});
-	Slot2.displayName = `${ownerName}.Slot`;
-	return Slot2;
-}
-var Slot$1 = /* @__PURE__ */ createSlot$1("Slot");
-/* @__NO_SIDE_EFFECTS__ */
-function createSlotClone(ownerName) {
-	const SlotClone = import_react.forwardRef((props, forwardedRef) => {
-		let { children, ...slotProps } = props;
-		if (isLazyComponent(children) && typeof use === "function") children = use(children._payload);
-		if (import_react.isValidElement(children)) {
-			const childrenRef = getElementRef(children);
-			const props2 = mergeProps(slotProps, children.props);
-			if (children.type !== import_react.Fragment) props2.ref = forwardedRef ? composeRefs(forwardedRef, childrenRef) : childrenRef;
-			return import_react.cloneElement(children, props2);
-		}
-		return import_react.Children.count(children) > 1 ? import_react.Children.only(null) : null;
-	});
-	SlotClone.displayName = `${ownerName}.SlotClone`;
-	return SlotClone;
-}
-var SLOTTABLE_IDENTIFIER = Symbol("radix.slottable");
-function isSlottable(child) {
-	return import_react.isValidElement(child) && typeof child.type === "function" && "__radixId" in child.type && child.type.__radixId === SLOTTABLE_IDENTIFIER;
-}
-function mergeProps(slotProps, childProps) {
-	const overrideProps = { ...childProps };
-	for (const propName in childProps) {
-		const slotPropValue = slotProps[propName];
-		const childPropValue = childProps[propName];
-		if (/^on[A-Z]/.test(propName)) {
-			if (slotPropValue && childPropValue) overrideProps[propName] = (...args) => {
-				const result = childPropValue(...args);
-				slotPropValue(...args);
-				return result;
-			};
-			else if (slotPropValue) overrideProps[propName] = slotPropValue;
-		} else if (propName === "style") overrideProps[propName] = {
-			...slotPropValue,
-			...childPropValue
-		};
-		else if (propName === "className") overrideProps[propName] = [slotPropValue, childPropValue].filter(Boolean).join(" ");
-	}
-	return {
-		...slotProps,
-		...overrideProps
-	};
-}
-function getElementRef(element) {
-	let getter = Object.getOwnPropertyDescriptor(element.props, "ref")?.get;
-	let mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
-	if (mayWarn) return element.ref;
-	getter = Object.getOwnPropertyDescriptor(element, "ref")?.get;
-	mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
-	if (mayWarn) return element.props.ref;
-	return element.props.ref || element.ref;
-}
-require_react_dom();
-var Primitive$1 = [
-	"a",
-	"button",
-	"div",
-	"form",
-	"h2",
-	"h3",
-	"img",
-	"input",
-	"label",
-	"li",
-	"nav",
-	"ol",
-	"p",
-	"select",
-	"span",
-	"svg",
-	"ul"
-].reduce((primitive, node) => {
-	const Slot$4 = /* @__PURE__ */ createSlot$1(`Primitive.${node}`);
-	const Node$1 = import_react.forwardRef((props, forwardedRef) => {
-		const { asChild, ...primitiveProps } = props;
-		const Comp = asChild ? Slot$4 : node;
-		if (typeof window !== "undefined") window[Symbol.for("radix-ui")] = true;
-		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Comp, {
-			...primitiveProps,
-			ref: forwardedRef
-		});
-	});
-	Node$1.displayName = `Primitive.${node}`;
-	return {
-		...primitive,
-		[node]: Node$1
-	};
-}, {});
 /**
 * @license React
 * use-sync-external-store-shim.development.js
@@ -25938,7 +26389,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$21({ inst: {
+			cachedValue = useState$20({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -25975,7 +26426,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$35 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$21 = React$35.useState, useEffect$13 = React$35.useEffect, useLayoutEffect$1 = React$35.useLayoutEffect, useDebugValue = React$35.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$35 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$20 = React$35.useState, useEffect$13 = React$35.useEffect, useLayoutEffect$1 = React$35.useLayoutEffect, useDebugValue = React$35.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$35.useSyncExternalStore ? React$35.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -26405,6 +26856,14 @@ function StoreProvider({ children }) {
 			return [];
 		}
 	});
+	const [actionLogs, setActionLogs] = (0, import_react.useState)(() => {
+		try {
+			const saved = localStorage.getItem("langflow_action_logs");
+			return saved ? JSON.parse(saved) : [];
+		} catch {
+			return [];
+		}
+	});
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem("langflow_words", JSON.stringify(words));
 	}, [words]);
@@ -26420,6 +26879,18 @@ function StoreProvider({ children }) {
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem("langflow_recent_videos", JSON.stringify(recentVideos));
 	}, [recentVideos]);
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem("langflow_action_logs", JSON.stringify(actionLogs));
+	}, [actionLogs]);
+	const logAction = (0, import_react.useCallback)((title, description, icon) => {
+		setActionLogs((prev) => [{
+			id: crypto.randomUUID(),
+			title,
+			description,
+			icon,
+			date: Date.now()
+		}, ...prev].slice(0, 50));
+	}, []);
 	const addNotification = (0, import_react.useCallback)((title, body) => {
 		setNotifications((prev) => [{
 			id: crypto.randomUUID(),
@@ -26453,7 +26924,8 @@ function StoreProvider({ children }) {
 				timestamp: Date.now()
 			}, ...filtered].slice(0, 10);
 		});
-	}, []);
+		logAction("Vídeo Assistido", `Prática com: ${data.title}`, "book");
+	}, [logAction]);
 	(0, import_react.useEffect)(() => {
 		const { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = stats;
 		const levels = [
@@ -26511,7 +26983,8 @@ function StoreProvider({ children }) {
 			setStats((s$1) => checkGamification(s$1, next.length));
 			return next;
 		});
-	}, []);
+		logAction("Novo Vocabulário", `"${data.word}" foi adicionado.`, "plus");
+	}, [logAction]);
 	const updateWordStatus = (0, import_react.useCallback)((id, status) => {
 		setWords((prev) => prev.map((w) => w.id === id ? {
 			...w,
@@ -26577,9 +27050,15 @@ function StoreProvider({ children }) {
 				dailyMissions: newMissions
 			}, words.length);
 		});
+		logAction("Daily Prompt", "Desafio diário de escrita concluído.", "star");
 		return true;
-	}, [stats.dailyPromptsHistory, words.length]);
+	}, [
+		stats.dailyPromptsHistory,
+		words.length,
+		logAction
+	]);
 	const updateStats = (0, import_react.useCallback)((isCorrect, type) => {
+		logAction(type === "practice" ? "Sessão de Prática" : "Revisão de Flashcard", isCorrect ? "Resposta correta registrada." : "Sessão de estudo concluída.", type === "practice" ? "zap" : "brain");
 		setStats((prev) => {
 			const now$2 = Date.now();
 			const dNow = new Date(now$2);
@@ -26636,7 +27115,7 @@ function StoreProvider({ children }) {
 				consecutiveIncorrect
 			}, words.length);
 		});
-	}, [words.length]);
+	}, [words.length, logAction]);
 	const resetProgress = (0, import_react.useCallback)(() => {
 		setStats((prev) => ({
 			...defaultStats,
@@ -26662,6 +27141,7 @@ function StoreProvider({ children }) {
 		stats,
 		notifications,
 		recentVideos,
+		actionLogs,
 		addWord,
 		updateWordStatus,
 		reviewWord,
@@ -26676,7 +27156,8 @@ function StoreProvider({ children }) {
 		markAllNotificationsAsRead,
 		clearNotifications,
 		addRecentVideo,
-		resetProgress
+		resetProgress,
+		logAction
 	} }, children);
 }
 const useStore = () => {
@@ -26793,7 +27274,7 @@ var PopoverContent$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 PopoverContent$1.displayName = CONTENT_NAME$3;
-var Slot$2 = /* @__PURE__ */ createSlot("PopoverContent.RemoveScroll");
+var Slot$1 = /* @__PURE__ */ createSlot("PopoverContent.RemoveScroll");
 var PopoverContentModal = import_react.forwardRef((props, forwardedRef) => {
 	const context = usePopoverContext(CONTENT_NAME$3, props.__scopePopover);
 	const contentRef = import_react.useRef(null);
@@ -26804,7 +27285,7 @@ var PopoverContentModal = import_react.forwardRef((props, forwardedRef) => {
 		if (content) return hideOthers(content);
 	}, []);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Combination_default, {
-		as: Slot$2,
+		as: Slot$1,
 		allowPinchZoom: true,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContentImpl, {
 			...props,
@@ -26932,40 +27413,6 @@ var PopoverContent = import_react.forwardRef(({ className, align = "center", sid
 	...props
 }) }));
 PopoverContent.displayName = Content2$2.displayName;
-var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-all duration-250 ease-out active:scale-[0.98] active:shadow-[0_0_15px_rgba(108,63,197,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", {
-	variants: {
-		variant: {
-			default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md",
-			destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-			outline: "border border-input bg-background text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground",
-			secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-			ghost: "text-foreground hover:bg-accent hover:text-accent-foreground",
-			link: "text-primary underline-offset-4 hover:underline"
-		},
-		size: {
-			default: "h-10 px-4 py-2",
-			sm: "h-9 px-3 text-xs",
-			lg: "h-12 px-8 text-base",
-			icon: "h-10 w-10"
-		}
-	},
-	defaultVariants: {
-		variant: "default",
-		size: "default"
-	}
-});
-var Button = import_react.forwardRef(({ className, variant, size: size$3, asChild = false, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot$1 : "button", {
-		className: cn(buttonVariants({
-			variant,
-			size: size$3,
-			className
-		})),
-		ref,
-		...props
-	});
-});
-Button.displayName = "Button";
 function NotificationsPopover() {
 	const [open, setOpen] = (0, import_react.useState)(false);
 	const { notifications, markNotificationAsRead, markAllNotificationsAsRead, clearNotifications } = useStore();
@@ -27097,130 +27544,164 @@ var mainNav = [
 		icon: TrendingUp
 	}
 ];
-function SidebarContent() {
+var iconMap$2 = {
+	brain: Brain,
+	book: BookOpen,
+	zap: Zap,
+	check: Check,
+	plus: Plus,
+	star: Star
+};
+function AppSidebar() {
 	const location = useLocation();
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col h-full bg-sidebar border-r border-border text-sidebar-foreground w-full",
+	const { actionLogs } = useStore();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Sidebar, {
+		variant: "inset",
 		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "p-6 flex items-center gap-3 font-bold text-xl tracking-tight mb-4",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "w-8 h-8 rounded-lg bg-primary shadow-sm flex items-center justify-center",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-5 h-5 text-primary-foreground fill-current" })
-				}), "LangFlow"]
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarHeader, {
+				className: "p-4",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+					to: "/",
+					className: "flex items-center gap-3 font-bold text-xl tracking-tight text-foreground hover:opacity-80 transition-opacity",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "w-8 h-8 rounded-lg bg-primary shadow-sm flex items-center justify-center",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-5 h-5 text-primary-foreground fill-current" })
+					}), "LangFlow"]
+				})
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex-1 overflow-y-auto px-4 space-y-8",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-					className: "text-[10px] font-bold text-sidebar-foreground/50 tracking-widest uppercase mb-3 px-4",
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarContent, { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarGroup, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupLabel, {
+					className: "text-[10px] font-bold tracking-widest uppercase mb-2",
 					children: "Menu Principal"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
-					className: "space-y-1",
-					children: mainNav.map((item) => {
-						const Icon$2 = item.icon;
-						const isActive = location.pathname === item.path;
-						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenu, { children: mainNav.map((item) => {
+					const Icon$2 = item.icon;
+					const isActive = location.pathname === item.path;
+					return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuButton, {
+						asChild: true,
+						isActive,
+						className: cn("h-10 transition-all duration-300 group rounded-xl px-3", isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-sm" : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50"),
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 							to: item.path,
-							className: cn("flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group", isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-sm" : "hover:bg-sidebar-accent/50 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:scale-[1.02]"),
 							children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: cn("w-5 h-5 transition-transform group-hover:scale-110", isActive && "text-primary") }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "text-sm",
-									children: item.label
-								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: item.label }),
 								item.badge && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 									className: "ml-auto bg-pink-500 text-white text-[9px] px-2 py-0.5 rounded-sm font-bold shadow-[0_0_10px_rgba(236,72,153,0.3)]",
 									children: item.badge
 								})
 							]
-						}, item.path);
-					})
-				})] })
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "p-4 mt-auto",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
-					to: "/settings",
-					className: "flex items-center gap-3 px-4 py-3 rounded-2xl bg-secondary/50 border border-border hover:bg-secondary transition-colors",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
-						className: "w-10 h-10 border-2 border-background shadow-sm",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=1" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: "BS" })]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-sm font-bold text-foreground leading-tight",
-							children: "Bruno Silva"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-[10px] font-bold text-muted-foreground tracking-wider",
-							children: "PLANO PRO"
-						})]
+						})
+					}) }, item.path);
+				}) }) })] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarSeparator, { className: "my-2 mx-4" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarGroup, {
+					className: "flex-1 overflow-hidden flex flex-col",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupLabel, {
+						className: "text-[10px] font-bold tracking-widest uppercase mb-2",
+						children: "Atividade Recente"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupContent, {
+						className: "overflow-y-auto pr-2",
+						children: actionLogs && actionLogs.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "space-y-4 px-2 py-2",
+							children: actionLogs.slice(0, 10).map((log$1) => {
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex gap-3 relative before:absolute before:left-[11px] before:top-8 before:bottom-[-20px] before:w-px before:bg-border last:before:hidden group/log",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "w-6 h-6 rounded-full bg-secondary border border-border flex items-center justify-center shrink-0 z-10 shadow-sm group-hover/log:scale-110 transition-transform",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(iconMap$2[log$1.icon] || Check, { className: "w-3 h-3 text-muted-foreground group-hover/log:text-foreground transition-colors" })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex flex-col pb-2",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-sm font-medium leading-tight text-foreground",
+												children: log$1.title
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-[11px] text-muted-foreground mt-0.5 line-clamp-2 leading-relaxed",
+												children: log$1.description
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-[9px] text-muted-foreground/60 mt-1 uppercase font-bold tracking-wider",
+												children: new Intl.DateTimeFormat("pt-BR", {
+													hour: "2-digit",
+													minute: "2-digit",
+													day: "2-digit",
+													month: "2-digit"
+												}).format(new Date(log$1.date))
+											})
+										]
+									})]
+								}, log$1.id);
+							})
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "px-4 py-8 text-center text-muted-foreground text-sm flex flex-col items-center gap-2",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Brain, { className: "w-8 h-8 opacity-20 mb-2" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Nenhuma atividade ainda." }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xs opacity-70",
+									children: "Complete lições para ver seu histórico aqui."
+								})
+							]
+						})
 					})]
 				})
-			})
+			] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarFooter, {
+				className: "p-4",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+					to: "/settings",
+					className: "flex items-center gap-3 p-2 rounded-xl hover:bg-sidebar-accent transition-colors border border-transparent hover:border-sidebar-border",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Avatar, {
+							className: "w-10 h-10 border border-border shadow-sm",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarImage, { src: "https://img.usecurling.com/ppl/thumbnail?gender=male&seed=1" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, { children: "BS" })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col flex-1 min-w-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-sm font-bold text-foreground leading-tight truncate",
+								children: "Bruno Silva"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-[10px] font-bold text-muted-foreground tracking-wider truncate",
+								children: "PLANO PRO"
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings$1, { className: "w-4 h-4 text-muted-foreground" })
+					]
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarRail, {})
 		]
 	});
 }
 function Layout() {
-	const [mobileMenuOpen, setMobileMenuOpen] = (0, import_react.useState)(false);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex h-screen w-full bg-background overflow-hidden flex-col md:flex-row font-sans",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-				className: "md:hidden flex items-center justify-between p-4 bg-sidebar border-b border-border z-10 shrink-0",
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex h-screen w-full bg-background overflow-hidden font-sans",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AppSidebar, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarInset, {
+			className: "flex-1 flex flex-col overflow-hidden bg-background",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+				className: "flex items-center justify-between px-4 md:px-6 h-16 border-b border-border/50 bg-background/90 backdrop-blur sticky top-0 z-30 shrink-0 shadow-sm",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-2 font-bold text-lg tracking-tight text-sidebar-foreground",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "w-6 h-6 rounded bg-primary flex items-center justify-center shadow-sm",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-4 h-4 text-primary-foreground fill-current" })
-					}), "LangFlow"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-1",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationsPopover, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Sheet, {
-						open: mobileMenuOpen,
-						onOpenChange: setMobileMenuOpen,
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetTrigger, {
-							asChild: true,
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								className: "p-2 text-muted-foreground hover:text-foreground",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Menu, { className: "w-6 h-6" })
-							})
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetContent, {
-							side: "left",
-							className: "p-0 bg-sidebar border-r-border w-[280px]",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetTitle, {
-								className: "sr-only",
-								children: "Menu Principal"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, {})]
-						})]
+					className: "flex items-center gap-3",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarTrigger, { className: "-ml-2 text-muted-foreground hover:text-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "md:hidden flex items-center gap-2 font-bold text-lg tracking-tight text-foreground",
+						children: "LangFlow"
 					})]
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("aside", {
-				className: "hidden md:flex flex-col w-[260px] shrink-0 z-10",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, {})
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
-				className: "flex-1 overflow-y-auto relative bg-background",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
-					className: "hidden md:flex items-center justify-end px-8 h-16 border-b border-border/50 bg-background/90 backdrop-blur sticky top-0 z-30",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationsPopover, {})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "max-w-[1400px] mx-auto w-full p-4 md:p-8 lg:px-12",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
+					className: "flex items-center gap-2",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationsPopover, {})
 				})]
-			})
-		]
-	});
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+				className: "flex-1 overflow-y-auto relative w-full",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "max-w-[1400px] mx-auto w-full p-4 md:p-8 lg:px-12 pb-24",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
+				})
+			})]
+		})]
+	}) });
 }
-var Input = import_react.forwardRef(({ className, type, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-		type,
-		className: cn("flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50", className),
-		ref,
-		...props
-	});
-});
-Input.displayName = "Input";
 const LEVEL_TIERS = [
 	{
 		name: "Iniciante",
@@ -54758,4 +55239,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-OdkY1tmY.js.map
+//# sourceMappingURL=index-CfBaf41P.js.map

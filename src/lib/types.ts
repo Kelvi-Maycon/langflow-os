@@ -1,6 +1,14 @@
 export type WordStatus = 'learning' | 'builder' | 'srs' | 'mastered'
 export type WordType = 'word' | 'collocation'
 
+export interface ActionLog {
+  id: string
+  title: string
+  description: string
+  date: number
+  icon: 'brain' | 'book' | 'zap' | 'check' | 'plus' | 'star'
+}
+
 export interface WordEntry {
   id: string
   word: string
@@ -117,4 +125,5 @@ export interface AppState {
   stats: UserStats
   notifications: AppNotification[]
   recentVideos: RecentVideo[]
+  actionLogs: ActionLog[]
 }

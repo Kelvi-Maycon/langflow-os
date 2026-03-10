@@ -16,6 +16,7 @@ import {
   Achievement,
   AppNotification,
   RecentVideo,
+  ActionLog,
 } from '@/lib/types'
 import { calculateSM2, getNextReviewDate } from '@/lib/sm2'
 
@@ -40,6 +41,7 @@ interface StoreContextType extends AppState {
   clearNotifications: () => void
   addRecentVideo: (video: Omit<RecentVideo, 'id' | 'timestamp'>) => void
   resetProgress: () => void
+  logAction: (title: string, description: string, icon: ActionLog['icon']) => void
 }
 
 const defaultSettings: UserSettings = {
@@ -330,6 +332,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }
   })
 
+  const [actionLogs, setActionLogs] = useState<ActionLog[]>(() => {
+    try {
+      const saved = localStorage.getItem('langflow_action_logs')
+      return saved ? JSON.parse(saved) : []
+    } catch {
+      return []
+    }
+  })
+
   useEffect(() => {
     localStorage.setItem('langflow_words', JSON.stringify(words))
   }, [words])
@@ -349,6 +360,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem('langflow_recent_videos', JSON.stringify(recentVideos))
   }, [recentVideos])
+
+  useEffect(() => {
+    localStorage.setItem('langflow_action_logs', JSON.stringify(actionLogs))
+  }, [actionLogs])
+
+  const logAction = useCallback((title: string, description: string, icon: ActionLog['icon']) => {
+    setActionLogs((prev) =>
+      [{ id: crypto.randomUUID(), title, description, icon, date: Date.now() }, ...prev].slice(
+        0,
+        50,
+      ),
+    )
+  }, [])
 
   const addNotification = useCallback((title: string, body: string) => {
     setNotifications((prev) =>
@@ -371,13 +395,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setNotifications([])
   }, [])
 
-  const addRecentVideo = useCallback((data: Omit<RecentVideo, 'id' | 'timestamp'>) => {
-    setRecentVideos((prev) => {
-      const filtered = prev.filter((v) => v.videoId !== data.videoId)
-      const newVideo: RecentVideo = { ...data, id: crypto.randomUUID(), timestamp: Date.now() }
-      return [newVideo, ...filtered].slice(0, 10)
-    })
-  }, [])
+  const addRecentVideo = useCallback(
+    (data: Omit<RecentVideo, 'id' | 'timestamp'>) => {
+      setRecentVideos((prev) => {
+        const filtered = prev.filter((v) => v.videoId !== data.videoId)
+        const newVideo: RecentVideo = { ...data, id: crypto.randomUUID(), timestamp: Date.now() }
+        return [newVideo, ...filtered].slice(0, 10)
+      })
+      logAction('Vídeo Assistido', `Prática com: ${data.title}`, 'book')
+    },
+    [logAction],
+  )
 
   useEffect(() => {
     const { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = stats
@@ -411,23 +439,27 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }
   }, [stats.consecutiveCorrect, stats.consecutiveIncorrect, settings.level])
 
-  const addWord = useCallback((data: Parameters<StoreContextType['addWord']>[0]) => {
-    const newWord: WordEntry = {
-      ...data,
-      id: crypto.randomUUID(),
-      type: data.type || (data.word.includes(' ') ? 'collocation' : 'word'),
-      createdAt: Date.now(),
-      nextReviewDate: Date.now(),
-      interval: 0,
-      easeFactor: 2.5,
-      repetitions: 0,
-    }
-    setWords((prev) => {
-      const next = [newWord, ...prev]
-      setStats((s) => checkGamification(s, next.length))
-      return next
-    })
-  }, [])
+  const addWord = useCallback(
+    (data: Parameters<StoreContextType['addWord']>[0]) => {
+      const newWord: WordEntry = {
+        ...data,
+        id: crypto.randomUUID(),
+        type: data.type || (data.word.includes(' ') ? 'collocation' : 'word'),
+        createdAt: Date.now(),
+        nextReviewDate: Date.now(),
+        interval: 0,
+        easeFactor: 2.5,
+        repetitions: 0,
+      }
+      setWords((prev) => {
+        const next = [newWord, ...prev]
+        setStats((s) => checkGamification(s, next.length))
+        return next
+      })
+      logAction('Novo Vocabulário', `"${data.word}" foi adicionado.`, 'plus')
+    },
+    [logAction],
+  )
 
   const updateWordStatus = useCallback((id: string, status: WordStatus) => {
     setWords((prev) => prev.map((w) => (w.id === id ? { ...w, status } : w)))
@@ -495,13 +527,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
         return checkGamification(newState, words.length)
       })
+      logAction('Daily Prompt', 'Desafio diário de escrita concluído.', 'star')
       return true
     },
-    [stats.dailyPromptsHistory, words.length],
+    [stats.dailyPromptsHistory, words.length, logAction],
   )
 
   const updateStats = useCallback(
     (isCorrect: boolean, type: 'practice' | 'flashcard') => {
+      logAction(
+        type === 'practice' ? 'Sessão de Prática' : 'Revisão de Flashcard',
+        isCorrect ? 'Resposta correta registrada.' : 'Sessão de estudo concluída.',
+        type === 'practice' ? 'zap' : 'brain',
+      )
+
       setStats((prev) => {
         const now = Date.now()
         const dNow = new Date(now)
@@ -565,7 +604,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return checkGamification(newState, words.length)
       })
     },
-    [words.length],
+    [words.length, logAction],
   )
 
   const resetProgress = useCallback(() => {
@@ -597,6 +636,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         stats,
         notifications,
         recentVideos,
+        actionLogs,
         addWord,
         updateWordStatus,
         reviewWord,
@@ -612,6 +652,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         clearNotifications,
         addRecentVideo,
         resetProgress,
+        logAction,
       },
     },
     children,
