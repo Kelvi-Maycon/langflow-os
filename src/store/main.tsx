@@ -39,6 +39,7 @@ interface StoreContextType extends AppState {
   markAllNotificationsAsRead: () => void
   clearNotifications: () => void
   addRecentVideo: (video: Omit<RecentVideo, 'id' | 'timestamp'>) => void
+  resetProgress: () => void
 }
 
 const defaultSettings: UserSettings = {
@@ -181,9 +182,9 @@ const defaultStats: UserStats = {
   flashcardAttempts: 0,
   flashcardCorrect: 0,
   xp: 0,
-  streak: 5,
+  streak: 0,
   lastActiveDate: Date.now(),
-  activityHistory: getMockActivityHistory(),
+  activityHistory: getMockActivityHistory().map((h) => ({ ...h, count: 0 })),
   dailyMissions: [],
   missionsDate: '',
   achievements: defaultAchievements,
@@ -194,7 +195,7 @@ const defaultStats: UserStats = {
 
 const StoreContext = createContext<StoreContextType | null>(null)
 
-const checkGamification = (stats: UserStats, totalWords: number) => {
+const checkGamification = (stats: UserStats, totalWords: number): UserStats => {
   let extraXp = 0
 
   const updatedMissions = (stats.dailyMissions || []).map((m) => {
@@ -206,14 +207,14 @@ const checkGamification = (stats: UserStats, totalWords: number) => {
     return m
   })
 
-  stats.xp = (stats.xp || 0) + extraXp
+  const newXp = (stats.xp || 0) + extraXp
 
   const updatedAchievements = (stats.achievements || []).map((a) => {
     if (a.unlocked) return a
     let meetsReq = false
     switch (a.type) {
       case 'xp':
-        meetsReq = (stats.xp || 0) >= (a.requirement || 0)
+        meetsReq = newXp >= (a.requirement || 0)
         break
       case 'streak':
         meetsReq = (stats.streak || 0) >= (a.requirement || 0)
@@ -231,6 +232,7 @@ const checkGamification = (stats: UserStats, totalWords: number) => {
 
   return {
     ...stats,
+    xp: newXp,
     dailyMissions: updatedMissions,
     achievements: updatedAchievements,
   }
@@ -357,25 +359,25 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     )
   }, [])
 
-  const markNotificationAsRead = (id: string) => {
+  const markNotificationAsRead = useCallback((id: string) => {
     setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)))
-  }
+  }, [])
 
-  const markAllNotificationsAsRead = () => {
+  const markAllNotificationsAsRead = useCallback(() => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
-  }
+  }, [])
 
-  const clearNotifications = () => {
+  const clearNotifications = useCallback(() => {
     setNotifications([])
-  }
+  }, [])
 
-  const addRecentVideo = (data: Omit<RecentVideo, 'id' | 'timestamp'>) => {
+  const addRecentVideo = useCallback((data: Omit<RecentVideo, 'id' | 'timestamp'>) => {
     setRecentVideos((prev) => {
       const filtered = prev.filter((v) => v.videoId !== data.videoId)
       const newVideo: RecentVideo = { ...data, id: crypto.randomUUID(), timestamp: Date.now() }
       return [newVideo, ...filtered].slice(0, 10)
     })
-  }
+  }, [])
 
   useEffect(() => {
     const { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = stats
@@ -409,7 +411,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }
   }, [stats.consecutiveCorrect, stats.consecutiveIncorrect, settings.level])
 
-  const addWord = (data: Parameters<StoreContextType['addWord']>[0]) => {
+  const addWord = useCallback((data: Parameters<StoreContextType['addWord']>[0]) => {
     const newWord: WordEntry = {
       ...data,
       id: crypto.randomUUID(),
@@ -425,134 +427,166 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setStats((s) => checkGamification(s, next.length))
       return next
     })
-  }
+  }, [])
 
-  const updateWordStatus = (id: string, status: WordStatus) => {
+  const updateWordStatus = useCallback((id: string, status: WordStatus) => {
     setWords((prev) => prev.map((w) => (w.id === id ? { ...w, status } : w)))
-  }
+  }, [])
 
-  const reviewWord = (id: string, quality: number) => {
-    setWords((prev) =>
-      prev.map((w) => {
-        if (w.id !== id) return w
-        const sm2 = calculateSM2(
-          quality,
-          w.repetitions,
-          w.interval,
-          w.easeFactor,
-          settings.srsMultiplier,
-        )
-        const nextReviewDate = getNextReviewDate(sm2.interval)
-        const status = sm2.interval > 21 ? 'mastered' : 'srs'
-        return { ...w, ...sm2, nextReviewDate, status }
-      }),
-    )
-  }
+  const reviewWord = useCallback(
+    (id: string, quality: number) => {
+      setWords((prev) =>
+        prev.map((w) => {
+          if (w.id !== id) return w
+          const sm2 = calculateSM2(
+            quality,
+            w.repetitions,
+            w.interval,
+            w.easeFactor,
+            settings.srsMultiplier,
+          )
+          const nextReviewDate = getNextReviewDate(sm2.interval)
+          const status = sm2.interval > 21 ? 'mastered' : 'srs'
+          return { ...w, ...sm2, nextReviewDate, status }
+        }),
+      )
+    },
+    [settings.srsMultiplier],
+  )
 
-  const removeWord = (id: string) => setWords((prev) => prev.filter((w) => w.id !== id))
+  const removeWord = useCallback((id: string) => {
+    setWords((prev) => prev.filter((w) => w.id !== id))
+  }, [])
 
-  const editWord = (id: string, data: Partial<Omit<WordEntry, 'id' | 'createdAt'>>) => {
+  const editWord = useCallback((id: string, data: Partial<Omit<WordEntry, 'id' | 'createdAt'>>) => {
     setWords((prev) => prev.map((w) => (w.id === id ? { ...w, ...data } : w)))
-  }
+  }, [])
 
-  const updateSettings = (newSettings: Partial<UserSettings>) =>
+  const updateSettings = useCallback((newSettings: Partial<UserSettings>) => {
     setSettings((prev) => ({ ...prev, ...newSettings }))
+  }, [])
 
-  const submitDailyPrompt = (response: string, prompt: string, targetWord: string) => {
-    if (!response.toLowerCase().includes(targetWord.toLowerCase())) return false
-    if (response.trim().length < 10) return false
+  const submitDailyPrompt = useCallback(
+    (response: string, prompt: string, targetWord: string) => {
+      if (!response.toLowerCase().includes(targetWord.toLowerCase())) return false
+      if (response.trim().length < 10) return false
 
-    const todayStr = new Date().toISOString().split('T')[0]
-    const history = stats.dailyPromptsHistory || []
-    if (history.some((h) => h.date === todayStr)) return false
+      const todayStr = new Date().toISOString().split('T')[0]
+      const history = stats.dailyPromptsHistory || []
+      if (history.some((h) => h.date === todayStr)) return false
 
-    setStats((prev) => {
-      const newXp = (prev.xp || 0) + 50
-      const newEntry = { date: todayStr, prompt, targetWord, response }
+      setStats((prev) => {
+        const newXp = (prev.xp || 0) + 50
+        const newEntry = { date: todayStr, prompt, targetWord, response }
 
-      const newMissions = (prev.dailyMissions || []).map((m) => {
-        if (m.completed) return m
-        let p = m.progress || 0
-        if (m.type === 'prompt') p += 1
-        if (m.type === 'xp') p += 50
-        return { ...m, progress: p }
+        const newMissions = (prev.dailyMissions || []).map((m) => {
+          if (m.completed) return m
+          let p = m.progress || 0
+          if (m.type === 'prompt') p += 1
+          if (m.type === 'xp') p += 50
+          return { ...m, progress: p }
+        })
+
+        const newState = {
+          ...prev,
+          xp: newXp,
+          dailyPromptsHistory: [newEntry, ...(prev.dailyPromptsHistory || [])],
+          dailyMissions: newMissions,
+        }
+        return checkGamification(newState, words.length)
       })
+      return true
+    },
+    [stats.dailyPromptsHistory, words.length],
+  )
 
-      const newState = {
-        ...prev,
-        xp: newXp,
-        dailyPromptsHistory: [newEntry, ...(prev.dailyPromptsHistory || [])],
-        dailyMissions: newMissions,
-      }
-      return checkGamification(newState, words.length)
-    })
-    return true
-  }
+  const updateStats = useCallback(
+    (isCorrect: boolean, type: 'practice' | 'flashcard') => {
+      setStats((prev) => {
+        const now = Date.now()
+        const dNow = new Date(now)
+        const lastActiveDate = prev.lastActiveDate || now
+        const dLast = new Date(lastActiveDate)
+        const isNext = new Date(dLast.getTime() + 86400000).toDateString() === dNow.toDateString()
+        let streak = isNext
+          ? (prev.streak || 0) + 1
+          : dLast.toDateString() === dNow.toDateString()
+            ? prev.streak || 0
+            : 1
 
-  const updateStats = (isCorrect: boolean, type: 'practice' | 'flashcard') => {
-    setStats((prev) => {
-      const now = Date.now()
-      const dNow = new Date(now)
-      const lastActiveDate = prev.lastActiveDate || now
-      const dLast = new Date(lastActiveDate)
-      const isNext = new Date(dLast.getTime() + 86400000).toDateString() === dNow.toDateString()
-      let streak = isNext
-        ? (prev.streak || 0) + 1
-        : dLast.toDateString() === dNow.toDateString()
-          ? prev.streak || 0
-          : 1
+        const todayStr = dNow.toISOString().split('T')[0]
+        const hist = prev.activityHistory ? [...prev.activityHistory] : []
+        const idx = hist.findIndex((h) => h.date === todayStr)
+        if (idx >= 0) hist[idx] = { ...hist[idx], count: hist[idx].count + 1 }
+        else hist.push({ date: todayStr, count: 1 })
 
-      const todayStr = dNow.toISOString().split('T')[0]
-      const hist = prev.activityHistory ? [...prev.activityHistory] : []
-      const idx = hist.findIndex((h) => h.date === todayStr)
-      if (idx >= 0) hist[idx].count += 1
-      else hist.push({ date: todayStr, count: 1 })
+        const baseXp = type === 'practice' ? (isCorrect ? 10 : 2) : isCorrect ? 15 : 5
+        const newXp = (prev.xp || 0) + baseXp
 
-      const baseXp = type === 'practice' ? (isCorrect ? 10 : 2) : isCorrect ? 15 : 5
-      const newXp = (prev.xp || 0) + baseXp
+        const flashcardAttempts = (prev.flashcardAttempts || 0) + (type === 'flashcard' ? 1 : 0)
+        const flashcardCorrect =
+          (prev.flashcardCorrect || 0) + (type === 'flashcard' && isCorrect ? 1 : 0)
+        const practiceAttempts = (prev.practiceAttempts || 0) + (type === 'practice' ? 1 : 0)
+        const practiceCorrect =
+          (prev.practiceCorrect || 0) + (type === 'practice' && isCorrect ? 1 : 0)
 
-      const flashcardAttempts = (prev.flashcardAttempts || 0) + (type === 'flashcard' ? 1 : 0)
-      const flashcardCorrect =
-        (prev.flashcardCorrect || 0) + (type === 'flashcard' && isCorrect ? 1 : 0)
-      const practiceAttempts = (prev.practiceAttempts || 0) + (type === 'practice' ? 1 : 0)
-      const practiceCorrect =
-        (prev.practiceCorrect || 0) + (type === 'practice' && isCorrect ? 1 : 0)
+        const newMissions = (prev.dailyMissions || []).map((m) => {
+          if (m.completed) return m
+          let p = m.progress || 0
+          if (m.type === type && isCorrect) p += 1
+          if (m.type === 'xp') p += baseXp
+          return { ...m, progress: p }
+        })
 
-      const newMissions = (prev.dailyMissions || []).map((m) => {
-        if (m.completed) return m
-        let p = m.progress || 0
-        if (m.type === type && isCorrect) p += 1
-        if (m.type === 'xp') p += baseXp
-        return { ...m, progress: p }
+        let { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = prev
+        if (isCorrect) {
+          consecutiveCorrect += 1
+          consecutiveIncorrect = 0
+        } else {
+          consecutiveIncorrect += 1
+          consecutiveCorrect = 0
+        }
+
+        const newState = {
+          ...prev,
+          streak,
+          lastActiveDate: now,
+          activityHistory: hist,
+          xp: newXp,
+          flashcardAttempts,
+          flashcardCorrect,
+          practiceAttempts,
+          practiceCorrect,
+          dailyMissions: newMissions,
+          consecutiveCorrect,
+          consecutiveIncorrect,
+        }
+
+        return checkGamification(newState, words.length)
       })
+    },
+    [words.length],
+  )
 
-      let { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = prev
-      if (isCorrect) {
-        consecutiveCorrect += 1
-        consecutiveIncorrect = 0
-      } else {
-        consecutiveIncorrect += 1
-        consecutiveCorrect = 0
-      }
+  const resetProgress = useCallback(() => {
+    setStats((prev) => ({
+      ...defaultStats,
+      dailyMissions: generateMissions(),
+      achievements: defaultAchievements,
+      activityHistory: prev.activityHistory?.map((h) => ({ ...h, count: 0 })) || [],
+    }))
 
-      const newState = {
-        ...prev,
-        streak,
-        lastActiveDate: now,
-        activityHistory: hist,
-        xp: newXp,
-        flashcardAttempts,
-        flashcardCorrect,
-        practiceAttempts,
-        practiceCorrect,
-        dailyMissions: newMissions,
-        consecutiveCorrect,
-        consecutiveIncorrect,
-      }
-
-      return checkGamification(newState, words.length)
-    })
-  }
+    setWords((prev) =>
+      prev.map((w) => ({
+        ...w,
+        status: 'builder',
+        nextReviewDate: Date.now(),
+        interval: 0,
+        easeFactor: 2.5,
+        repetitions: 0,
+      })),
+    )
+  }, [])
 
   return React.createElement(
     StoreContext.Provider,
@@ -577,6 +611,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         markAllNotificationsAsRead,
         clearNotifications,
         addRecentVideo,
+        resetProgress,
       },
     },
     children,

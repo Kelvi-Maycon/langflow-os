@@ -33,6 +33,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { WordEntry, WordType } from '@/lib/types'
+import { EmptyState } from '@/components/ui/empty-state'
+import { useNavigate } from 'react-router-dom'
 
 function EditWordDialog({ wordEntry }: { wordEntry: WordEntry }) {
   const { editWord } = useStore()
@@ -116,6 +118,7 @@ function EditWordDialog({ wordEntry }: { wordEntry: WordEntry }) {
 export default function Vocabulary() {
   const { addWord, removeWord, words } = useStore()
   const { toast } = useToast()
+  const navigate = useNavigate()
   const [bulkText, setBulkText] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [typeFilter, setTypeFilter] = useState<'all' | 'word' | 'collocation'>('all')
@@ -241,13 +244,16 @@ export default function Vocabulary() {
               </div>
 
               {filteredWords.length === 0 ? (
-                <div className="text-center py-16 px-4 bg-secondary/20 rounded-2xl border border-dashed border-border/50">
-                  <Library className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
-                  <h3 className="text-lg font-semibold text-foreground">Nenhum item encontrado</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Capture palavras novas no Leitor ou modifique os filtros.
-                  </p>
-                </div>
+                <EmptyState
+                  icon={<Library className="w-12 h-12" />}
+                  title="Nenhum item encontrado"
+                  description="Você ainda não possui palavras com este filtro. Adicione novos itens explorando textos no Leitor ou importando listas."
+                  action={
+                    <Button onClick={() => navigate('/reader')} className="rounded-full px-8">
+                      Ir para o Leitor
+                    </Button>
+                  }
+                />
               ) : (
                 <div className="border border-border/60 rounded-xl overflow-hidden bg-background">
                   <Table>

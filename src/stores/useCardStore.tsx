@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useCallback,
+} from 'react'
 import { Flashcard } from '@/lib/types'
 import { calculateSM2, getNextReviewDate } from '@/lib/sm2'
 
@@ -12,6 +19,7 @@ interface CardStoreType {
   ) => void
   reviewCard: (id: string, quality: number, srsMultiplier: number) => void
   removeCard: (id: string) => void
+  resetProgress: () => void
 }
 
 const CardStoreContext = createContext<CardStoreType | null>(null)
@@ -30,9 +38,11 @@ export function CardStoreProvider({ children }: { children: ReactNode }) {
         )
 
         let needsSave = false
+        const updatedCards = [...parsedCards]
+
         srsWords.forEach((w: any) => {
-          if (!parsedCards.find((c) => c.wordId === w.id)) {
-            parsedCards.push({
+          if (!updatedCards.find((c) => c.wordId === w.id)) {
+            updatedCards.push({
               id: crypto.randomUUID(),
               wordId: w.id,
               targetText: w.word,
@@ -50,7 +60,8 @@ export function CardStoreProvider({ children }: { children: ReactNode }) {
         })
 
         if (needsSave) {
-          localStorage.setItem('langflow_cards', JSON.stringify(parsedCards))
+          localStorage.setItem('langflow_cards', JSON.stringify(updatedCards))
+          return updatedCards
         }
       }
       return parsedCards
@@ -63,25 +74,28 @@ export function CardStoreProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('langflow_cards', JSON.stringify(cards))
   }, [cards])
 
-  const addCard = (
-    data: Omit<
-      Flashcard,
-      'id' | 'createdAt' | 'nextReviewDate' | 'interval' | 'easeFactor' | 'repetitions'
-    >,
-  ) => {
-    const newCard: Flashcard = {
-      ...data,
-      id: crypto.randomUUID(),
-      createdAt: Date.now(),
-      nextReviewDate: Date.now(),
-      interval: 0,
-      easeFactor: 2.5,
-      repetitions: 0,
-    }
-    setCards((prev) => [newCard, ...prev])
-  }
+  const addCard = useCallback(
+    (
+      data: Omit<
+        Flashcard,
+        'id' | 'createdAt' | 'nextReviewDate' | 'interval' | 'easeFactor' | 'repetitions'
+      >,
+    ) => {
+      const newCard: Flashcard = {
+        ...data,
+        id: crypto.randomUUID(),
+        createdAt: Date.now(),
+        nextReviewDate: Date.now(),
+        interval: 0,
+        easeFactor: 2.5,
+        repetitions: 0,
+      }
+      setCards((prev) => [newCard, ...prev])
+    },
+    [],
+  )
 
-  const reviewCard = (id: string, quality: number, srsMultiplier: number) => {
+  const reviewCard = useCallback((id: string, quality: number, srsMultiplier: number) => {
     setCards((prev) =>
       prev.map((c) => {
         if (c.id !== id) return c
@@ -90,12 +104,26 @@ export function CardStoreProvider({ children }: { children: ReactNode }) {
         return { ...c, ...sm2, nextReviewDate }
       }),
     )
-  }
+  }, [])
 
-  const removeCard = (id: string) => setCards((prev) => prev.filter((c) => c.id !== id))
+  const removeCard = useCallback((id: string) => {
+    setCards((prev) => prev.filter((c) => c.id !== id))
+  }, [])
+
+  const resetProgress = useCallback(() => {
+    setCards((prev) =>
+      prev.map((c) => ({
+        ...c,
+        nextReviewDate: Date.now(),
+        interval: 0,
+        easeFactor: 2.5,
+        repetitions: 0,
+      })),
+    )
+  }, [])
 
   return (
-    <CardStoreContext.Provider value={{ cards, addCard, reviewCard, removeCard }}>
+    <CardStoreContext.Provider value={{ cards, addCard, reviewCard, removeCard, resetProgress }}>
       {children}
     </CardStoreContext.Provider>
   )

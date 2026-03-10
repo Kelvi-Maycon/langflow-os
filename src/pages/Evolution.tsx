@@ -1,156 +1,105 @@
 import { useStore } from '@/store/main'
-import { useToast } from '@/hooks/use-toast'
-import { TrendingUp, Download, BookOpen, Zap, BrainCircuit, ShieldCheck } from 'lucide-react'
+import { EmptyState } from '@/components/ui/empty-state'
+import { Activity, TrendingUp, Brain, Target, Star } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { EvolutionActivityChart } from '@/components/evolution/EvolutionActivityChart'
-import { SkillsRadarChart } from '@/components/evolution/SkillsRadarChart'
-import { VocabFunnelChart } from '@/components/evolution/VocabFunnelChart'
-import { MilestonesTimeline } from '@/components/evolution/MilestonesTimeline'
+import { useNavigate } from 'react-router-dom'
 
 export default function Evolution() {
-  const { stats, words, settings } = useStore()
-  const { toast } = useToast()
+  const { stats } = useStore()
+  const navigate = useNavigate()
 
-  const retentionRate = stats.flashcardAttempts
-    ? Math.round((stats.flashcardCorrect / stats.flashcardAttempts) * 100)
-    : 0
-
-  const handleExport = () => {
-    const reportText = `
-RELATÓRIO DE EVOLUÇÃO LANGFLOW
-Data: ${new Date().toLocaleDateString('pt-BR')}
-
---- VISÃO GERAL ---
-Nível Atual: ${settings.level}
-XP Total: ${stats.xp} XP
-Ofensiva Atual: ${stats.streak} dias
-Taxa de Retenção (Revisões): ${retentionRate}%
-
---- VOCABULÁRIO (${words.length} palavras) ---
-- Em Aprendizado: ${words.filter((w) => w.status === 'learning').length}
-- Construção de Frases: ${words.filter((w) => w.status === 'builder').length}
-- Em Revisão Espaçada: ${words.filter((w) => w.status === 'srs').length}
-- Totalmente Dominadas: ${words.filter((w) => w.status === 'mastered' || w.interval > 21).length}
-
---- CONQUISTAS ALCANÇADAS ---
-${
-  stats.achievements
-    .filter((a) => a.unlocked)
-    .map(
-      (a) => `- ${a.title} (${new Date(a.unlockedAt || Date.now()).toLocaleDateString('pt-BR')})`,
-    )
-    .join('\n') || 'Nenhuma conquista registrada ainda.'
-}
-
-Continue praticando para alcançar a fluência plena!
-    `.trim()
-
-    const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `langflow-relatorio-${new Date().toISOString().split('T')[0]}.txt`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-
-    toast({
-      title: 'Relatório Exportado!',
-      description: 'Seu resumo de evolução foi salvo com sucesso.',
-      className: 'bg-success text-success-foreground border-success',
-    })
-  }
+  const history = stats.activityHistory || []
+  const hasActivity = history.some((h) => h.count > 0)
 
   return (
-    <div className="space-y-8 animate-fade-in pb-12 pt-2">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-foreground flex items-center gap-3">
-            <div className="p-2.5 bg-primary/10 rounded-2xl text-primary border border-primary/20 shadow-sm">
-              <TrendingUp className="w-8 h-8" />
-            </div>
-            Dashboard de Evolução
-          </h1>
-          <p className="text-muted-foreground mt-2 text-lg">
-            Visualize seu progresso, histórico de vocabulário e crescimento geral.
-          </p>
-        </div>
-
-        <Button
-          onClick={handleExport}
-          size="lg"
-          className="gap-2 rounded-full shadow-md font-bold h-12 px-6"
-        >
-          <Download className="w-5 h-5" /> Exportar Relatório
-        </Button>
+    <div className="space-y-8 animate-fade-in-up max-w-5xl mx-auto pb-12 pt-4">
+      <header>
+        <h1 className="text-4xl font-bold tracking-tight text-foreground flex items-center gap-3">
+          <TrendingUp className="w-10 h-10 text-primary" />
+          Evolução e Histórico
+        </h1>
+        <p className="text-muted-foreground mt-2 text-lg">
+          Acompanhe seu progresso, histórico de atividades e estatísticas.
+        </p>
       </header>
 
-      {/* Quick Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-5 bg-card border-border shadow-sm flex items-center gap-4 rounded-[20px] hover:shadow-md transition-shadow">
-          <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-            <BookOpen className="w-6 h-6 text-blue-500" />
-          </div>
-          <div>
-            <p className="text-xs font-bold tracking-wider text-muted-foreground mb-0.5">
-              PALAVRAS
-            </p>
-            <p className="text-2xl font-black text-foreground">{words.length}</p>
-          </div>
-        </Card>
+      {!hasActivity ? (
+        <EmptyState
+          icon={<Activity className="w-12 h-12" />}
+          title="Sem histórico de atividades"
+          description="Você ainda não completou nenhuma sessão de prática. Comece a estudar para gerar gráficos de evolução e acompanhar suas métricas detalhadas."
+          action={
+            <Button onClick={() => navigate('/practice')} className="rounded-full px-8">
+              Começar a Praticar
+            </Button>
+          }
+        />
+      ) : (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="bg-gradient-to-br from-background to-secondary/30">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+                  Total de Práticas
+                </CardTitle>
+                <Target className="w-4 h-4 text-primary" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-foreground">{stats.practiceAttempts}</div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {stats.practiceCorrect} acertos (
+                  {stats.practiceAttempts > 0
+                    ? Math.round((stats.practiceCorrect / stats.practiceAttempts) * 100)
+                    : 0}
+                  %)
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card className="p-5 bg-card border-border shadow-sm flex items-center gap-4 rounded-[20px] hover:shadow-md transition-shadow">
-          <div className="w-12 h-12 rounded-full bg-pink-500/10 flex items-center justify-center shrink-0">
-            <Zap className="w-6 h-6 text-pink-500" />
-          </div>
-          <div>
-            <p className="text-xs font-bold tracking-wider text-muted-foreground mb-0.5">
-              EXPERIÊNCIA
-            </p>
-            <p className="text-2xl font-black text-foreground">{stats.xp} XP</p>
-          </div>
-        </Card>
+            <Card className="bg-gradient-to-br from-background to-secondary/30">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+                  Flashcards Revisados
+                </CardTitle>
+                <Brain className="w-4 h-4 text-orange-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-foreground">{stats.flashcardAttempts}</div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {stats.flashcardCorrect} acertos (
+                  {stats.flashcardAttempts > 0
+                    ? Math.round((stats.flashcardCorrect / stats.flashcardAttempts) * 100)
+                    : 0}
+                  %)
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card className="p-5 bg-card border-border shadow-sm flex items-center gap-4 rounded-[20px] hover:shadow-md transition-shadow">
-          <div className="w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center shrink-0">
-            <BrainCircuit className="w-6 h-6 text-orange-500" />
+            <Card className="bg-gradient-to-br from-background to-secondary/30">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+                  XP Acumulado
+                </CardTitle>
+                <Star className="w-4 h-4 text-yellow-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-foreground">{stats.xp}</div>
+                <p className="text-xs text-muted-foreground mt-1">Mantendo o ritmo diário</p>
+              </CardContent>
+            </Card>
           </div>
-          <div>
-            <p className="text-xs font-bold tracking-wider text-muted-foreground mb-0.5">
-              RETENÇÃO
-            </p>
-            <p className="text-2xl font-black text-foreground">{retentionRate}%</p>
-          </div>
-        </Card>
 
-        <Card className="p-5 bg-card border-border shadow-sm flex items-center gap-4 rounded-[20px] hover:shadow-md transition-shadow">
-          <div className="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center shrink-0">
-            <ShieldCheck className="w-6 h-6 text-success" />
-          </div>
-          <div>
-            <p className="text-xs font-bold tracking-wider text-muted-foreground mb-0.5">
-              NÍVEL CEFR
+          <Card className="border-border shadow-sm p-8 flex flex-col items-center justify-center min-h-[300px] text-center bg-secondary/10">
+            <Activity className="w-16 h-16 text-muted-foreground/30 mb-4" />
+            <h3 className="text-xl font-semibold mb-2">Gráficos em Breve</h3>
+            <p className="text-muted-foreground max-w-sm">
+              Continue praticando! Suas métricas de consistência visual estarão disponíveis aqui nas
+              próximas atualizações.
             </p>
-            <p className="text-2xl font-black text-foreground">{settings.level}</p>
-          </div>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-8">
-          <EvolutionActivityChart />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <SkillsRadarChart />
-            <VocabFunnelChart />
-          </div>
+          </Card>
         </div>
-
-        <div className="lg:col-span-1">
-          <MilestonesTimeline />
-        </div>
-      </div>
+      )}
     </div>
   )
 }

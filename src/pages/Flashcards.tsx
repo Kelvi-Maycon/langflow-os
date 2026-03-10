@@ -5,10 +5,13 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { BrainCircuit, Check, X, Frown, Smile, PartyPopper } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { EmptyState } from '@/components/ui/empty-state'
+import { useNavigate } from 'react-router-dom'
 
 export default function Flashcards() {
   const { recordFlashcardAttempt, settings } = useStore()
   const { cards, reviewCard } = useCardStore()
+  const navigate = useNavigate()
 
   const dueCards = useMemo(
     () =>
@@ -35,15 +38,17 @@ export default function Flashcards() {
 
   if (dueCards.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-6">
-        <div className="w-32 h-32 bg-success/10 rounded-full flex items-center justify-center mb-2 shadow-sm border border-success/20">
-          <PartyPopper className="w-16 h-16 text-success animate-bounce" />
-        </div>
-        <h2 className="text-4xl font-bold text-foreground tracking-tight">Tudo Feito!</h2>
-        <p className="text-muted-foreground max-w-md text-xl">
-          Você não tem revisões pendentes para hoje. Excelente trabalho mantendo seu vocabulário
-          afiado.
-        </p>
+      <div className="flex flex-col h-full items-center justify-center pt-10">
+        <EmptyState
+          icon={<PartyPopper className="w-12 h-12 text-success" />}
+          title="Tudo Feito!"
+          description="Você não tem revisões pendentes para hoje. Excelente trabalho mantendo seu vocabulário afiado e atualizado."
+          action={
+            <Button onClick={() => navigate('/practice')} className="rounded-full px-8">
+              Ir para a Prática
+            </Button>
+          }
+        />
       </div>
     )
   }
@@ -68,7 +73,7 @@ export default function Flashcards() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in max-w-xl mx-auto h-full flex flex-col">
+    <div className="space-y-6 animate-fade-in max-w-xl mx-auto h-full flex flex-col pt-4">
       <header className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-3">

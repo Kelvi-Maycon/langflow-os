@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useStore } from '@/store/main'
+import useCardStore from '@/stores/useCardStore'
 import { UserSettings } from '@/lib/types'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
@@ -25,11 +26,24 @@ import {
   Bell,
   Clock,
   Check,
+  RefreshCcw,
 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 export default function Settings() {
-  const { settings, updateSettings, words } = useStore()
+  const { settings, updateSettings, words, resetProgress: resetMainProgress } = useStore()
+  const { resetProgress: resetCardProgress } = useCardStore()
   const { toast } = useToast()
 
   const [localSettings, setLocalSettings] = useState(settings)
@@ -112,6 +126,16 @@ export default function Settings() {
     } finally {
       setIsTesting(false)
     }
+  }
+
+  const handleResetProgress = () => {
+    resetMainProgress()
+    resetCardProgress()
+    toast({
+      title: 'Progresso redefinido',
+      description: 'Suas métricas foram zeradas, mas o vocabulário foi mantido com segurança.',
+      variant: 'default',
+    })
   }
 
   const handleClearData = () => {
@@ -409,14 +433,15 @@ export default function Settings() {
         </Button>
       </div>
 
-      <Card className="border-destructive/30 bg-destructive/5 relative overflow-hidden">
+      <Card className="border-border shadow-sm relative overflow-hidden">
         <CardHeader>
-          <CardTitle className="text-destructive flex items-center gap-2">
-            <HardDrive className="w-6 h-6" />
+          <CardTitle className="flex items-center gap-2">
+            <HardDrive className="w-6 h-6 text-primary" />
             Dados e Armazenamento
           </CardTitle>
-          <CardDescription className="text-destructive/80">
-            Todos os seus dados são salvos localmente. Exporte um backup regularmente.
+          <CardDescription>
+            Todos os seus dados são salvos localmente. Exporte um backup regularmente ou gerencie
+            seu progresso.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8 relative z-10">
@@ -427,13 +452,13 @@ export default function Settings() {
                 {formatBytes(storageUsage?.bytes)} / 5 MB
               </span>
             </div>
-            <Progress value={storageUsage?.percentage ?? 0} className="h-3 bg-destructive/20" />
+            <Progress value={storageUsage?.percentage ?? 0} className="h-3" />
             <p className="text-xs text-muted-foreground">
               {(storageUsage?.percentage ?? 0).toFixed(1)}% utilizado no navegador.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2">
             <Button
               variant="outline"
               className="gap-2 h-12 bg-background rounded-xl"
@@ -456,6 +481,43 @@ export default function Settings() {
                 onChange={handleImport}
               />
             </Label>
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="gap-2 h-12 rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
+                >
+                  <RefreshCcw className="w-5 h-5" />
+                  Redefinir Progresso
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Redefinir Progresso de Estudo?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Isso irá zerar sua Ofensiva, XP, histórico e reiniciará os intervalos de revisão
+                    (SRS) de todas as suas palavras e flashcards.
+                    <br />
+                    <br />
+                    <strong className="text-foreground">
+                      Seu vocabulário salvo e cards não serão apagados.
+                    </strong>{' '}
+                    Você apenas voltará ao estágio inicial de aprendizado para eles.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleResetProgress}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Sim, Redefinir
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
             <Button
               variant="destructive"
               className="gap-2 h-12 rounded-xl"
