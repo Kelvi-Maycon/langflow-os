@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useStore } from '@/store/main'
+import useCardStore from '@/stores/useCardStore'
 import { useToast } from '@/hooks/use-toast'
 import { PracticeBuilder } from './PracticeBuilder'
 import { PracticeCloze } from './PracticeCloze'
 import { PracticeTransform } from './PracticeTransform'
 import { PracticeFooter } from './PracticeFooter'
-import { WordEntry } from '@/lib/types'
 import { Block, ExerciseType } from '@/hooks/use-practice-engine'
 import { cn } from '@/lib/utils'
 
 interface Props {
-  currentWord: WordEntry
+  currentItem: any
   practiceData: any
   shuffledBlocks: Block[]
   exerciseType: ExerciseType
@@ -18,13 +18,14 @@ interface Props {
 }
 
 export function PracticeContent({
-  currentWord,
+  currentItem,
   practiceData,
   shuffledBlocks,
   exerciseType,
   onNext,
 }: Props) {
-  const { recordPracticeAttempt, reviewWord } = useStore()
+  const { recordPracticeAttempt, reviewWord, updateWordStatus, settings } = useStore()
+  const { addCard, reviewCard } = useCardStore()
   const { toast } = useToast()
 
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
@@ -39,7 +40,7 @@ export function PracticeContent({
     setAttempts(0)
     setStatus('idle')
     setFeedback([])
-  }, [currentWord.id, exerciseType])
+  }, [currentItem.id, exerciseType])
 
   const checkAnswer = () => {
     if (!practiceData) return
@@ -100,8 +101,23 @@ export function PracticeContent({
   }
 
   const handleRate = (quality: number) => {
-    reviewWord(currentWord.id, quality)
-    onNext(currentWord.id)
+    if (currentItem.isCard) {
+      reviewCard(currentItem.id, quality, settings.srsMultiplier)
+    } else {
+      if (quality >= 3) {
+        addCard({
+          wordId: currentItem.id,
+          targetText: currentItem.word,
+          translation: currentItem.translation,
+          contextSentenceEn: practiceData.en,
+          contextSentencePt: practiceData.pt,
+        })
+        updateWordStatus(currentItem.id, 'srs')
+      } else {
+        reviewWord(currentItem.id, quality)
+      }
+    }
+    onNext(currentItem.id)
   }
 
   return (
@@ -110,12 +126,12 @@ export function PracticeContent({
         <span
           className={cn(
             'px-4 py-1.5 rounded-full font-bold text-sm border uppercase tracking-wider inline-block mb-6',
-            currentWord.status === 'srs'
+            currentItem.isCard
               ? 'bg-orange-500/10 text-orange-500 border-orange-500/20'
               : 'bg-primary/10 text-primary border-primary/20',
           )}
         >
-          {currentWord.status === 'srs'
+          {currentItem.isCard
             ? exerciseType === 'transform'
               ? 'Transformação de Frase'
               : exerciseType === 'cloze'
@@ -163,7 +179,7 @@ export function PracticeContent({
       <div className="flex-shrink-0 mt-6">
         <PracticeFooter
           status={status}
-          currentWord={currentWord}
+          currentItem={currentItem}
           practiceData={practiceData}
           exerciseType={exerciseType}
           selectedIndicesLength={selectedIndices.length}

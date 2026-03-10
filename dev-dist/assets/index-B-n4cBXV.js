@@ -1109,7 +1109,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			return dispatcher;
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$39 = require_react(), Internals = {
+		var React$40 = require_react(), Internals = {
 			d: {
 				f: noop$2,
 				r: function() {
@@ -1125,7 +1125,7 @@ var require_react_dom_development = /* @__PURE__ */ __commonJSMin(((exports) => 
 			},
 			p: 0,
 			findDOMNode: null
-		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$39.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+		}, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React$40.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
 		exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
 		exports.createPortal = function(children, container) {
@@ -2365,7 +2365,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			"number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
 		}
 		function validateOptionProps(element, props) {
-			props.value ?? ("object" === typeof props.children && null !== props.children ? React$39.Children.forEach(props.children, function(child) {
+			props.value ?? ("object" === typeof props.children && null !== props.children ? React$40.Children.forEach(props.children, function(child) {
 				null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = !0, console.error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."));
 			}) : null == props.dangerouslySetInnerHTML || didWarnInvalidInnerHTML || (didWarnInvalidInnerHTML = !0, console.error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.")));
 			null == props.selected || didWarnSelectedSetOnOption || (console.error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>."), didWarnSelectedSetOnOption = !0);
@@ -12656,10 +12656,10 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			container[internalContainerInstanceKey] && (container._reactRootContainer ? console.error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.") : console.error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it."));
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var Scheduler = require_scheduler(), React$39 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
+		var Scheduler = require_scheduler(), React$40 = require_react(), ReactDOM$2 = require_react_dom(), assign$1 = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy");
 		var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
 		var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
-		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$39.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+		var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React$40.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM$2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
 			pending: !1,
 			data: null,
 			method: null,
@@ -15281,7 +15281,7 @@ var require_react_dom_client_development = /* @__PURE__ */ __commonJSMin(((expor
 			}
 		};
 		(function() {
-			var isomorphicReactPackageVersion = React$39.version;
+			var isomorphicReactPackageVersion = React$40.version;
 			if ("19.2.4" !== isomorphicReactPackageVersion) throw Error("Incompatible React versions: The \"react\" and \"react-dom\" packages must have the exact same version. Instead got:\n  - react:      " + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.4\nLearn more: https://react.dev/warnings/version-mismatch"));
 		})();
 		"function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
@@ -17604,15 +17604,15 @@ var require_react_jsx_runtime_development = /* @__PURE__ */ __commonJSMin(((expo
 		function isValidElement$7(object) {
 			return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
 		}
-		var React$39 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$39.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+		var React$40 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE$1 = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React$40.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty$12 = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
 			return null;
 		};
-		React$39 = { react_stack_bottom_frame: function(callStackForError) {
+		React$40 = { react_stack_bottom_frame: function(callStackForError) {
 			return callStackForError();
 		} };
 		var specialPropKeyWarningShown;
 		var didWarnAboutElementRef = {};
-		var unknownOwnerDebugStack = React$39.react_stack_bottom_frame.bind(React$39, UnknownOwner)();
+		var unknownOwnerDebugStack = React$40.react_stack_bottom_frame.bind(React$40, UnknownOwner)();
 		var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
 		var didWarnAboutKeySpread = {};
 		exports.Fragment = REACT_FRAGMENT_TYPE;
@@ -25921,13 +25921,13 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return x$2 === y$1 && (0 !== x$2 || 1 / x$2 === 1 / y$1) || x$2 !== x$2 && y$1 !== y$1;
 		}
 		function useSyncExternalStore$2(subscribe$1, getSnapshot) {
-			didWarnOld18Alpha || void 0 === React$39.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
+			didWarnOld18Alpha || void 0 === React$40.startTransition || (didWarnOld18Alpha = !0, console.error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release."));
 			var value = getSnapshot();
 			if (!didWarnUncachedGetSnapshot) {
 				var cachedValue = getSnapshot();
 				objectIs(value, cachedValue) || (console.error("The result of getSnapshot should be cached to avoid an infinite loop"), didWarnUncachedGetSnapshot = !0);
 			}
-			cachedValue = useState$20({ inst: {
+			cachedValue = useState$21({ inst: {
 				value,
 				getSnapshot
 			} });
@@ -25941,7 +25941,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$12(function() {
+			useEffect$13(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -25964,8 +25964,8 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$39 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$20 = React$39.useState, useEffect$12 = React$39.useEffect, useLayoutEffect$1 = React$39.useLayoutEffect, useDebugValue = React$39.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
-		exports.useSyncExternalStore = void 0 !== React$39.useSyncExternalStore ? React$39.useSyncExternalStore : shim;
+		var React$40 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$21 = React$40.useState, useEffect$13 = React$40.useEffect, useLayoutEffect$1 = React$40.useLayoutEffect, useDebugValue = React$40.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		exports.useSyncExternalStore = void 0 !== React$40.useSyncExternalStore ? React$40.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
 }));
@@ -26116,40 +26116,6 @@ function getNextReviewDate(intervalDays) {
 	date$1.setDate(date$1.getDate() + intervalDays);
 	return date$1.getTime();
 }
-function useNotificationEngine(settings, stats, words, addNotification) {
-	const notified = (0, import_react.useRef)(/* @__PURE__ */ new Set());
-	(0, import_react.useEffect)(() => {
-		if (!settings?.studySessionReminder) return;
-		const now$2 = Date.now();
-		const dueReviews = words.filter((w) => w.status === "srs" && w.nextReviewDate <= now$2).length;
-		if (dueReviews > 0) {
-			const key = `reviews-${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}`;
-			if (!notified.current.has(key)) {
-				addNotification("Revisões Pendentes! 🧠", `Você tem ${dueReviews} flashcards para revisar hoje. Mantenha sua ofensiva!`);
-				notified.current.add(key);
-			}
-		}
-	}, [
-		words,
-		settings?.studySessionReminder,
-		addNotification
-	]);
-	(0, import_react.useEffect)(() => {
-		if (!settings?.dailyPromptReminder) return;
-		const today = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
-		if (!stats?.dailyPromptsHistory?.some((h) => h.date === today)) {
-			const key = `prompt-${today}`;
-			if (!notified.current.has(key)) {
-				addNotification("Daily Prompt Disponível ✍️", "Não se esqueça de praticar sua escrita criativa hoje!");
-				notified.current.add(key);
-			}
-		}
-	}, [
-		stats?.dailyPromptsHistory,
-		settings?.dailyPromptReminder,
-		addNotification
-	]);
-}
 var defaultSettings = {
 	level: "B1",
 	aiProvider: "openai",
@@ -26295,29 +26261,6 @@ var defaultStats = {
 	consecutiveIncorrect: 0,
 	dailyPromptsHistory: []
 };
-var mockWords = [{
-	id: "1",
-	word: "serendipity",
-	translation: "serendipidade",
-	contextSentence: "Finding that old photograph was a moment of pure serendipity.",
-	status: "builder",
-	nextReviewDate: Date.now() - 1e4,
-	interval: 1,
-	easeFactor: 2.5,
-	repetitions: 0,
-	createdAt: Date.now()
-}, {
-	id: "2",
-	word: "ephemeral",
-	translation: "efêmero",
-	contextSentence: "The beauty of a sunset is ephemeral.",
-	status: "srs",
-	nextReviewDate: Date.now() - 864e5,
-	interval: 1,
-	easeFactor: 2.5,
-	repetitions: 1,
-	createdAt: Date.now() - 1e5
-}];
 var StoreContext = (0, import_react.createContext)(null);
 var checkGamification = (stats, totalWords) => {
 	let extraXp = 0;
@@ -26368,9 +26311,9 @@ function StoreProvider({ children }) {
 	const [words, setWords] = (0, import_react.useState)(() => {
 		try {
 			const saved = localStorage.getItem("langflow_words");
-			return saved ? JSON.parse(saved) : mockWords;
+			return saved ? JSON.parse(saved) : [];
 		} catch {
-			return mockWords;
+			return [];
 		}
 	});
 	const [settings, setSettings] = (0, import_react.useState)(() => {
@@ -26496,7 +26439,6 @@ function StoreProvider({ children }) {
 			}, ...filtered].slice(0, 10);
 		});
 	};
-	useNotificationEngine(settings, stats, words, addNotification);
 	(0, import_react.useEffect)(() => {
 		const { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = stats;
 		const levels = [
@@ -26542,6 +26484,7 @@ function StoreProvider({ children }) {
 		const newWord = {
 			...data,
 			id: crypto.randomUUID(),
+			type: data.type || (data.word.includes(" ") ? "collocation" : "word"),
 			createdAt: Date.now(),
 			nextReviewDate: Date.now(),
 			interval: 0,
@@ -53383,18 +53326,96 @@ function Reader() {
 		})]
 	});
 }
-function usePracticeEngine(currentWord, settings) {
+var CardStoreContext = (0, import_react.createContext)(null);
+function CardStoreProvider({ children }) {
+	const [cards, setCards] = (0, import_react.useState)(() => {
+		try {
+			const savedCards = localStorage.getItem("langflow_cards");
+			let parsedCards = savedCards ? JSON.parse(savedCards) : [];
+			const savedWordsStr = localStorage.getItem("langflow_words");
+			if (savedWordsStr) {
+				const srsWords = JSON.parse(savedWordsStr).filter((w) => w.status === "srs" || w.status === "mastered");
+				let needsSave = false;
+				srsWords.forEach((w) => {
+					if (!parsedCards.find((c$1) => c$1.wordId === w.id)) {
+						parsedCards.push({
+							id: crypto.randomUUID(),
+							wordId: w.id,
+							targetText: w.word,
+							translation: w.translation,
+							contextSentenceEn: w.contextSentence || `This is a sentence for ${w.word}.`,
+							contextSentencePt: w.translation,
+							nextReviewDate: w.nextReviewDate || Date.now(),
+							interval: w.interval || 1,
+							easeFactor: w.easeFactor || 2.5,
+							repetitions: w.repetitions || 1,
+							createdAt: w.createdAt || Date.now()
+						});
+						needsSave = true;
+					}
+				});
+				if (needsSave) localStorage.setItem("langflow_cards", JSON.stringify(parsedCards));
+			}
+			return parsedCards;
+		} catch {
+			return [];
+		}
+	});
+	(0, import_react.useEffect)(() => {
+		localStorage.setItem("langflow_cards", JSON.stringify(cards));
+	}, [cards]);
+	const addCard = (data) => {
+		const newCard = {
+			...data,
+			id: crypto.randomUUID(),
+			createdAt: Date.now(),
+			nextReviewDate: Date.now(),
+			interval: 0,
+			easeFactor: 2.5,
+			repetitions: 0
+		};
+		setCards((prev) => [newCard, ...prev]);
+	};
+	const reviewCard = (id, quality, srsMultiplier) => {
+		setCards((prev) => prev.map((c$1) => {
+			if (c$1.id !== id) return c$1;
+			const sm2 = calculateSM2(quality, c$1.repetitions, c$1.interval, c$1.easeFactor, srsMultiplier);
+			const nextReviewDate = getNextReviewDate(sm2.interval);
+			return {
+				...c$1,
+				...sm2,
+				nextReviewDate
+			};
+		}));
+	};
+	const removeCard = (id) => setCards((prev) => prev.filter((c$1) => c$1.id !== id));
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardStoreContext.Provider, {
+		value: {
+			cards,
+			addCard,
+			reviewCard,
+			removeCard
+		},
+		children
+	});
+}
+function useCardStore() {
+	const ctx = (0, import_react.useContext)(CardStoreContext);
+	if (!ctx) throw new Error("useCardStore must be used within CardStoreProvider");
+	return ctx;
+}
+function usePracticeEngine(currentItem, settings) {
 	const [practiceData, setPracticeData] = (0, import_react.useState)(null);
 	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
 	const [shuffledBlocks, setShuffledBlocks] = (0, import_react.useState)([]);
 	const [exerciseType, setExerciseType] = (0, import_react.useState)("builder");
 	const fetchedId = (0, import_react.useRef)(null);
 	(0, import_react.useEffect)(() => {
-		if (!currentWord || fetchedId.current === currentWord.id) return;
-		fetchedId.current = currentWord.id;
+		if (!currentItem || fetchedId.current === currentItem.id) return;
+		fetchedId.current = currentItem.id;
 		setIsLoading(true);
 		let type = "builder";
-		if (currentWord.status === "srs") {
+		if (currentItem.isCard) {
 			const types = [
 				"cloze",
 				"transform",
@@ -53405,28 +53426,46 @@ function usePracticeEngine(currentWord, settings) {
 		setExerciseType(type);
 		const fetchPractice = async () => {
 			let result = null;
+			const targetWord = currentItem.isCard ? currentItem.targetText : currentItem.word;
+			if (currentItem.isCard && type !== "transform") {
+				setTimeout(() => {
+					if (type === "cloze") result = {
+						pt: currentItem.contextSentencePt,
+						en: currentItem.contextSentenceEn,
+						word: targetWord
+					};
+					else result = {
+						pt: currentItem.contextSentencePt,
+						en: currentItem.contextSentenceEn
+					};
+					setupData(result, type);
+				}, 150);
+				return;
+			}
 			if (!settings.apiKey) {
 				setTimeout(() => {
 					const isAdvanced = settings.level === "C1" || settings.level === "C2";
 					const isIntermediate = settings.level === "B1" || settings.level === "B2";
-					let sentenceEn = `I saw a ${currentWord.word} today.`;
-					let sentencePt = `Eu vi um(a) ${currentWord.translation} hoje.`;
-					if (isAdvanced) {
-						sentenceEn = `The unexpected presence of a ${currentWord.word} drastically altered the situation.`;
-						sentencePt = `A presença inesperada de um(a) ${currentWord.translation} alterou drasticamente a situação.`;
-					} else if (isIntermediate) {
-						sentenceEn = `I quickly noticed a ${currentWord.word} while walking outside.`;
-						sentencePt = `Eu notei rapidamente um(a) ${currentWord.translation} enquanto caminhava lá fora.`;
+					let sentenceEn = currentItem.isCard ? currentItem.contextSentenceEn : `I saw a ${targetWord} today.`;
+					let sentencePt = currentItem.isCard ? currentItem.contextSentencePt : `Eu vi um(a) ${currentItem.translation} hoje.`;
+					if (!currentItem.isCard) {
+						if (isAdvanced) {
+							sentenceEn = `The unexpected presence of a ${targetWord} drastically altered the situation.`;
+							sentencePt = `A presença inesperada de um(a) ${currentItem.translation} alterou drasticamente a situação.`;
+						} else if (isIntermediate) {
+							sentenceEn = `I quickly noticed a ${targetWord} while walking outside.`;
+							sentencePt = `Eu notei rapidamente um(a) ${currentItem.translation} enquanto caminhava lá fora.`;
+						}
 					}
 					if (type === "cloze") result = {
 						pt: sentencePt,
 						en: sentenceEn,
-						word: currentWord.word
+						word: targetWord
 					};
 					else if (type === "transform") result = {
 						instruction: isAdvanced ? "Change to passive voice" : "Change to past tense",
-						original: isAdvanced ? `They notice a ${currentWord.word} in the room.` : `I see a ${currentWord.word} today.`,
-						transformed: isAdvanced ? `A ${currentWord.word} is noticed in the room.` : sentenceEn,
+						original: currentItem.isCard ? currentItem.contextSentenceEn : isAdvanced ? `They notice a ${targetWord} in the room.` : `I see a ${targetWord} today.`,
+						transformed: currentItem.isCard ? currentItem.contextSentenceEn : isAdvanced ? `A ${targetWord} is noticed in the room.` : sentenceEn,
 						pt: sentencePt
 					};
 					else result = {
@@ -53439,10 +53478,14 @@ function usePracticeEngine(currentWord, settings) {
 			}
 			try {
 				let systemPrompt = "";
-				const baseLevelInfo = `Nível do aluno: ${settings.level} (${settings.complexity || "intermediate"}). Adapte a complexidade do vocabulário e da gramática da frase para este nível.`;
-				if (type === "builder") systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`;
-				else if (type === "cloze") systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie uma frase com a palavra "${currentWord.word}". Retorne JSON: {"pt": "frase pt", "en": "frase completa em ingles", "word": "${currentWord.word}"}`;
-				else if (type === "transform") systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie uma frase simples usando a palavra "${currentWord.word}", uma instrução de transformação gramatical em inglês (ex: 'Change to negative', 'Change to past tense'), e a frase transformada. Retorne JSON: {"instruction": "instrução", "original": "frase original", "transformed": "frase transformada", "pt": "tradução da frase transformada"}`;
+				const baseLevelInfo = `Nível do aluno: ${settings.level} (${settings.complexity || "intermediate"}). Adapte a complexidade do vocabulário e gramática.`;
+				const entityLabel = currentItem.type === "collocation" ? "expressão" : "palavra";
+				if (type === "builder") systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie frase focada na ${entityLabel} "${targetWord}" baseada no contexto: "${currentItem.contextSentence || currentItem.contextSentenceEn}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`;
+				else if (type === "cloze") systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie uma frase com a ${entityLabel} "${targetWord}". Retorne JSON: {"pt": "frase pt", "en": "frase completa em ingles", "word": "${targetWord}"}`;
+				else if (type === "transform") {
+					const original = currentItem.isCard ? currentItem.contextSentenceEn : `I see a ${targetWord} today.`;
+					systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Pegue a frase: "${original}". Crie uma instrução de transformação gramatical em inglês (ex: 'Change to negative'), e a frase transformada. Retorne JSON: {"instruction": "instrução", "original": "${original}", "transformed": "frase transformada", "pt": "tradução da frase transformada"}`;
+				}
 				const payload = settings.aiProvider === "gemini" ? {
 					url: `https://generativelanguage.googleapis.com/v1beta/models/${settings.aiModel || "gemini-1.5-flash"}:generateContent?key=${settings.apiKey}`,
 					body: {
@@ -53476,19 +53519,19 @@ function usePracticeEngine(currentWord, settings) {
 				result = JSON.parse(settings.aiProvider === "gemini" ? data.candidates[0].content.parts[0].text : data.choices[0].message.content);
 			} catch (err) {
 				if (type === "cloze") result = {
-					pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
-					en: `I saw a ${currentWord.word} today.`,
-					word: currentWord.word
+					pt: `Eu vi um(a) ${currentItem.translation || "item"} hoje.`,
+					en: `I saw a ${targetWord} today.`,
+					word: targetWord
 				};
 				else if (type === "transform") result = {
 					instruction: "Change to past tense",
-					original: `I see a ${currentWord.word} today.`,
-					transformed: `I saw a ${currentWord.word} today.`,
-					pt: `Eu vi um(a) ${currentWord.translation} hoje.`
+					original: currentItem.isCard ? currentItem.contextSentenceEn : `I see a ${targetWord} today.`,
+					transformed: currentItem.isCard ? currentItem.contextSentenceEn : `I saw a ${targetWord} today.`,
+					pt: `Eu vi um(a) ${currentItem.translation || "item"} hoje.`
 				};
 				else result = {
-					pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
-					en: `I saw a ${currentWord.word} today.`
+					pt: `Eu vi um(a) ${currentItem.translation || "item"} hoje.`,
+					en: `I saw a ${targetWord} today.`
 				};
 			}
 			setupData(result, type);
@@ -53502,7 +53545,7 @@ function usePracticeEngine(currentWord, settings) {
 			setIsLoading(false);
 		};
 		fetchPractice();
-	}, [currentWord, settings]);
+	}, [currentItem, settings]);
 	return {
 		practiceData,
 		isLoading,
@@ -53717,7 +53760,7 @@ function PracticeCloze({ practiceData, textInput, setTextInput, status, onEnter 
 					onKeyDown: (e) => e.key === "Enter" && onEnter(),
 					disabled: status === "correct" || status === "incorrect",
 					autoFocus: true,
-					className: cn("mx-2 inline-block w-36 md:w-48 border-b-4 border-primary bg-transparent text-center focus:outline-none focus:border-primary/80 transition-colors placeholder:text-muted-foreground/30", status === "checking" && "border-destructive text-destructive", status === "correct" && "border-success text-success", status === "incorrect" && "border-destructive text-destructive"),
+					className: cn("mx-2 inline-block border-b-4 border-primary bg-transparent text-center focus:outline-none focus:border-primary/80 transition-colors placeholder:text-muted-foreground/30", practiceData.word.includes(" ") ? "w-48 md:w-64" : "w-36 md:w-48", status === "checking" && "border-destructive text-destructive", status === "correct" && "border-success text-success", status === "incorrect" && "border-destructive text-destructive"),
 					placeholder: "____"
 				}, i);
 				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: part }, i);
@@ -53761,11 +53804,11 @@ function PracticeTransform({ practiceData, textInput, setTextInput, status, onEn
 		]
 	});
 }
-function PracticeFooter({ status, currentWord, practiceData, exerciseType, selectedIndicesLength = 0, textInputLength = 0, checkAnswer, handleRate }) {
+function PracticeFooter({ status, currentItem, practiceData, exerciseType, selectedIndicesLength = 0, textInputLength = 0, checkAnswer, handleRate }) {
 	const { settings } = useStore();
 	const getPredictedInterval = (quality) => {
-		if (!currentWord) return 0;
-		const { interval } = calculateSM2(quality, currentWord.repetitions, currentWord.interval, currentWord.easeFactor, settings.srsMultiplier);
+		if (!currentItem) return 0;
+		const { interval } = calculateSM2(quality, currentItem?.repetitions || 0, currentItem?.interval || 0, currentItem?.easeFactor || 2.5, settings.srsMultiplier);
 		return interval;
 	};
 	const formatInterval = (days) => {
@@ -53875,8 +53918,9 @@ function PracticeFooter({ status, currentWord, practiceData, exerciseType, selec
 		]
 	});
 }
-function PracticeContent({ currentWord, practiceData, shuffledBlocks, exerciseType, onNext }) {
-	const { recordPracticeAttempt, reviewWord } = useStore();
+function PracticeContent({ currentItem, practiceData, shuffledBlocks, exerciseType, onNext }) {
+	const { recordPracticeAttempt, reviewWord, updateWordStatus, settings } = useStore();
+	const { addCard, reviewCard } = useCardStore();
 	const { toast: toast$2 } = useToast();
 	const [selectedIndices, setSelectedIndices] = (0, import_react.useState)([]);
 	const [textInput, setTextInput] = (0, import_react.useState)("");
@@ -53889,7 +53933,7 @@ function PracticeContent({ currentWord, practiceData, shuffledBlocks, exerciseTy
 		setAttempts(0);
 		setStatus("idle");
 		setFeedback([]);
-	}, [currentWord.id, exerciseType]);
+	}, [currentItem.id, exerciseType]);
 	const checkAnswer = () => {
 		if (!practiceData) return;
 		if (exerciseType === "builder") {
@@ -53934,8 +53978,18 @@ function PracticeContent({ currentWord, practiceData, shuffledBlocks, exerciseTy
 		}
 	};
 	const handleRate = (quality) => {
-		reviewWord(currentWord.id, quality);
-		onNext(currentWord.id);
+		if (currentItem.isCard) reviewCard(currentItem.id, quality, settings.srsMultiplier);
+		else if (quality >= 3) {
+			addCard({
+				wordId: currentItem.id,
+				targetText: currentItem.word,
+				translation: currentItem.translation,
+				contextSentenceEn: practiceData.en,
+				contextSentencePt: practiceData.pt
+			});
+			updateWordStatus(currentItem.id, "srs");
+		} else reviewWord(currentItem.id, quality);
+		onNext(currentItem.id);
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex-1 flex flex-col h-full z-10",
@@ -53943,8 +53997,8 @@ function PracticeContent({ currentWord, practiceData, shuffledBlocks, exerciseTy
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "mb-8 text-center flex-shrink-0",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: cn("px-4 py-1.5 rounded-full font-bold text-sm border uppercase tracking-wider inline-block mb-6", currentWord.status === "srs" ? "bg-orange-500/10 text-orange-500 border-orange-500/20" : "bg-primary/10 text-primary border-primary/20"),
-					children: currentWord.status === "srs" ? exerciseType === "transform" ? "Transformação de Frase" : exerciseType === "cloze" ? "Preencha a Lacuna" : "Revisão da Frase" : "Construa a frase"
+					className: cn("px-4 py-1.5 rounded-full font-bold text-sm border uppercase tracking-wider inline-block mb-6", currentItem.isCard ? "bg-orange-500/10 text-orange-500 border-orange-500/20" : "bg-primary/10 text-primary border-primary/20"),
+					children: currentItem.isCard ? exerciseType === "transform" ? "Transformação de Frase" : exerciseType === "cloze" ? "Preencha a Lacuna" : "Revisão da Frase" : "Construa a frase"
 				}), exerciseType === "builder" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "text-3xl md:text-4xl font-medium text-foreground leading-tight",
 					children: practiceData.pt
@@ -53980,7 +54034,7 @@ function PracticeContent({ currentWord, practiceData, shuffledBlocks, exerciseTy
 				className: "flex-shrink-0 mt-6",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeFooter, {
 					status,
-					currentWord,
+					currentItem,
 					practiceData,
 					exerciseType,
 					selectedIndicesLength: selectedIndices.length,
@@ -53994,6 +54048,7 @@ function PracticeContent({ currentWord, practiceData, shuffledBlocks, exerciseTy
 }
 function Practice() {
 	const { words, settings, stats } = useStore();
+	const { cards } = useCardStore();
 	const [reviewedIds, setReviewedIds] = (0, import_react.useState)(/* @__PURE__ */ new Set());
 	const { toast: toast$2 } = useToast();
 	const prevLevelRef = (0, import_react.useRef)(settings.level);
@@ -54024,17 +54079,27 @@ function Practice() {
 	}, [settings.level, toast$2]);
 	const queue = (0, import_react.useMemo)(() => {
 		const now$2 = Date.now();
-		const reviews = words.filter((w) => w.status === "srs" && w.nextReviewDate <= now$2 && !reviewedIds.has(w.id));
-		const builders = words.filter((w) => w.status === "builder" && !reviewedIds.has(w.id));
+		const reviews = cards.filter((c$1) => c$1.nextReviewDate <= now$2 && !reviewedIds.has(c$1.id)).map((c$1) => ({
+			...c$1,
+			isCard: true
+		}));
+		const builders = words.filter((w) => w.status === "builder" && !reviewedIds.has(w.id)).map((w) => ({
+			...w,
+			isCard: false
+		}));
 		return [...reviews.sort((a$1, b$1) => a$1.nextReviewDate - b$1.nextReviewDate), ...builders];
-	}, [words, reviewedIds]);
-	const currentWord = queue[0];
+	}, [
+		words,
+		cards,
+		reviewedIds
+	]);
+	const currentItem = queue[0];
 	const [initialQueueSize, setInitialQueueSize] = (0, import_react.useState)(0);
 	(0, import_react.useEffect)(() => {
 		const total = queue.length + reviewedIds.size;
 		if (total > initialQueueSize) setInitialQueueSize(total);
 	}, [queue.length, reviewedIds.size]);
-	const { practiceData, isLoading, shuffledBlocks, exerciseType } = usePracticeEngine(currentWord, settings);
+	const { practiceData, isLoading, shuffledBlocks, exerciseType } = usePracticeEngine(currentItem, settings);
 	if (!queue.length) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeEmpty, {});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-6 animate-fade-in max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col pt-4",
@@ -54042,7 +54107,7 @@ function Practice() {
 			className: "flex justify-between items-start mb-2 flex-shrink-0",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 				className: "text-3xl font-bold tracking-tight text-foreground flex items-center gap-3",
-				children: currentWord.status === "srs" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "w-8 h-8 text-orange-500" }), " Revisão Espaçada"] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-8 h-8 text-primary" }), " Sentence Builder"] })
+				children: currentItem.isCard ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "w-8 h-8 text-orange-500" }), " Revisão Espaçada"] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "w-8 h-8 text-primary" }), " Sentence Builder"] })
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex items-center gap-3 mt-3",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
@@ -54088,7 +54153,7 @@ function Practice() {
 					children: "Gerando exercício ideal com IA..."
 				})]
 			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PracticeContent, {
-				currentWord,
+				currentItem,
 				practiceData,
 				shuffledBlocks,
 				exerciseType,
@@ -54098,15 +54163,16 @@ function Practice() {
 	});
 }
 function Flashcards() {
-	const { words, reviewWord, recordFlashcardAttempt } = useStore();
-	const dueCards = (0, import_react.useMemo)(() => words.filter((w) => w.status === "srs" && w.nextReviewDate <= Date.now()).sort((a$1, b$1) => a$1.nextReviewDate - b$1.nextReviewDate), [words]);
+	const { recordFlashcardAttempt, settings } = useStore();
+	const { cards, reviewCard } = useCardStore();
+	const dueCards = (0, import_react.useMemo)(() => cards.filter((c$1) => c$1.nextReviewDate <= Date.now()).sort((a$1, b$1) => a$1.nextReviewDate - b$1.nextReviewDate), [cards]);
 	const [currentIndex, setCurrentIndex] = (0, import_react.useState)(0);
 	const [isFlipped, setIsFlipped] = (0, import_react.useState)(false);
 	const currentCard = dueCards[currentIndex];
 	const handleReview = (quality) => {
 		if (!currentCard) return;
 		recordFlashcardAttempt(quality >= 3);
-		reviewWord(currentCard.id, quality);
+		reviewCard(currentCard.id, quality, settings.srsMultiplier);
 		setIsFlipped(false);
 		setCurrentIndex(0);
 	};
@@ -54129,8 +54195,8 @@ function Flashcards() {
 	});
 	const renderSentence = () => {
 		if (!currentCard) return null;
-		const escapedWord = currentCard.word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-		return currentCard.contextSentence.split(new RegExp(`(${escapedWord})`, "gi")).map((part, i) => part.toLowerCase() === currentCard.word.toLowerCase() ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+		const escapedWord = currentCard.targetText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+		return currentCard.contextSentenceEn.split(new RegExp(`(${escapedWord})`, "gi")).map((part, i) => part.toLowerCase() === currentCard.targetText.toLowerCase() ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 			className: "bg-primary/20 text-primary px-2 py-0.5 rounded-md font-bold shadow-[0_0_10px_rgba(108,63,197,0.1)] border border-primary/20",
 			children: part
 		}, i) : part);
@@ -54183,7 +54249,7 @@ function Flashcards() {
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 									className: "text-4xl md:text-5xl font-extrabold text-foreground mb-8 font-sans",
-									children: currentCard.word
+									children: currentCard.targetText
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "text-xl md:text-2xl text-foreground/80 italic leading-relaxed bg-secondary/40 p-6 rounded-[20px] border border-border shadow-inner",
@@ -54499,6 +54565,7 @@ function Settings() {
 		if (confirm("Tem certeza? Isso apagará todo o seu progresso e configurações armazenadas.")) {
 			[
 				"langflow_words",
+				"langflow_cards",
 				"langflow_config",
 				"langflow_settings",
 				"langflow_stats",
@@ -54510,6 +54577,7 @@ function Settings() {
 	const handleExport = () => {
 		const data = {
 			langflow_words: JSON.parse(localStorage.getItem("langflow_words") || "[]"),
+			langflow_cards: JSON.parse(localStorage.getItem("langflow_cards") || "[]"),
 			langflow_config: JSON.parse(localStorage.getItem("langflow_config") || "{}"),
 			langflow_stats: JSON.parse(localStorage.getItem("langflow_stats") || "{}"),
 			langflow_notifications: JSON.parse(localStorage.getItem("langflow_notifications") || "[]")
@@ -54532,6 +54600,7 @@ function Settings() {
 			try {
 				const data = JSON.parse(event.target?.result);
 				if (data.langflow_words) localStorage.setItem("langflow_words", JSON.stringify(data.langflow_words));
+				if (data.langflow_cards) localStorage.setItem("langflow_cards", JSON.stringify(data.langflow_cards));
 				if (data.langflow_config) localStorage.setItem("langflow_config", JSON.stringify(data.langflow_config));
 				if (data.langflow_stats) localStorage.setItem("langflow_stats", JSON.stringify(data.langflow_stats));
 				if (data.langflow_notifications) localStorage.setItem("langflow_notifications", JSON.stringify(data.langflow_notifications));
@@ -54894,115 +54963,162 @@ const CEFRLists = {
 		{
 			word: "hello",
 			translation: "olá",
-			contextSentence: "Hello, how are you?"
+			contextSentence: "Hello, how are you?",
+			type: "word"
 		},
 		{
 			word: "goodbye",
 			translation: "adeus",
-			contextSentence: "Goodbye, see you later."
+			contextSentence: "Goodbye, see you later.",
+			type: "word"
 		},
 		{
 			word: "water",
 			translation: "água",
-			contextSentence: "I drink water every day."
+			contextSentence: "I drink water every day.",
+			type: "word"
 		},
 		{
 			word: "food",
 			translation: "comida",
-			contextSentence: "This food is delicious."
+			contextSentence: "This food is delicious.",
+			type: "word"
 		},
 		{
 			word: "friend",
 			translation: "amigo",
-			contextSentence: "He is my best friend."
+			contextSentence: "He is my best friend.",
+			type: "word"
 		}
 	],
 	A2: [
 		{
 			word: "experience",
 			translation: "experiência",
-			contextSentence: "It was a great experience."
+			contextSentence: "It was a great experience.",
+			type: "word"
 		},
 		{
 			word: "journey",
 			translation: "jornada",
-			contextSentence: "The journey takes two hours."
+			contextSentence: "The journey takes two hours.",
+			type: "word"
 		},
 		{
 			word: "weather",
 			translation: "clima",
-			contextSentence: "The weather is nice today."
+			contextSentence: "The weather is nice today.",
+			type: "word"
 		},
 		{
 			word: "suggest",
 			translation: "sugerir",
-			contextSentence: "I suggest we go home now."
+			contextSentence: "I suggest we go home now.",
+			type: "word"
 		}
 	],
 	B1: [
 		{
 			word: "advantage",
 			translation: "vantagem",
-			contextSentence: "There is one big advantage."
+			contextSentence: "There is one big advantage.",
+			type: "word"
 		},
 		{
 			word: "development",
 			translation: "desenvolvimento",
-			contextSentence: "Software development is hard."
+			contextSentence: "Software development is hard.",
+			type: "word"
 		},
 		{
 			word: "environment",
 			translation: "meio ambiente",
-			contextSentence: "We must protect the environment."
+			contextSentence: "We must protect the environment.",
+			type: "word"
 		},
 		{
 			word: "opportunity",
 			translation: "oportunidade",
-			contextSentence: "This is a great opportunity."
+			contextSentence: "This is a great opportunity.",
+			type: "word"
 		}
 	],
 	B2: [
 		{
 			word: "inevitable",
 			translation: "inevitável",
-			contextSentence: "Change is completely inevitable."
+			contextSentence: "Change is completely inevitable.",
+			type: "word"
 		},
 		{
 			word: "consequence",
 			translation: "consequência",
-			contextSentence: "You must face the consequence."
+			contextSentence: "You must face the consequence.",
+			type: "word"
 		},
 		{
 			word: "sustainable",
 			translation: "sustentável",
-			contextSentence: "We need sustainable solutions."
+			contextSentence: "We need sustainable solutions.",
+			type: "word"
 		},
 		{
 			word: "crucial",
 			translation: "crucial",
-			contextSentence: "It is crucial to understand this."
+			contextSentence: "It is crucial to understand this.",
+			type: "word"
 		}
 	],
 	C1: [
 		{
 			word: "ubiquitous",
 			translation: "onipresente",
-			contextSentence: "Smartphones are ubiquitous today."
+			contextSentence: "Smartphones are ubiquitous today.",
+			type: "word"
 		},
 		{
 			word: "ephemeral",
 			translation: "efêmero",
-			contextSentence: "Fame is often ephemeral."
+			contextSentence: "Fame is often ephemeral.",
+			type: "word"
 		},
 		{
 			word: "pragmatic",
 			translation: "pragmático",
-			contextSentence: "He took a pragmatic approach."
+			contextSentence: "He took a pragmatic approach.",
+			type: "word"
 		},
 		{
 			word: "meticulous",
 			translation: "meticuloso",
-			contextSentence: "She is a meticulous researcher."
+			contextSentence: "She is a meticulous researcher.",
+			type: "word"
+		}
+	],
+	C2: [
+		{
+			word: "bear in mind",
+			translation: "ter em mente",
+			contextSentence: "You must bear in mind the profound consequences.",
+			type: "collocation"
+		},
+		{
+			word: "ubiquity",
+			translation: "ubiquidade",
+			contextSentence: "The ubiquity of smartphones is an undeniable reality.",
+			type: "word"
+		},
+		{
+			word: "by and large",
+			translation: "de modo geral",
+			contextSentence: "By and large, the ambitious project was considered a success.",
+			type: "collocation"
+		},
+		{
+			word: "obfuscate",
+			translation: "ofuscar",
+			contextSentence: "The politician tried to obfuscate the truth with jargon.",
+			type: "word"
 		}
 	]
 };
@@ -55108,6 +55224,7 @@ function EditWordDialog({ wordEntry }) {
 	const [wordText, setWordText] = (0, import_react.useState)(wordEntry.word);
 	const [translation, setTranslation] = (0, import_react.useState)(wordEntry.translation);
 	const [context, setContext] = (0, import_react.useState)(wordEntry.contextSentence);
+	const [type, setType] = (0, import_react.useState)(wordEntry.type || "word");
 	const handleSave = () => {
 		if (!wordText.trim() || !translation.trim()) {
 			toast$2({
@@ -55120,11 +55237,12 @@ function EditWordDialog({ wordEntry }) {
 		editWord(wordEntry.id, {
 			word: wordText,
 			translation,
-			contextSentence: context
+			contextSentence: context,
+			type
 		});
 		setOpen(false);
 		toast$2({
-			title: "Palavra atualizada",
+			title: "Item atualizado",
 			description: "As alterações foram salvas com sucesso."
 		});
 	};
@@ -55140,13 +55258,27 @@ function EditWordDialog({ wordEntry }) {
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pen, { className: "w-4 h-4" })
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, { children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Editar Palavra" }) }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, { children: "Editar Item" }) }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "space-y-4 py-4",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "space-y-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Palavra (Inglês)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Tipo" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+							value: type,
+							onValueChange: (v) => setType(v),
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "word",
+								children: "Palavra"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								value: "collocation",
+								children: "Collocation (Expressão)"
+							})] })]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Inglês" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 							value: wordText,
 							onChange: (e) => setWordText(e.target.value)
 						})]
@@ -55184,6 +55316,7 @@ function Vocabulary() {
 	const { toast: toast$2 } = useToast();
 	const [bulkText, setBulkText] = (0, import_react.useState)("");
 	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
+	const [typeFilter, setTypeFilter] = (0, import_react.useState)("all");
 	const handleBulkUpload = () => {
 		const lines = bulkText.split("\n").map((l) => l.trim()).filter(Boolean);
 		if (!lines.length) return;
@@ -55195,6 +55328,7 @@ function Vocabulary() {
 					word,
 					translation: translation || "N/A",
 					contextSentence: `This is a context sentence for ${word}.`,
+					type: word.includes(" ") ? "collocation" : "word",
 					status: "builder"
 				});
 				added++;
@@ -55203,7 +55337,7 @@ function Vocabulary() {
 		setBulkText("");
 		toast$2({
 			title: "Upload concluído",
-			description: `${added} palavras adicionadas com sucesso.`
+			description: `${added} itens adicionados com sucesso.`
 		});
 	};
 	const handleSeedCEFR = (level) => {
@@ -55215,6 +55349,7 @@ function Vocabulary() {
 					word: item.word,
 					translation: item.translation,
 					contextSentence: item.contextSentence,
+					type: item.type || (item.word.includes(" ") ? "collocation" : "word"),
 					status: "builder"
 				});
 				added++;
@@ -55222,10 +55357,10 @@ function Vocabulary() {
 		});
 		toast$2({
 			title: "Semente concluída",
-			description: `${added} palavras do nível ${level} adicionadas.`
+			description: `${added} itens do nível ${level} adicionados.`
 		});
 	};
-	const filteredWords = words.filter((w) => w.word.toLowerCase().includes(searchTerm.toLowerCase()) || w.translation.toLowerCase().includes(searchTerm.toLowerCase()));
+	const filteredWords = words.filter((w) => (w.word.toLowerCase().includes(searchTerm.toLowerCase()) || w.translation.toLowerCase().includes(searchTerm.toLowerCase())) && (typeFilter === "all" || (w.type || "word") === typeFilter));
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "space-y-8 animate-fade-in-up max-w-5xl mx-auto pb-12 pt-4",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
@@ -55233,7 +55368,7 @@ function Vocabulary() {
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Library, { className: "w-10 h-10 text-primary" }), "Gerenciamento de Vocabulário"]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 			className: "text-muted-foreground mt-2 text-lg",
-			children: "Gerencie suas palavras salvas, importe listas ou utilize coleções CEFR."
+			children: "Gerencie suas palavras e collocations salvas, importe listas ou utilize coleções CEFR."
 		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
 			defaultValue: "list",
 			className: "w-full",
@@ -55265,24 +55400,47 @@ function Vocabulary() {
 						className: "border-border shadow-sm rounded-[24px] overflow-hidden",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
 							className: "pb-4",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Palavras Salvas" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Visualize e edite as palavras que você capturou durante suas leituras." })]
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Itens Salvos" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Visualize e edite palavras e expressões capturadas." })]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex justify-between items-center mb-6 gap-4",
+							className: "flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "relative flex-1 max-w-md",
+								className: "relative flex-1 w-full max-w-md",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-									placeholder: "Buscar por palavra ou tradução...",
+									placeholder: "Buscar por termo ou tradução...",
 									value: searchTerm,
 									onChange: (e) => setSearchTerm(e.target.value),
 									className: "pl-9 h-11 bg-background rounded-xl border-border/60 shadow-sm"
 								})]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "text-sm font-medium text-muted-foreground bg-secondary/50 px-4 py-2 rounded-full border border-border/50",
-								children: [
-									filteredWords.length,
-									" palavra",
-									filteredWords.length === 1 ? "" : "s"
-								]
+								className: "flex items-center gap-3 w-full sm:w-auto",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: typeFilter,
+									onValueChange: (v) => setTypeFilter(v),
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+										className: "w-full sm:w-[160px] h-11 bg-background rounded-xl border-border/60 shadow-sm",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Tipo" })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "all",
+											children: "Todos os tipos"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "word",
+											children: "Palavras"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+											value: "collocation",
+											children: "Collocations"
+										})
+									] })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "hidden sm:block text-sm font-medium text-muted-foreground bg-secondary/50 px-4 py-2 rounded-full border border-border/50",
+									children: [
+										filteredWords.length,
+										" item",
+										filteredWords.length === 1 ? "" : "s"
+									]
+								})]
 							})]
 						}), filteredWords.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "text-center py-16 px-4 bg-secondary/20 rounded-2xl border border-dashed border-border/50",
@@ -55290,11 +55448,11 @@ function Vocabulary() {
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Library, { className: "w-12 h-12 text-muted-foreground/30 mx-auto mb-3" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
 									className: "text-lg font-semibold text-foreground",
-									children: "Nenhuma palavra encontrada"
+									children: "Nenhum item encontrado"
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 									className: "text-sm text-muted-foreground mt-1",
-									children: "Capture palavras novas no Leitor ou importe uma lista."
+									children: "Capture palavras novas no Leitor ou modifique os filtros."
 								})
 							]
 						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -55306,10 +55464,14 @@ function Vocabulary() {
 									children: [
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
 											className: "w-[20%] font-semibold",
-											children: "Palavra"
+											children: "Termo"
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
-											className: "w-[25%] font-semibold",
+											className: "w-[15%] font-semibold",
+											children: "Tipo"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+											className: "w-[20%] font-semibold",
 											children: "Tradução"
 										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
@@ -55329,12 +55491,16 @@ function Vocabulary() {
 										className: "font-bold text-foreground",
 										children: w.word
 									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded bg-secondary text-muted-foreground",
+										children: w.type === "collocation" ? "Collocation" : "Palavra"
+									}) }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
 										className: "text-muted-foreground font-medium",
 										children: w.translation
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableCell, {
-										className: "text-muted-foreground text-sm max-w-[300px] truncate",
+										className: "text-muted-foreground text-sm max-w-[200px] truncate",
 										title: w.contextSentence,
 										children: [
 											"\"",
@@ -55365,18 +55531,18 @@ function Vocabulary() {
 					className: "mt-6",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 						className: "border-border shadow-sm rounded-[24px]",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Upload em Lote" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Cole uma lista de palavras e traduções (separadas por vírgula), uma por linha. Exemplo: \"apple, maçã\"" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Upload em Lote" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Cole uma lista de termos e traduções (separados por vírgula), uma por linha. Exemplo: \"bear in mind, ter em mente\"" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
 							className: "space-y-4",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
 								value: bulkText,
 								onChange: (e) => setBulkText(e.target.value),
-								placeholder: "apple, maçã\ncar, carro\nhouse, casa",
+								placeholder: "apple, maçã\nbear in mind, ter em mente\nhouse, casa",
 								className: "min-h-[250px] font-mono text-base p-6 rounded-2xl bg-secondary/30"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 								onClick: handleBulkUpload,
 								size: "lg",
 								className: "w-full h-14 text-lg rounded-xl shadow-md gap-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { className: "w-5 h-5" }), " Importar Palavras"]
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Upload, { className: "w-5 h-5" }), " Importar Itens"]
 							})]
 						})]
 					})
@@ -55397,7 +55563,7 @@ function Vocabulary() {
 										children: ["Nível ", level]
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardDescription, {
 										className: "text-sm font-medium",
-										children: [CEFRLists[level].length, " palavras disponíveis"]
+										children: [CEFRLists[level].length, " itens disponíveis"]
 									})]
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 									variant: "outline",
@@ -55946,7 +56112,47 @@ var NotFound = () => {
 	});
 };
 var NotFound_default = NotFound;
-var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
+function useNotificationEngine() {
+	const { settings, stats, addNotification } = useStore();
+	const { cards } = useCardStore();
+	const notified = (0, import_react.useRef)(/* @__PURE__ */ new Set());
+	(0, import_react.useEffect)(() => {
+		if (!settings?.studySessionReminder) return;
+		const now$2 = Date.now();
+		const dueReviews = cards.filter((c$1) => c$1.nextReviewDate <= now$2).length;
+		if (dueReviews > 0) {
+			const key = `reviews-${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}`;
+			if (!notified.current.has(key)) {
+				addNotification("Revisões Pendentes! 🧠", `Você tem ${dueReviews} flashcards para revisar hoje. Mantenha sua constância!`);
+				notified.current.add(key);
+			}
+		}
+	}, [
+		cards,
+		settings?.studySessionReminder,
+		addNotification
+	]);
+	(0, import_react.useEffect)(() => {
+		if (!settings?.dailyPromptReminder) return;
+		const today = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+		if (!stats?.dailyPromptsHistory?.some((h) => h.date === today)) {
+			const key = `prompt-${today}`;
+			if (!notified.current.has(key)) {
+				addNotification("Daily Prompt Disponível ✍️", "Não se esqueça de praticar sua escrita criativa hoje!");
+				notified.current.add(key);
+			}
+		}
+	}, [
+		stats?.dailyPromptsHistory,
+		settings?.dailyPromptReminder,
+		addNotification
+	]);
+}
+function NotificationRunner() {
+	useNotificationEngine();
+	return null;
+}
+var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardStoreProvider, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotificationRunner, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
 	future: {
 		v7_startTransition: false,
 		v7_relativeSplatPath: false
@@ -55998,8 +56204,8 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 			element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotFound_default, {})
 		})] })
 	] })
-}) });
+})] }) });
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CTU3tKmT.js.map
+//# sourceMappingURL=index-B-n4cBXV.js.map

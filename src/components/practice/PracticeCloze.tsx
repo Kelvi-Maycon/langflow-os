@@ -29,7 +29,8 @@ export function PracticeCloze({ practiceData, textInput, setTextInput, status, o
                 disabled={status === 'correct' || status === 'incorrect'}
                 autoFocus
                 className={cn(
-                  'mx-2 inline-block w-36 md:w-48 border-b-4 border-primary bg-transparent text-center focus:outline-none focus:border-primary/80 transition-colors placeholder:text-muted-foreground/30',
+                  'mx-2 inline-block border-b-4 border-primary bg-transparent text-center focus:outline-none focus:border-primary/80 transition-colors placeholder:text-muted-foreground/30',
+                  practiceData.word.includes(' ') ? 'w-48 md:w-64' : 'w-36 md:w-48',
                   status === 'checking' && 'border-destructive text-destructive',
                   status === 'correct' && 'border-success text-success',
                   status === 'incorrect' && 'border-destructive text-destructive',

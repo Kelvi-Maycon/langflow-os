@@ -18,7 +18,6 @@ import {
   RecentVideo,
 } from '@/lib/types'
 import { calculateSM2, getNextReviewDate } from '@/lib/sm2'
-import { useNotificationEngine } from '@/hooks/use-notifications'
 
 interface StoreContextType extends AppState {
   addWord: (
@@ -193,33 +192,6 @@ const defaultStats: UserStats = {
   dailyPromptsHistory: [],
 }
 
-const mockWords: WordEntry[] = [
-  {
-    id: '1',
-    word: 'serendipity',
-    translation: 'serendipidade',
-    contextSentence: 'Finding that old photograph was a moment of pure serendipity.',
-    status: 'builder',
-    nextReviewDate: Date.now() - 10000,
-    interval: 1,
-    easeFactor: 2.5,
-    repetitions: 0,
-    createdAt: Date.now(),
-  },
-  {
-    id: '2',
-    word: 'ephemeral',
-    translation: 'efêmero',
-    contextSentence: 'The beauty of a sunset is ephemeral.',
-    status: 'srs',
-    nextReviewDate: Date.now() - 86400000,
-    interval: 1,
-    easeFactor: 2.5,
-    repetitions: 1,
-    createdAt: Date.now() - 100000,
-  },
-]
-
 const StoreContext = createContext<StoreContextType | null>(null)
 
 const checkGamification = (stats: UserStats, totalWords: number) => {
@@ -268,9 +240,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [words, setWords] = useState<WordEntry[]>(() => {
     try {
       const saved = localStorage.getItem('langflow_words')
-      return saved ? JSON.parse(saved) : mockWords
+      return saved ? JSON.parse(saved) : []
     } catch {
-      return mockWords
+      return []
     }
   })
 
@@ -405,8 +377,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     })
   }
 
-  useNotificationEngine(settings, stats, words, addNotification)
-
   useEffect(() => {
     const { consecutiveCorrect = 0, consecutiveIncorrect = 0 } = stats
     const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const
@@ -443,6 +413,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const newWord: WordEntry = {
       ...data,
       id: crypto.randomUUID(),
+      type: data.type || (data.word.includes(' ') ? 'collocation' : 'word'),
       createdAt: Date.now(),
       nextReviewDate: Date.now(),
       interval: 0,

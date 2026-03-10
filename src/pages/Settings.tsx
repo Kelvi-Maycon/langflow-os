@@ -118,6 +118,7 @@ export default function Settings() {
     if (confirm('Tem certeza? Isso apagará todo o seu progresso e configurações armazenadas.')) {
       const keysToRemove = [
         'langflow_words',
+        'langflow_cards',
         'langflow_config',
         'langflow_settings',
         'langflow_stats',
@@ -131,6 +132,7 @@ export default function Settings() {
   const handleExport = () => {
     const data = {
       langflow_words: JSON.parse(localStorage.getItem('langflow_words') || '[]'),
+      langflow_cards: JSON.parse(localStorage.getItem('langflow_cards') || '[]'),
       langflow_config: JSON.parse(localStorage.getItem('langflow_config') || '{}'),
       langflow_stats: JSON.parse(localStorage.getItem('langflow_stats') || '{}'),
       langflow_notifications: JSON.parse(localStorage.getItem('langflow_notifications') || '[]'),
@@ -155,6 +157,8 @@ export default function Settings() {
         const data = JSON.parse(event.target?.result as string)
         if (data.langflow_words)
           localStorage.setItem('langflow_words', JSON.stringify(data.langflow_words))
+        if (data.langflow_cards)
+          localStorage.setItem('langflow_cards', JSON.stringify(data.langflow_cards))
         if (data.langflow_config)
           localStorage.setItem('langflow_config', JSON.stringify(data.langflow_config))
         if (data.langflow_stats)

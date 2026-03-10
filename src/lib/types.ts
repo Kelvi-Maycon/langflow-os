@@ -1,11 +1,27 @@
 export type WordStatus = 'learning' | 'builder' | 'srs' | 'mastered'
+export type WordType = 'word' | 'collocation'
 
 export interface WordEntry {
   id: string
   word: string
   translation: string
   contextSentence: string
+  type?: WordType
   status: WordStatus
+  nextReviewDate: number
+  interval: number
+  easeFactor: number
+  repetitions: number
+  createdAt: number
+}
+
+export interface Flashcard {
+  id: string
+  wordId: string
+  targetText: string
+  translation: string
+  contextSentenceEn: string
+  contextSentencePt: string
   nextReviewDate: number
   interval: number
   easeFactor: number

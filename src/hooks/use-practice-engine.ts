@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { WordEntry, UserSettings } from '@/lib/types'
+import { UserSettings } from '@/lib/types'
 
 export interface Block {
   id: number
@@ -8,7 +8,7 @@ export interface Block {
 
 export type ExerciseType = 'builder' | 'cloze' | 'transform'
 
-export function usePracticeEngine(currentWord: WordEntry | undefined, settings: UserSettings) {
+export function usePracticeEngine(currentItem: any | undefined, settings: UserSettings) {
   const [practiceData, setPracticeData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [shuffledBlocks, setShuffledBlocks] = useState<Block[]>([])
@@ -16,12 +16,12 @@ export function usePracticeEngine(currentWord: WordEntry | undefined, settings: 
   const fetchedId = useRef<string | null>(null)
 
   useEffect(() => {
-    if (!currentWord || fetchedId.current === currentWord.id) return
-    fetchedId.current = currentWord.id
+    if (!currentItem || fetchedId.current === currentItem.id) return
+    fetchedId.current = currentItem.id
     setIsLoading(true)
 
     let type: ExerciseType = 'builder'
-    if (currentWord.status === 'srs') {
+    if (currentItem.isCard) {
       const types: ExerciseType[] = ['cloze', 'transform', 'builder']
       type = types[Math.floor(Math.random() * types.length)]
     }
@@ -29,33 +29,61 @@ export function usePracticeEngine(currentWord: WordEntry | undefined, settings: 
 
     const fetchPractice = async () => {
       let result = null
+      const targetWord = currentItem.isCard ? currentItem.targetText : currentItem.word
+
+      if (currentItem.isCard && type !== 'transform') {
+        setTimeout(() => {
+          if (type === 'cloze') {
+            result = {
+              pt: currentItem.contextSentencePt,
+              en: currentItem.contextSentenceEn,
+              word: targetWord,
+            }
+          } else {
+            result = { pt: currentItem.contextSentencePt, en: currentItem.contextSentenceEn }
+          }
+          setupData(result, type)
+        }, 150)
+        return
+      }
+
       if (!settings.apiKey) {
         setTimeout(() => {
           const isAdvanced = settings.level === 'C1' || settings.level === 'C2'
           const isIntermediate = settings.level === 'B1' || settings.level === 'B2'
 
-          let sentenceEn = `I saw a ${currentWord.word} today.`
-          let sentencePt = `Eu vi um(a) ${currentWord.translation} hoje.`
+          let sentenceEn = currentItem.isCard
+            ? currentItem.contextSentenceEn
+            : `I saw a ${targetWord} today.`
+          let sentencePt = currentItem.isCard
+            ? currentItem.contextSentencePt
+            : `Eu vi um(a) ${currentItem.translation} hoje.`
 
-          if (isAdvanced) {
-            sentenceEn = `The unexpected presence of a ${currentWord.word} drastically altered the situation.`
-            sentencePt = `A presença inesperada de um(a) ${currentWord.translation} alterou drasticamente a situação.`
-          } else if (isIntermediate) {
-            sentenceEn = `I quickly noticed a ${currentWord.word} while walking outside.`
-            sentencePt = `Eu notei rapidamente um(a) ${currentWord.translation} enquanto caminhava lá fora.`
+          if (!currentItem.isCard) {
+            if (isAdvanced) {
+              sentenceEn = `The unexpected presence of a ${targetWord} drastically altered the situation.`
+              sentencePt = `A presença inesperada de um(a) ${currentItem.translation} alterou drasticamente a situação.`
+            } else if (isIntermediate) {
+              sentenceEn = `I quickly noticed a ${targetWord} while walking outside.`
+              sentencePt = `Eu notei rapidamente um(a) ${currentItem.translation} enquanto caminhava lá fora.`
+            }
           }
 
           if (type === 'cloze') {
-            result = { pt: sentencePt, en: sentenceEn, word: currentWord.word }
+            result = { pt: sentencePt, en: sentenceEn, word: targetWord }
           } else if (type === 'transform') {
             result = {
               instruction: isAdvanced ? 'Change to passive voice' : 'Change to past tense',
-              original: isAdvanced
-                ? `They notice a ${currentWord.word} in the room.`
-                : `I see a ${currentWord.word} today.`,
-              transformed: isAdvanced
-                ? `A ${currentWord.word} is noticed in the room.`
-                : sentenceEn,
+              original: currentItem.isCard
+                ? currentItem.contextSentenceEn
+                : isAdvanced
+                  ? `They notice a ${targetWord} in the room.`
+                  : `I see a ${targetWord} today.`,
+              transformed: currentItem.isCard
+                ? currentItem.contextSentenceEn
+                : isAdvanced
+                  ? `A ${targetWord} is noticed in the room.`
+                  : sentenceEn,
               pt: sentencePt,
             }
           } else {
@@ -68,14 +96,19 @@ export function usePracticeEngine(currentWord: WordEntry | undefined, settings: 
 
       try {
         let systemPrompt = ''
-        const baseLevelInfo = `Nível do aluno: ${settings.level} (${settings.complexity || 'intermediate'}). Adapte a complexidade do vocabulário e da gramática da frase para este nível.`
+        const baseLevelInfo = `Nível do aluno: ${settings.level} (${settings.complexity || 'intermediate'}). Adapte a complexidade do vocabulário e gramática.`
+        const entityLabel = currentItem.type === 'collocation' ? 'expressão' : 'palavra'
 
         if (type === 'builder')
-          systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie frase focada na palavra "${currentWord.word}" baseada no contexto: "${currentWord.contextSentence}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`
+          systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie frase focada na ${entityLabel} "${targetWord}" baseada no contexto: "${currentItem.contextSentence || currentItem.contextSentenceEn}". Retorne JSON: {"pt": "frase pt", "en": "frase en"}`
         else if (type === 'cloze')
-          systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie uma frase com a palavra "${currentWord.word}". Retorne JSON: {"pt": "frase pt", "en": "frase completa em ingles", "word": "${currentWord.word}"}`
-        else if (type === 'transform')
-          systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie uma frase simples usando a palavra "${currentWord.word}", uma instrução de transformação gramatical em inglês (ex: 'Change to negative', 'Change to past tense'), e a frase transformada. Retorne JSON: {"instruction": "instrução", "original": "frase original", "transformed": "frase transformada", "pt": "tradução da frase transformada"}`
+          systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Crie uma frase com a ${entityLabel} "${targetWord}". Retorne JSON: {"pt": "frase pt", "en": "frase completa em ingles", "word": "${targetWord}"}`
+        else if (type === 'transform') {
+          const original = currentItem.isCard
+            ? currentItem.contextSentenceEn
+            : `I see a ${targetWord} today.`
+          systemPrompt = `Você é professor de inglês. ${baseLevelInfo} Pegue a frase: "${original}". Crie uma instrução de transformação gramatical em inglês (ex: 'Change to negative'), e a frase transformada. Retorne JSON: {"instruction": "instrução", "original": "${original}", "transformed": "frase transformada", "pt": "tradução da frase transformada"}`
+        }
 
         const payload =
           settings.aiProvider === 'gemini'
@@ -120,21 +153,25 @@ export function usePracticeEngine(currentWord: WordEntry | undefined, settings: 
       } catch (err) {
         if (type === 'cloze')
           result = {
-            pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
-            en: `I saw a ${currentWord.word} today.`,
-            word: currentWord.word,
+            pt: `Eu vi um(a) ${currentItem.translation || 'item'} hoje.`,
+            en: `I saw a ${targetWord} today.`,
+            word: targetWord,
           }
         else if (type === 'transform')
           result = {
             instruction: 'Change to past tense',
-            original: `I see a ${currentWord.word} today.`,
-            transformed: `I saw a ${currentWord.word} today.`,
-            pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
+            original: currentItem.isCard
+              ? currentItem.contextSentenceEn
+              : `I see a ${targetWord} today.`,
+            transformed: currentItem.isCard
+              ? currentItem.contextSentenceEn
+              : `I saw a ${targetWord} today.`,
+            pt: `Eu vi um(a) ${currentItem.translation || 'item'} hoje.`,
           }
         else
           result = {
-            pt: `Eu vi um(a) ${currentWord.translation} hoje.`,
-            en: `I saw a ${currentWord.word} today.`,
+            pt: `Eu vi um(a) ${currentItem.translation || 'item'} hoje.`,
+            en: `I saw a ${targetWord} today.`,
           }
       }
       setupData(result, type)
@@ -150,7 +187,7 @@ export function usePracticeEngine(currentWord: WordEntry | undefined, settings: 
       setIsLoading(false)
     }
     fetchPractice()
-  }, [currentWord, settings])
+  }, [currentItem, settings])
 
   return { practiceData, isLoading, shuffledBlocks, exerciseType }
 }

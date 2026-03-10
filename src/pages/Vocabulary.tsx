@@ -25,7 +25,14 @@ import {
   DialogTrigger,
   DialogFooter,
 } from '@/components/ui/dialog'
-import { WordEntry } from '@/lib/types'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { WordEntry, WordType } from '@/lib/types'
 
 function EditWordDialog({ wordEntry }: { wordEntry: WordEntry }) {
   const { editWord } = useStore()
@@ -34,6 +41,7 @@ function EditWordDialog({ wordEntry }: { wordEntry: WordEntry }) {
   const [wordText, setWordText] = useState(wordEntry.word)
   const [translation, setTranslation] = useState(wordEntry.translation)
   const [context, setContext] = useState(wordEntry.contextSentence)
+  const [type, setType] = useState<WordType>(wordEntry.type || 'word')
 
   const handleSave = () => {
     if (!wordText.trim() || !translation.trim()) {
@@ -44,9 +52,9 @@ function EditWordDialog({ wordEntry }: { wordEntry: WordEntry }) {
       })
       return
     }
-    editWord(wordEntry.id, { word: wordText, translation, contextSentence: context })
+    editWord(wordEntry.id, { word: wordText, translation, contextSentence: context, type })
     setOpen(false)
-    toast({ title: 'Palavra atualizada', description: 'As alterações foram salvas com sucesso.' })
+    toast({ title: 'Item atualizado', description: 'As alterações foram salvas com sucesso.' })
   }
 
   return (
@@ -62,11 +70,23 @@ function EditWordDialog({ wordEntry }: { wordEntry: WordEntry }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Editar Palavra</DialogTitle>
+          <DialogTitle>Editar Item</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label>Palavra (Inglês)</Label>
+            <Label>Tipo</Label>
+            <Select value={type} onValueChange={(v) => setType(v as WordType)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="word">Palavra</SelectItem>
+                <SelectItem value="collocation">Collocation (Expressão)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Inglês</Label>
             <Input value={wordText} onChange={(e) => setWordText(e.target.value)} />
           </div>
           <div className="space-y-2">
@@ -98,6 +118,7 @@ export default function Vocabulary() {
   const { toast } = useToast()
   const [bulkText, setBulkText] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [typeFilter, setTypeFilter] = useState<'all' | 'word' | 'collocation'>('all')
 
   const handleBulkUpload = () => {
     const lines = bulkText
@@ -113,13 +134,14 @@ export default function Vocabulary() {
           word,
           translation: translation || 'N/A',
           contextSentence: `This is a context sentence for ${word}.`,
+          type: word.includes(' ') ? 'collocation' : 'word',
           status: 'builder',
         })
         added++
       }
     })
     setBulkText('')
-    toast({ title: 'Upload concluído', description: `${added} palavras adicionadas com sucesso.` })
+    toast({ title: 'Upload concluído', description: `${added} itens adicionados com sucesso.` })
   }
 
   const handleSeedCEFR = (level: string) => {
@@ -131,6 +153,7 @@ export default function Vocabulary() {
           word: item.word,
           translation: item.translation,
           contextSentence: item.contextSentence,
+          type: (item as any).type || (item.word.includes(' ') ? 'collocation' : 'word'),
           status: 'builder',
         })
         added++
@@ -138,14 +161,15 @@ export default function Vocabulary() {
     })
     toast({
       title: 'Semente concluída',
-      description: `${added} palavras do nível ${level} adicionadas.`,
+      description: `${added} itens do nível ${level} adicionados.`,
     })
   }
 
   const filteredWords = words.filter(
     (w) =>
-      w.word.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      w.translation.toLowerCase().includes(searchTerm.toLowerCase()),
+      (w.word.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        w.translation.toLowerCase().includes(searchTerm.toLowerCase())) &&
+      (typeFilter === 'all' || (w.type || 'word') === typeFilter),
   )
 
   return (
@@ -156,7 +180,7 @@ export default function Vocabulary() {
           Gerenciamento de Vocabulário
         </h1>
         <p className="text-muted-foreground mt-2 text-lg">
-          Gerencie suas palavras salvas, importe listas ou utilize coleções CEFR.
+          Gerencie suas palavras e collocations salvas, importe listas ou utilize coleções CEFR.
         </p>
       </header>
 
@@ -185,35 +209,43 @@ export default function Vocabulary() {
         <TabsContent value="list" className="mt-6">
           <Card className="border-border shadow-sm rounded-[24px] overflow-hidden">
             <CardHeader className="pb-4">
-              <CardTitle>Palavras Salvas</CardTitle>
-              <CardDescription>
-                Visualize e edite as palavras que você capturou durante suas leituras.
-              </CardDescription>
+              <CardTitle>Itens Salvos</CardTitle>
+              <CardDescription>Visualize e edite palavras e expressões capturadas.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-between items-center mb-6 gap-4">
-                <div className="relative flex-1 max-w-md">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div className="relative flex-1 w-full max-w-md">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder="Buscar por palavra ou tradução..."
+                    placeholder="Buscar por termo ou tradução..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-9 h-11 bg-background rounded-xl border-border/60 shadow-sm"
                   />
                 </div>
-                <div className="text-sm font-medium text-muted-foreground bg-secondary/50 px-4 py-2 rounded-full border border-border/50">
-                  {filteredWords.length} palavra{filteredWords.length === 1 ? '' : 's'}
+                <div className="flex items-center gap-3 w-full sm:w-auto">
+                  <Select value={typeFilter} onValueChange={(v: any) => setTypeFilter(v)}>
+                    <SelectTrigger className="w-full sm:w-[160px] h-11 bg-background rounded-xl border-border/60 shadow-sm">
+                      <SelectValue placeholder="Tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos os tipos</SelectItem>
+                      <SelectItem value="word">Palavras</SelectItem>
+                      <SelectItem value="collocation">Collocations</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <div className="hidden sm:block text-sm font-medium text-muted-foreground bg-secondary/50 px-4 py-2 rounded-full border border-border/50">
+                    {filteredWords.length} item{filteredWords.length === 1 ? '' : 's'}
+                  </div>
                 </div>
               </div>
 
               {filteredWords.length === 0 ? (
                 <div className="text-center py-16 px-4 bg-secondary/20 rounded-2xl border border-dashed border-border/50">
                   <Library className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
-                  <h3 className="text-lg font-semibold text-foreground">
-                    Nenhuma palavra encontrada
-                  </h3>
+                  <h3 className="text-lg font-semibold text-foreground">Nenhum item encontrado</h3>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Capture palavras novas no Leitor ou importe uma lista.
+                    Capture palavras novas no Leitor ou modifique os filtros.
                   </p>
                 </div>
               ) : (
@@ -221,8 +253,9 @@ export default function Vocabulary() {
                   <Table>
                     <TableHeader className="bg-secondary/40">
                       <TableRow className="hover:bg-transparent">
-                        <TableHead className="w-[20%] font-semibold">Palavra</TableHead>
-                        <TableHead className="w-[25%] font-semibold">Tradução</TableHead>
+                        <TableHead className="w-[20%] font-semibold">Termo</TableHead>
+                        <TableHead className="w-[15%] font-semibold">Tipo</TableHead>
+                        <TableHead className="w-[20%] font-semibold">Tradução</TableHead>
                         <TableHead className="font-semibold">Contexto Original</TableHead>
                         <TableHead className="text-right font-semibold">Ações</TableHead>
                       </TableRow>
@@ -231,11 +264,16 @@ export default function Vocabulary() {
                       {filteredWords.map((w) => (
                         <TableRow key={w.id} className="group">
                           <TableCell className="font-bold text-foreground">{w.word}</TableCell>
+                          <TableCell>
+                            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded bg-secondary text-muted-foreground">
+                              {w.type === 'collocation' ? 'Collocation' : 'Palavra'}
+                            </span>
+                          </TableCell>
                           <TableCell className="text-muted-foreground font-medium">
                             {w.translation}
                           </TableCell>
                           <TableCell
-                            className="text-muted-foreground text-sm max-w-[300px] truncate"
+                            className="text-muted-foreground text-sm max-w-[200px] truncate"
                             title={w.contextSentence}
                           >
                             "{w.contextSentence}"
@@ -268,15 +306,15 @@ export default function Vocabulary() {
             <CardHeader>
               <CardTitle>Upload em Lote</CardTitle>
               <CardDescription>
-                Cole uma lista de palavras e traduções (separadas por vírgula), uma por linha.
-                Exemplo: "apple, maçã"
+                Cole uma lista de termos e traduções (separados por vírgula), uma por linha.
+                Exemplo: "bear in mind, ter em mente"
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
                 value={bulkText}
                 onChange={(e) => setBulkText(e.target.value)}
-                placeholder="apple, maçã&#10;car, carro&#10;house, casa"
+                placeholder="apple, maçã&#10;bear in mind, ter em mente&#10;house, casa"
                 className="min-h-[250px] font-mono text-base p-6 rounded-2xl bg-secondary/30"
               />
               <Button
@@ -284,7 +322,7 @@ export default function Vocabulary() {
                 size="lg"
                 className="w-full h-14 text-lg rounded-xl shadow-md gap-2"
               >
-                <Upload className="w-5 h-5" /> Importar Palavras
+                <Upload className="w-5 h-5" /> Importar Itens
               </Button>
             </CardContent>
           </Card>
@@ -308,7 +346,7 @@ export default function Vocabulary() {
                     <CardHeader className="pb-3">
                       <CardTitle className="text-2xl text-primary">Nível {level}</CardTitle>
                       <CardDescription className="text-sm font-medium">
-                        {CEFRLists[level as keyof typeof CEFRLists].length} palavras disponíveis
+                        {CEFRLists[level as keyof typeof CEFRLists].length} itens disponíveis
                       </CardDescription>
                     </CardHeader>
                     <CardContent>

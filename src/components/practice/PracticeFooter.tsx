@@ -5,7 +5,7 @@ import { useStore } from '@/store/main'
 
 interface Props {
   status: string
-  currentWord: any
+  currentItem: any
   practiceData: any
   exerciseType: string
   selectedIndicesLength?: number
@@ -16,7 +16,7 @@ interface Props {
 
 export function PracticeFooter({
   status,
-  currentWord,
+  currentItem,
   practiceData,
   exerciseType,
   selectedIndicesLength = 0,
@@ -27,14 +27,12 @@ export function PracticeFooter({
   const { settings } = useStore()
 
   const getPredictedInterval = (quality: number) => {
-    if (!currentWord) return 0
-    const { interval } = calculateSM2(
-      quality,
-      currentWord.repetitions,
-      currentWord.interval,
-      currentWord.easeFactor,
-      settings.srsMultiplier,
-    )
+    if (!currentItem) return 0
+    const rep = currentItem?.repetitions || 0
+    const int = currentItem?.interval || 0
+    const ef = currentItem?.easeFactor || 2.5
+
+    const { interval } = calculateSM2(quality, rep, int, ef, settings.srsMultiplier)
     return interval
   }
 

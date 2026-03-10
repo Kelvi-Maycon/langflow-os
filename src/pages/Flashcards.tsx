@@ -1,19 +1,21 @@
 import { useState, useMemo } from 'react'
 import { useStore } from '@/store/main'
+import useCardStore from '@/stores/useCardStore'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { BrainCircuit, Check, X, Frown, Smile, PartyPopper } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export default function Flashcards() {
-  const { words, reviewWord, recordFlashcardAttempt } = useStore()
+  const { recordFlashcardAttempt, settings } = useStore()
+  const { cards, reviewCard } = useCardStore()
 
   const dueCards = useMemo(
     () =>
-      words
-        .filter((w) => w.status === 'srs' && w.nextReviewDate <= Date.now())
+      cards
+        .filter((c) => c.nextReviewDate <= Date.now())
         .sort((a, b) => a.nextReviewDate - b.nextReviewDate),
-    [words],
+    [cards],
   )
 
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -24,10 +26,9 @@ export default function Flashcards() {
   const handleReview = (quality: number) => {
     if (!currentCard) return
 
-    // Register the result in stats: 3, 4, 5 are considered correct/successful
     recordFlashcardAttempt(quality >= 3)
 
-    reviewWord(currentCard.id, quality)
+    reviewCard(currentCard.id, quality, settings.srsMultiplier)
     setIsFlipped(false)
     setCurrentIndex(0)
   }
@@ -49,12 +50,11 @@ export default function Flashcards() {
 
   const renderSentence = () => {
     if (!currentCard) return null
-    // Escape regex characters in the word safely to prevent runtime errors
-    const escapedWord = currentCard.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const parts = currentCard.contextSentence.split(new RegExp(`(${escapedWord})`, 'gi'))
+    const escapedWord = currentCard.targetText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const parts = currentCard.contextSentenceEn.split(new RegExp(`(${escapedWord})`, 'gi'))
 
     return parts.map((part, i) =>
-      part.toLowerCase() === currentCard.word.toLowerCase() ? (
+      part.toLowerCase() === currentCard.targetText.toLowerCase() ? (
         <span
           key={i}
           className="bg-primary/20 text-primary px-2 py-0.5 rounded-md font-bold shadow-[0_0_10px_rgba(108,63,197,0.1)] border border-primary/20"
@@ -82,7 +82,6 @@ export default function Flashcards() {
         </div>
       </header>
 
-      {/* Perspective wrapper for 3D flip effect */}
       <div className="flex-1 perspective-1000 relative min-h-[450px]">
         <div
           className={cn(
@@ -121,7 +120,7 @@ export default function Flashcards() {
                 Inglês
               </span>
               <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-8 font-sans">
-                {currentCard.word}
+                {currentCard.targetText}
               </h2>
               <div className="text-xl md:text-2xl text-foreground/80 italic leading-relaxed bg-secondary/40 p-6 rounded-[20px] border border-border shadow-inner">
                 "{renderSentence()}"

@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { useStore } from '@/store/main'
+import useCardStore from '@/stores/useCardStore'
 import { Card } from '@/components/ui/card'
 import { BrainCircuit, Loader2, Zap, TrendingUp, TrendingDown, Activity } from 'lucide-react'
 import { usePracticeEngine } from '@/hooks/use-practice-engine'
@@ -9,6 +10,7 @@ import { useToast } from '@/hooks/use-toast'
 
 export default function Practice() {
   const { words, settings, stats } = useStore()
+  const { cards } = useCardStore()
   const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set())
   const { toast } = useToast()
   const prevLevelRef = useRef(settings.level)
@@ -38,14 +40,18 @@ export default function Practice() {
 
   const queue = useMemo(() => {
     const now = Date.now()
-    const reviews = words.filter(
-      (w) => w.status === 'srs' && w.nextReviewDate <= now && !reviewedIds.has(w.id),
-    )
-    const builders = words.filter((w) => w.status === 'builder' && !reviewedIds.has(w.id))
-    return [...reviews.sort((a, b) => a.nextReviewDate - b.nextReviewDate), ...builders]
-  }, [words, reviewedIds])
+    const reviews = cards
+      .filter((c) => c.nextReviewDate <= now && !reviewedIds.has(c.id))
+      .map((c) => ({ ...c, isCard: true }))
 
-  const currentWord = queue[0]
+    const builders = words
+      .filter((w) => w.status === 'builder' && !reviewedIds.has(w.id))
+      .map((w) => ({ ...w, isCard: false }))
+
+    return [...reviews.sort((a, b) => a.nextReviewDate - b.nextReviewDate), ...builders]
+  }, [words, cards, reviewedIds])
+
+  const currentItem = queue[0]
 
   const [initialQueueSize, setInitialQueueSize] = useState(0)
   useEffect(() => {
@@ -54,7 +60,7 @@ export default function Practice() {
   }, [queue.length, reviewedIds.size])
 
   const { practiceData, isLoading, shuffledBlocks, exerciseType } = usePracticeEngine(
-    currentWord,
+    currentItem,
     settings,
   )
 
@@ -65,7 +71,7 @@ export default function Practice() {
       <header className="flex justify-between items-start mb-2 flex-shrink-0">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-3">
-            {currentWord.status === 'srs' ? (
+            {currentItem.isCard ? (
               <>
                 <BrainCircuit className="w-8 h-8 text-orange-500" /> Revisão Espaçada
               </>
@@ -112,7 +118,7 @@ export default function Practice() {
           </div>
         ) : (
           <PracticeContent
-            currentWord={currentWord}
+            currentItem={currentItem}
             practiceData={practiceData}
             shuffledBlocks={shuffledBlocks}
             exerciseType={exerciseType}

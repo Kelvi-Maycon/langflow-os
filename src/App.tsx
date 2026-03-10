@@ -12,28 +12,38 @@ import Vocabulary from './pages/Vocabulary'
 import Evolution from './pages/Evolution'
 import NotFound from './pages/NotFound'
 import { StoreProvider } from './store/main'
+import { CardStoreProvider } from './stores/useCardStore'
+import { useNotificationEngine } from '@/hooks/use-notifications'
+
+function NotificationRunner() {
+  useNotificationEngine()
+  return null
+}
 
 const App = () => (
   <StoreProvider>
-    <BrowserRouter future={{ v7_startTransition: false, v7_relativeSplatPath: false }}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Index />} />
-            <Route path="/reader" element={<Reader />} />
-            <Route path="/practice" element={<Practice />} />
-            <Route path="/flashcards" element={<Flashcards />} />
-            <Route path="/evolution" element={<Evolution />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/vocabulary" element={<Vocabulary />} />
-            <Route path="/builder" element={<Navigate to="/practice" replace />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </TooltipProvider>
-    </BrowserRouter>
+    <CardStoreProvider>
+      <NotificationRunner />
+      <BrowserRouter future={{ v7_startTransition: false, v7_relativeSplatPath: false }}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/reader" element={<Reader />} />
+              <Route path="/practice" element={<Practice />} />
+              <Route path="/flashcards" element={<Flashcards />} />
+              <Route path="/evolution" element={<Evolution />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/vocabulary" element={<Vocabulary />} />
+              <Route path="/builder" element={<Navigate to="/practice" replace />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </TooltipProvider>
+      </BrowserRouter>
+    </CardStoreProvider>
   </StoreProvider>
 )
 
