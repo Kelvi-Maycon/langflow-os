@@ -5,12 +5,12 @@ import { getLevelTier } from '@/lib/gamification'
 export function useShareProgress() {
   const { toast } = useToast()
   const { stats } = useStore()
-  const { current } = getLevelTier(stats.xp)
+  const { current } = getLevelTier(stats?.xp || 0)
 
   const share = async (customText?: string) => {
     const text =
       customText ||
-      `I just reached Level ${current.name} in Langflow! My current streak is ${stats.streak} days. #LangflowLearning`
+      `I just reached Level ${current.name} in Langflow! My current streak is ${stats?.streak || 0} days. #LangflowLearning`
 
     const fallbackCopy = async () => {
       try {

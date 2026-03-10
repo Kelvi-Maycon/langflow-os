@@ -19125,6 +19125,13 @@ var ChevronUp = createLucideIcon("chevron-up", [["path", {
 	d: "m18 15-6-6-6 6",
 	key: "153udz"
 }]]);
+var CircleCheckBig = createLucideIcon("circle-check-big", [["path", {
+	d: "M21.801 10A10 10 0 1 1 17 3.335",
+	key: "yps3ct"
+}], ["path", {
+	d: "m9 11 3 3L22 4",
+	key: "1pflzl"
+}]]);
 var CircleCheck = createLucideIcon("circle-check", [["circle", {
 	cx: "12",
 	cy: "12",
@@ -19674,28 +19681,6 @@ var Sparkles = createLucideIcon("sparkles", [
 		cy: "20",
 		r: "2",
 		key: "6kqj1y"
-	}]
-]);
-var SquareLibrary = createLucideIcon("square-library", [
-	["rect", {
-		width: "18",
-		height: "18",
-		x: "3",
-		y: "3",
-		rx: "2",
-		key: "afitv7"
-	}],
-	["path", {
-		d: "M7 7v10",
-		key: "d5nglc"
-	}],
-	["path", {
-		d: "M11 7v10",
-		key: "pptsnr"
-	}],
-	["path", {
-		d: "m15 7 2 10",
-		key: "1m7qm5"
 	}]
 ]);
 var Star = createLucideIcon("star", [["path", {
@@ -26158,50 +26143,38 @@ function getNextReviewDate(intervalDays) {
 	date$1.setDate(date$1.getDate() + intervalDays);
 	return date$1.getTime();
 }
-function useNotificationEngine(settings, stats, words, onNotification) {
+function useNotificationEngine(settings, stats, words, addNotification) {
+	const notified = (0, import_react.useRef)(/* @__PURE__ */ new Set());
 	(0, import_react.useEffect)(() => {
-		if (!settings.dailyPromptReminder && !settings.studySessionReminder) return;
-		const checkAndNotify = () => {
-			const now$2 = /* @__PURE__ */ new Date();
-			const currentHour = now$2.getHours();
-			const currentMinute = now$2.getMinutes();
-			const todayStr = now$2.toISOString().split("T")[0];
-			const [prefHour, prefMin] = (settings.preferredStudyTime || "18:00").split(":").map(Number);
-			if ((localStorage.getItem("langflow_last_notified") || "") === todayStr) return;
-			if (currentHour > prefHour || currentHour === prefHour && currentMinute >= prefMin) {
-				let notified = false;
-				if (settings.dailyPromptReminder) {
-					if (!(stats.dailyPromptsHistory || []).some((h) => h.date === todayStr)) {
-						const title = "Daily Prompt Disponível! ✍️";
-						const body = "Seu desafio diário de escrita está te esperando. Mantenha sua consistência!";
-						if ("Notification" in window && Notification.permission === "granted") new Notification(title, { body });
-						if (onNotification) onNotification(title, body);
-						notified = true;
-					}
-				}
-				if (!notified && settings.studySessionReminder) {
-					const pendingReviews = words.filter((w) => w.nextReviewDate <= Date.now() && w.status !== "learning");
-					if (pendingReviews.length > 0) {
-						const title = "Hora da Revisão! 🧠";
-						const body = `Você tem ${pendingReviews.length} palavras prontas para revisão no seu SRS.`;
-						if ("Notification" in window && Notification.permission === "granted") new Notification(title, { body });
-						if (onNotification) onNotification(title, body);
-						notified = true;
-					}
-				}
-				if (notified) localStorage.setItem("langflow_last_notified", todayStr);
+		if (!settings?.studySessionReminder) return;
+		const now$2 = Date.now();
+		const dueReviews = words.filter((w) => w.status === "srs" && w.nextReviewDate <= now$2).length;
+		if (dueReviews > 0) {
+			const key = `reviews-${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}`;
+			if (!notified.current.has(key)) {
+				addNotification("Revisões Pendentes! 🧠", `Você tem ${dueReviews} flashcards para revisar hoje. Mantenha sua ofensiva!`);
+				notified.current.add(key);
 			}
-		};
-		const interval = setInterval(checkAndNotify, 60 * 1e3);
-		checkAndNotify();
-		return () => clearInterval(interval);
+		}
 	}, [
-		settings.dailyPromptReminder,
-		settings.studySessionReminder,
-		settings.preferredStudyTime,
-		stats.dailyPromptsHistory,
 		words,
-		onNotification
+		settings?.studySessionReminder,
+		addNotification
+	]);
+	(0, import_react.useEffect)(() => {
+		if (!settings?.dailyPromptReminder) return;
+		const today = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+		if (!stats?.dailyPromptsHistory?.some((h) => h.date === today)) {
+			const key = `prompt-${today}`;
+			if (!notified.current.has(key)) {
+				addNotification("Daily Prompt Disponível ✍️", "Não se esqueça de praticar sua escrita criativa hoje!");
+				notified.current.add(key);
+			}
+		}
+	}, [
+		stats?.dailyPromptsHistory,
+		settings?.dailyPromptReminder,
+		addNotification
 	]);
 }
 var defaultSettings = {
@@ -26377,8 +26350,8 @@ var checkGamification = (stats, totalWords) => {
 	let extraXp = 0;
 	const updatedMissions = (stats.dailyMissions || []).map((m) => {
 		if (m.completed) return m;
-		if (m.progress >= m.target) {
-			extraXp += m.xpReward;
+		if ((m.progress || 0) >= (m.target || 1)) {
+			extraXp += m.xpReward || 0;
 			return {
 				...m,
 				completed: true,
@@ -26387,22 +26360,22 @@ var checkGamification = (stats, totalWords) => {
 		}
 		return m;
 	});
-	stats.xp += extraXp;
+	stats.xp = (stats.xp || 0) + extraXp;
 	const updatedAchievements = (stats.achievements || []).map((a$1) => {
 		if (a$1.unlocked) return a$1;
 		let meetsReq = false;
 		switch (a$1.type) {
 			case "xp":
-				meetsReq = stats.xp >= a$1.requirement;
+				meetsReq = (stats.xp || 0) >= (a$1.requirement || 0);
 				break;
 			case "streak":
-				meetsReq = stats.streak >= a$1.requirement;
+				meetsReq = (stats.streak || 0) >= (a$1.requirement || 0);
 				break;
 			case "flashcards":
-				meetsReq = stats.flashcardCorrect >= a$1.requirement;
+				meetsReq = (stats.flashcardCorrect || 0) >= (a$1.requirement || 0);
 				break;
 			case "words":
-				meetsReq = totalWords >= a$1.requirement;
+				meetsReq = totalWords >= (a$1.requirement || 0);
 				break;
 		}
 		if (meetsReq) return {
@@ -26420,59 +26393,86 @@ var checkGamification = (stats, totalWords) => {
 };
 function StoreProvider({ children }) {
 	const [words, setWords] = (0, import_react.useState)(() => {
-		const saved = localStorage.getItem("langflow_words");
-		return saved ? JSON.parse(saved) : mockWords;
+		try {
+			const saved = localStorage.getItem("langflow_words");
+			return saved ? JSON.parse(saved) : mockWords;
+		} catch {
+			return mockWords;
+		}
 	});
 	const [settings, setSettings] = (0, import_react.useState)(() => {
-		const savedConfig = localStorage.getItem("langflow_config");
-		if (savedConfig) return {
-			...defaultSettings,
-			...JSON.parse(savedConfig)
-		};
-		const savedSettings = localStorage.getItem("langflow_settings");
-		if (savedSettings) return {
-			...defaultSettings,
-			...JSON.parse(savedSettings)
-		};
-		return defaultSettings;
+		try {
+			const savedConfig = localStorage.getItem("langflow_config");
+			if (savedConfig) return {
+				...defaultSettings,
+				...JSON.parse(savedConfig)
+			};
+			const savedSettings = localStorage.getItem("langflow_settings");
+			if (savedSettings) return {
+				...defaultSettings,
+				...JSON.parse(savedSettings)
+			};
+			return defaultSettings;
+		} catch {
+			return defaultSettings;
+		}
 	});
 	const [stats, setStats] = (0, import_react.useState)(() => {
-		const saved = localStorage.getItem("langflow_stats");
-		let parsed = saved ? {
-			...defaultStats,
-			...JSON.parse(saved)
-		} : defaultStats;
-		const now$2 = /* @__PURE__ */ new Date();
-		const last$3 = new Date(parsed.lastActiveDate);
-		if (Math.floor((now$2.getTime() - last$3.getTime()) / (1e3 * 3600 * 24)) > 1) parsed.streak = 0;
-		if (!parsed.activityHistory || !parsed.activityHistory.length) parsed.activityHistory = defaultStats.activityHistory;
-		const todayStr = now$2.toISOString().split("T")[0];
-		if (parsed.missionsDate !== todayStr) {
-			parsed.dailyMissions = generateMissions();
-			parsed.missionsDate = todayStr;
+		try {
+			const saved = localStorage.getItem("langflow_stats");
+			let parsed = saved ? {
+				...defaultStats,
+				...JSON.parse(saved)
+			} : defaultStats;
+			const now$2 = /* @__PURE__ */ new Date();
+			const lastActiveDate = parsed.lastActiveDate || Date.now();
+			const last$3 = new Date(lastActiveDate);
+			let diffDays = Math.floor((now$2.getTime() - last$3.getTime()) / (1e3 * 3600 * 24));
+			if (isNaN(diffDays)) diffDays = 0;
+			if (diffDays > 1) parsed.streak = 0;
+			if (!parsed.activityHistory || !parsed.activityHistory.length) parsed.activityHistory = defaultStats.activityHistory;
+			const todayStr = now$2.toISOString().split("T")[0];
+			if (parsed.missionsDate !== todayStr) {
+				parsed.dailyMissions = generateMissions();
+				parsed.missionsDate = todayStr;
+			}
+			if (!parsed.achievements || parsed.achievements.length === 0) parsed.achievements = defaultAchievements;
+			else {
+				const achIds = parsed.achievements.map((a$1) => a$1.id);
+				defaultAchievements.forEach((da) => {
+					if (!achIds.includes(da.id)) parsed.achievements.push(da);
+				});
+			}
+			return parsed;
+		} catch {
+			return {
+				...defaultStats,
+				dailyMissions: generateMissions(),
+				achievements: defaultAchievements
+			};
 		}
-		if (!parsed.achievements || parsed.achievements.length === 0) parsed.achievements = defaultAchievements;
-		else {
-			const achIds = parsed.achievements.map((a$1) => a$1.id);
-			defaultAchievements.forEach((da) => {
-				if (!achIds.includes(da.id)) parsed.achievements.push(da);
-			});
-		}
-		return parsed;
 	});
 	const [notifications, setNotifications] = (0, import_react.useState)(() => {
-		const saved = localStorage.getItem("langflow_notifications");
-		return saved ? JSON.parse(saved) : [{
-			id: "welcome-notification",
-			title: "Bem-vindo ao LangFlow! 👋",
-			body: "Configure suas preferências de estudo e ative os lembretes para manter a constância.",
-			date: Date.now(),
-			read: false
-		}];
+		try {
+			const saved = localStorage.getItem("langflow_notifications");
+			return saved ? JSON.parse(saved) : [{
+				id: "welcome-notification",
+				title: "Bem-vindo ao LangFlow! 👋",
+				body: "Configure suas preferências de estudo e ative os lembretes para manter a constância.",
+				date: Date.now(),
+				read: false
+			}];
+		} catch {
+			return [];
+		}
 	});
 	const [recentVideos, setRecentVideos] = (0, import_react.useState)(() => {
-		const saved = localStorage.getItem("langflow_recent_videos");
-		return saved ? JSON.parse(saved) : [];
+		try {
+			const saved = localStorage.getItem("langflow_recent_videos");
+			return saved ? JSON.parse(saved) : [];
+		} catch {
+			return [];
+		}
 	});
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem("langflow_words", JSON.stringify(words));
@@ -26489,7 +26489,7 @@ function StoreProvider({ children }) {
 	(0, import_react.useEffect)(() => {
 		localStorage.setItem("langflow_recent_videos", JSON.stringify(recentVideos));
 	}, [recentVideos]);
-	const addNotification = import_react.useCallback((title, body) => {
+	const addNotification = (0, import_react.useCallback)((title, body) => {
 		setNotifications((prev) => [{
 			id: crypto.randomUUID(),
 			title,
@@ -26627,7 +26627,7 @@ function StoreProvider({ children }) {
 			};
 			const newMissions = (prev.dailyMissions || []).map((m) => {
 				if (m.completed) return m;
-				let p = m.progress;
+				let p = m.progress || 0;
 				if (m.type === "prompt") p += 1;
 				if (m.type === "xp") p += 50;
 				return {
@@ -26647,8 +26647,10 @@ function StoreProvider({ children }) {
 	const updateStats = (isCorrect, type) => {
 		setStats((prev) => {
 			const now$2 = Date.now();
-			const dNow = new Date(now$2), dLast = new Date(prev.lastActiveDate);
-			let streak = new Date(dLast.getTime() + 864e5).toDateString() === dNow.toDateString() ? prev.streak + 1 : dLast.toDateString() === dNow.toDateString() ? prev.streak : 1;
+			const dNow = new Date(now$2);
+			const lastActiveDate = prev.lastActiveDate || now$2;
+			const dLast = new Date(lastActiveDate);
+			let streak = new Date(dLast.getTime() + 864e5).toDateString() === dNow.toDateString() ? (prev.streak || 0) + 1 : dLast.toDateString() === dNow.toDateString() ? prev.streak || 0 : 1;
 			const todayStr = dNow.toISOString().split("T")[0];
 			const hist = prev.activityHistory ? [...prev.activityHistory] : [];
 			const idx = hist.findIndex((h) => h.date === todayStr);
@@ -26665,7 +26667,7 @@ function StoreProvider({ children }) {
 			const practiceCorrect = (prev.practiceCorrect || 0) + (type === "practice" && isCorrect ? 1 : 0);
 			const newMissions = (prev.dailyMissions || []).map((m) => {
 				if (m.completed) return m;
-				let p = m.progress;
+				let p = m.progress || 0;
 				if (m.type === type && isCorrect) p += 1;
 				if (m.type === "xp") p += baseXp;
 				return {
@@ -27514,12 +27516,12 @@ var iconMap$1 = {
 	star: Star,
 	flame: Flame,
 	mic: Mic,
-	library: SquareLibrary,
+	library: Library,
 	penTool: PenTool
 };
 function MissionsToday() {
 	const { stats } = useStore();
-	const missions = stats.dailyMissions || [];
+	const missions = stats?.dailyMissions || [];
 	const completedCount = missions.filter((m) => m.completed).length;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 		className: "space-y-6",
@@ -27543,8 +27545,8 @@ function MissionsToday() {
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "space-y-3",
 			children: missions.map((mission) => {
-				const Icon$2 = iconMap$1[mission.icon] || Check;
-				const progressPct = Math.min(mission.progress / mission.target * 100, 100);
+				const Icon$2 = iconMap$1[mission.icon || "check"] || Check;
+				const progressPct = Math.min((mission.progress || 0) / (mission.target || 1) * 100, 100);
 				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 					className: `p-5 flex items-center gap-5 bg-card hover:bg-secondary/40 border-border shadow-sm transition-all duration-250 ease-out rounded-[24px] ${mission.completed ? "opacity-80" : ""}`,
 					children: [
@@ -27565,9 +27567,9 @@ function MissionsToday() {
 								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 									className: "text-xs font-bold text-muted-foreground bg-secondary px-2.5 py-1 rounded-full border border-border/50",
 									children: [
-										Math.floor(mission.progress),
+										Math.floor(mission.progress || 0),
 										" / ",
-										mission.target
+										mission.target || 1
 									]
 								})]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
@@ -27579,7 +27581,7 @@ function MissionsToday() {
 							className: "font-bold text-sm text-muted-foreground bg-secondary px-3 py-1.5 rounded-full whitespace-nowrap border border-border/60",
 							children: [
 								"+",
-								mission.xpReward,
+								mission.xpReward || 0,
 								" XP"
 							]
 						})
@@ -50580,12 +50582,13 @@ function VocabAccumulationChart() {
 		today.setHours(23, 59, 59, 999);
 		const wordsPerDay = {};
 		words.forEach((w) => {
-			const d = new Date(w.createdAt).toISOString().split("T")[0];
+			const createdAt = w.createdAt || Date.now();
+			const d = new Date(createdAt).toISOString().split("T")[0];
 			wordsPerDay[d] = (wordsPerDay[d] || 0) + 1;
 		});
 		const ninetyDaysAgo = new Date(today);
 		ninetyDaysAgo.setDate(today.getDate() - 90);
-		let baseCount = words.filter((w) => w.createdAt < ninetyDaysAgo.getTime()).length;
+		let baseCount = words.filter((w) => (w.createdAt || Date.now()) < ninetyDaysAgo.getTime()).length;
 		for (let i = 89; i >= 0; i--) {
 			const d = new Date(today);
 			d.setDate(today.getDate() - i);
@@ -50708,7 +50711,7 @@ function DailyGoalWidget() {
 	const [goalStr, setGoalStr] = (0, import_react.useState)((settings.dailyGoal || 20).toString());
 	const startOfToday = /* @__PURE__ */ new Date();
 	startOfToday.setHours(0, 0, 0, 0);
-	const wordsLearnedToday = words.filter((w) => w.createdAt >= startOfToday.getTime()).length;
+	const wordsLearnedToday = words.filter((w) => (w.createdAt || Date.now()) >= startOfToday.getTime()).length;
 	const goal = settings.dailyGoal || 20;
 	const progress = Math.min(wordsLearnedToday / goal * 100, 100);
 	const isReached = wordsLearnedToday >= goal && goal > 0;
@@ -50791,7 +50794,7 @@ function DailyGoalWidget() {
 							children: "Progresso"
 						}), isReached && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 							className: "text-[10px] font-bold text-success flex items-center gap-1 uppercase tracking-wider animate-in fade-in zoom-in",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-3 h-3" }), " Alcançada!"]
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheckBig, { className: "w-3 h-3" }), " Alcançada!"]
 						})]
 					})]
 				})]
@@ -50848,7 +50851,7 @@ function DailyPromptWidget() {
 		return Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 1e3 / 60 / 60 / 24);
 	}, []);
 	const challenge = (0, import_react.useMemo)(() => DAILY_PROMPTS[dayOfYear % DAILY_PROMPTS.length], [dayOfYear]);
-	const todaysSubmission = stats.dailyPromptsHistory?.find((h) => h.date === todayStr);
+	const todaysSubmission = stats?.dailyPromptsHistory?.find((h) => h.date === todayStr);
 	const handleSubmit = () => {
 		if (text.trim().length < 10) {
 			toast$2({
@@ -50879,7 +50882,7 @@ function DailyPromptWidget() {
 			className: "flex items-center gap-3 mb-6",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "p-2.5 bg-indigo-500/10 rounded-xl border border-indigo-500/20",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-6 h-6 text-indigo-500" })
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheckBig, { className: "w-6 h-6 text-indigo-500" })
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
 				className: "text-xl font-bold text-foreground",
 				children: "Desafio do Dia Concluído!"
@@ -50970,9 +50973,9 @@ function DailyPromptWidget() {
 function useShareProgress() {
 	const { toast: toast$2 } = useToast();
 	const { stats } = useStore();
-	const { current } = getLevelTier(stats.xp);
+	const { current } = getLevelTier(stats?.xp || 0);
 	const share = async (customText) => {
-		const text = customText || `I just reached Level ${current.name} in Langflow! My current streak is ${stats.streak} days. #LangflowLearning`;
+		const text = customText || `I just reached Level ${current.name} in Langflow! My current streak is ${stats?.streak || 0} days. #LangflowLearning`;
 		const fallbackCopy = async () => {
 			try {
 				await navigator.clipboard.writeText(text);
@@ -51184,17 +51187,17 @@ function LearningStatsCentral() {
 	const { words, stats } = useStore();
 	const { share } = useShareProgress();
 	const totalWords = words.length;
-	const streak = stats.streak;
+	const streak = stats?.streak || 0;
 	const masteredWords = words.filter((w) => w.status === "mastered").length;
 	const oneWeekAgo = Date.now() - 10080 * 60 * 1e3;
-	const wordsThisWeek = words.filter((w) => (w.createdAt || 0) > oneWeekAgo).length;
+	const wordsThisWeek = words.filter((w) => (w.createdAt || Date.now()) > oneWeekAgo).length;
 	const latestAchievement = (0, import_react.useMemo)(() => {
-		const unlocked = stats.achievements?.filter((a$1) => a$1.unlocked) || [];
+		const unlocked = stats?.achievements?.filter((a$1) => a$1.unlocked) || [];
 		if (unlocked.length === 0) return null;
 		return unlocked.reduce((latest, current) => {
 			return (current.unlockedAt || 0) > (latest.unlockedAt || 0) ? current : latest;
 		}, unlocked[0]);
-	}, [stats.achievements]);
+	}, [stats?.achievements]);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 		className: "p-6 md:p-8 bg-card border-border shadow-sm rounded-[32px] overflow-hidden relative group transition-all duration-300 hover:shadow-md",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary/10 transition-colors duration-700" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -56065,4 +56068,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CXfMtZg3.js.map
+//# sourceMappingURL=index-BxHGYNZE.js.map

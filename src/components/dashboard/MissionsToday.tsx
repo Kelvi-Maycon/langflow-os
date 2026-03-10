@@ -1,7 +1,7 @@
 import { useStore } from '@/store/main'
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { Check, Mic, LibrarySquare, Zap, Star, Flame, Brain, PenTool } from 'lucide-react'
+import { Check, Mic, Library, Zap, Star, Flame, Brain, PenTool } from 'lucide-react'
 
 const iconMap: Record<string, any> = {
   check: Check,
@@ -10,13 +10,13 @@ const iconMap: Record<string, any> = {
   star: Star,
   flame: Flame,
   mic: Mic,
-  library: LibrarySquare,
+  library: Library,
   penTool: PenTool,
 }
 
 export function MissionsToday() {
   const { stats } = useStore()
-  const missions = stats.dailyMissions || []
+  const missions = stats?.dailyMissions || []
   const completedCount = missions.filter((m) => m.completed).length
 
   return (
@@ -35,8 +35,8 @@ export function MissionsToday() {
 
       <div className="space-y-3">
         {missions.map((mission) => {
-          const Icon = iconMap[mission.icon] || Check
-          const progressPct = Math.min((mission.progress / mission.target) * 100, 100)
+          const Icon = iconMap[mission.icon || 'check'] || Check
+          const progressPct = Math.min(((mission.progress || 0) / (mission.target || 1)) * 100, 100)
 
           return (
             <Card
@@ -56,14 +56,14 @@ export function MissionsToday() {
                     <p className="text-sm text-muted-foreground truncate">{mission.subtitle}</p>
                   </div>
                   <span className="text-xs font-bold text-muted-foreground bg-secondary px-2.5 py-1 rounded-full border border-border/50">
-                    {Math.floor(mission.progress)} / {mission.target}
+                    {Math.floor(mission.progress || 0)} / {mission.target || 1}
                   </span>
                 </div>
                 <Progress value={progressPct} className="h-1.5 w-full" />
               </div>
 
               <div className="font-bold text-sm text-muted-foreground bg-secondary px-3 py-1.5 rounded-full whitespace-nowrap border border-border/60">
-                +{mission.xpReward} XP
+                +{mission.xpReward || 0} XP
               </div>
             </Card>
           )

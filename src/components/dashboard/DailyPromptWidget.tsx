@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useStore } from '@/store/main'
 import { useToast } from '@/hooks/use-toast'
-import { PenTool, CheckCircle2, Sparkles } from 'lucide-react'
+import { PenTool, CheckCircle, Sparkles } from 'lucide-react'
 
 const DAILY_PROMPTS = [
   {
@@ -35,7 +35,7 @@ export function DailyPromptWidget() {
 
   const challenge = useMemo(() => DAILY_PROMPTS[dayOfYear % DAILY_PROMPTS.length], [dayOfYear])
 
-  const todaysSubmission = stats.dailyPromptsHistory?.find((h) => h.date === todayStr)
+  const todaysSubmission = stats?.dailyPromptsHistory?.find((h) => h.date === todayStr)
 
   const handleSubmit = () => {
     if (text.trim().length < 10) {
@@ -72,7 +72,7 @@ export function DailyPromptWidget() {
       <Card className="p-6 md:p-8 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 border-indigo-500/20 shadow-sm rounded-[24px] hover:shadow-md transition-shadow">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2.5 bg-indigo-500/10 rounded-xl border border-indigo-500/20">
-            <CheckCircle2 className="w-6 h-6 text-indigo-500" />
+            <CheckCircle className="w-6 h-6 text-indigo-500" />
           </div>
           <div>
             <h3 className="text-xl font-bold text-foreground">Desafio do Dia Concluído!</h3>

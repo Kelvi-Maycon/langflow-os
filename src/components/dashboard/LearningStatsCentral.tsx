@@ -9,19 +9,19 @@ export function LearningStatsCentral() {
   const { share } = useShareProgress()
 
   const totalWords = words.length
-  const streak = stats.streak
+  const streak = stats?.streak || 0
   const masteredWords = words.filter((w) => w.status === 'mastered').length
 
   const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
-  const wordsThisWeek = words.filter((w) => (w.createdAt || 0) > oneWeekAgo).length
+  const wordsThisWeek = words.filter((w) => (w.createdAt || Date.now()) > oneWeekAgo).length
 
   const latestAchievement = useMemo(() => {
-    const unlocked = stats.achievements?.filter((a) => a.unlocked) || []
+    const unlocked = stats?.achievements?.filter((a) => a.unlocked) || []
     if (unlocked.length === 0) return null
     return unlocked.reduce((latest, current) => {
       return (current.unlockedAt || 0) > (latest.unlockedAt || 0) ? current : latest
     }, unlocked[0])
-  }, [stats.achievements])
+  }, [stats?.achievements])
 
   return (
     <Card className="p-6 md:p-8 bg-card border-border shadow-sm rounded-[32px] overflow-hidden relative group transition-all duration-300 hover:shadow-md">

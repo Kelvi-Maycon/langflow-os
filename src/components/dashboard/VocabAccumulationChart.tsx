@@ -15,14 +15,17 @@ export function VocabAccumulationChart() {
 
     const wordsPerDay: Record<string, number> = {}
     words.forEach((w) => {
-      const d = new Date(w.createdAt).toISOString().split('T')[0]
+      const createdAt = w.createdAt || Date.now()
+      const d = new Date(createdAt).toISOString().split('T')[0]
       wordsPerDay[d] = (wordsPerDay[d] || 0) + 1
     })
 
     const ninetyDaysAgo = new Date(today)
     ninetyDaysAgo.setDate(today.getDate() - 90)
 
-    let baseCount = words.filter((w) => w.createdAt < ninetyDaysAgo.getTime()).length
+    let baseCount = words.filter(
+      (w) => (w.createdAt || Date.now()) < ninetyDaysAgo.getTime(),
+    ).length
 
     for (let i = 89; i >= 0; i--) {
       const d = new Date(today)

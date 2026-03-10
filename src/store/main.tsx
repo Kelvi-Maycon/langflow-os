@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useCallback,
+} from 'react'
 import {
   AppState,
   WordEntry,
@@ -220,30 +227,30 @@ const checkGamification = (stats: UserStats, totalWords: number) => {
 
   const updatedMissions = (stats.dailyMissions || []).map((m) => {
     if (m.completed) return m
-    if (m.progress >= m.target) {
-      extraXp += m.xpReward
+    if ((m.progress || 0) >= (m.target || 1)) {
+      extraXp += m.xpReward || 0
       return { ...m, completed: true, progress: m.target }
     }
     return m
   })
 
-  stats.xp += extraXp
+  stats.xp = (stats.xp || 0) + extraXp
 
   const updatedAchievements = (stats.achievements || []).map((a) => {
     if (a.unlocked) return a
     let meetsReq = false
     switch (a.type) {
       case 'xp':
-        meetsReq = stats.xp >= a.requirement
+        meetsReq = (stats.xp || 0) >= (a.requirement || 0)
         break
       case 'streak':
-        meetsReq = stats.streak >= a.requirement
+        meetsReq = (stats.streak || 0) >= (a.requirement || 0)
         break
       case 'flashcards':
-        meetsReq = stats.flashcardCorrect >= a.requirement
+        meetsReq = (stats.flashcardCorrect || 0) >= (a.requirement || 0)
         break
       case 'words':
-        meetsReq = totalWords >= a.requirement
+        meetsReq = totalWords >= (a.requirement || 0)
         break
     }
     if (meetsReq) return { ...a, unlocked: true, unlockedAt: Date.now() }
@@ -259,66 +266,94 @@ const checkGamification = (stats: UserStats, totalWords: number) => {
 
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [words, setWords] = useState<WordEntry[]>(() => {
-    const saved = localStorage.getItem('langflow_words')
-    return saved ? JSON.parse(saved) : mockWords
+    try {
+      const saved = localStorage.getItem('langflow_words')
+      return saved ? JSON.parse(saved) : mockWords
+    } catch {
+      return mockWords
+    }
   })
 
   const [settings, setSettings] = useState<UserSettings>(() => {
-    const savedConfig = localStorage.getItem('langflow_config')
-    if (savedConfig) return { ...defaultSettings, ...JSON.parse(savedConfig) }
-    const savedSettings = localStorage.getItem('langflow_settings')
-    if (savedSettings) return { ...defaultSettings, ...JSON.parse(savedSettings) }
-    return defaultSettings
+    try {
+      const savedConfig = localStorage.getItem('langflow_config')
+      if (savedConfig) return { ...defaultSettings, ...JSON.parse(savedConfig) }
+      const savedSettings = localStorage.getItem('langflow_settings')
+      if (savedSettings) return { ...defaultSettings, ...JSON.parse(savedSettings) }
+      return defaultSettings
+    } catch {
+      return defaultSettings
+    }
   })
 
   const [stats, setStats] = useState<UserStats>(() => {
-    const saved = localStorage.getItem('langflow_stats')
-    let parsed = saved ? { ...defaultStats, ...JSON.parse(saved) } : defaultStats
+    try {
+      const saved = localStorage.getItem('langflow_stats')
+      let parsed = saved ? { ...defaultStats, ...JSON.parse(saved) } : defaultStats
 
-    const now = new Date()
-    const last = new Date(parsed.lastActiveDate)
-    const diffDays = Math.floor((now.getTime() - last.getTime()) / (1000 * 3600 * 24))
-    if (diffDays > 1) parsed.streak = 0
-    if (!parsed.activityHistory || !parsed.activityHistory.length) {
-      parsed.activityHistory = defaultStats.activityHistory
+      const now = new Date()
+      const lastActiveDate = parsed.lastActiveDate || Date.now()
+      const last = new Date(lastActiveDate)
+
+      let diffDays = Math.floor((now.getTime() - last.getTime()) / (1000 * 3600 * 24))
+      if (isNaN(diffDays)) diffDays = 0
+
+      if (diffDays > 1) parsed.streak = 0
+      if (!parsed.activityHistory || !parsed.activityHistory.length) {
+        parsed.activityHistory = defaultStats.activityHistory
+      }
+
+      const todayStr = now.toISOString().split('T')[0]
+      if (parsed.missionsDate !== todayStr) {
+        parsed.dailyMissions = generateMissions()
+        parsed.missionsDate = todayStr
+      }
+
+      if (!parsed.achievements || parsed.achievements.length === 0) {
+        parsed.achievements = defaultAchievements
+      } else {
+        const achIds = parsed.achievements.map((a: Achievement) => a.id)
+        defaultAchievements.forEach((da) => {
+          if (!achIds.includes(da.id)) parsed.achievements.push(da)
+        })
+      }
+
+      return parsed
+    } catch {
+      return {
+        ...defaultStats,
+        dailyMissions: generateMissions(),
+        achievements: defaultAchievements,
+      }
     }
-
-    const todayStr = now.toISOString().split('T')[0]
-    if (parsed.missionsDate !== todayStr) {
-      parsed.dailyMissions = generateMissions()
-      parsed.missionsDate = todayStr
-    }
-
-    if (!parsed.achievements || parsed.achievements.length === 0) {
-      parsed.achievements = defaultAchievements
-    } else {
-      const achIds = parsed.achievements.map((a: Achievement) => a.id)
-      defaultAchievements.forEach((da) => {
-        if (!achIds.includes(da.id)) parsed.achievements.push(da)
-      })
-    }
-
-    return parsed
   })
 
   const [notifications, setNotifications] = useState<AppNotification[]>(() => {
-    const saved = localStorage.getItem('langflow_notifications')
-    return saved
-      ? JSON.parse(saved)
-      : [
-          {
-            id: 'welcome-notification',
-            title: 'Bem-vindo ao LangFlow! 👋',
-            body: 'Configure suas preferências de estudo e ative os lembretes para manter a constância.',
-            date: Date.now(),
-            read: false,
-          },
-        ]
+    try {
+      const saved = localStorage.getItem('langflow_notifications')
+      return saved
+        ? JSON.parse(saved)
+        : [
+            {
+              id: 'welcome-notification',
+              title: 'Bem-vindo ao LangFlow! 👋',
+              body: 'Configure suas preferências de estudo e ative os lembretes para manter a constância.',
+              date: Date.now(),
+              read: false,
+            },
+          ]
+    } catch {
+      return []
+    }
   })
 
   const [recentVideos, setRecentVideos] = useState<RecentVideo[]>(() => {
-    const saved = localStorage.getItem('langflow_recent_videos')
-    return saved ? JSON.parse(saved) : []
+    try {
+      const saved = localStorage.getItem('langflow_recent_videos')
+      return saved ? JSON.parse(saved) : []
+    } catch {
+      return []
+    }
   })
 
   useEffect(() => {
@@ -341,7 +376,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('langflow_recent_videos', JSON.stringify(recentVideos))
   }, [recentVideos])
 
-  const addNotification = React.useCallback((title: string, body: string) => {
+  const addNotification = useCallback((title: string, body: string) => {
     setNotifications((prev) =>
       [{ id: crypto.randomUUID(), title, body, date: Date.now(), read: false }, ...prev].slice(
         0,
@@ -466,7 +501,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
       const newMissions = (prev.dailyMissions || []).map((m) => {
         if (m.completed) return m
-        let p = m.progress
+        let p = m.progress || 0
         if (m.type === 'prompt') p += 1
         if (m.type === 'xp') p += 50
         return { ...m, progress: p }
@@ -486,13 +521,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const updateStats = (isCorrect: boolean, type: 'practice' | 'flashcard') => {
     setStats((prev) => {
       const now = Date.now()
-      const dNow = new Date(now),
-        dLast = new Date(prev.lastActiveDate)
+      const dNow = new Date(now)
+      const lastActiveDate = prev.lastActiveDate || now
+      const dLast = new Date(lastActiveDate)
       const isNext = new Date(dLast.getTime() + 86400000).toDateString() === dNow.toDateString()
       let streak = isNext
-        ? prev.streak + 1
+        ? (prev.streak || 0) + 1
         : dLast.toDateString() === dNow.toDateString()
-          ? prev.streak
+          ? prev.streak || 0
           : 1
 
       const todayStr = dNow.toISOString().split('T')[0]
@@ -513,7 +549,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
       const newMissions = (prev.dailyMissions || []).map((m) => {
         if (m.completed) return m
-        let p = m.progress
+        let p = m.progress || 0
         if (m.type === type && isCorrect) p += 1
         if (m.type === 'xp') p += baseXp
         return { ...m, progress: p }

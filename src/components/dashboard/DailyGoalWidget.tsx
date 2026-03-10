@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Input } from '@/components/ui/input'
-import { Target, CheckCircle2, Pencil, X, Check } from 'lucide-react'
+import { Target, CheckCircle, Pencil, X, Check } from 'lucide-react'
 import { useStore } from '@/store/main'
 
 export function DailyGoalWidget() {
@@ -13,7 +13,9 @@ export function DailyGoalWidget() {
   const startOfToday = new Date()
   startOfToday.setHours(0, 0, 0, 0)
 
-  const wordsLearnedToday = words.filter((w) => w.createdAt >= startOfToday.getTime()).length
+  const wordsLearnedToday = words.filter(
+    (w) => (w.createdAt || Date.now()) >= startOfToday.getTime(),
+  ).length
 
   const goal = settings.dailyGoal || 20
   const progress = Math.min((wordsLearnedToday / goal) * 100, 100)
@@ -108,7 +110,7 @@ export function DailyGoalWidget() {
             </span>
             {isReached && (
               <span className="text-[10px] font-bold text-success flex items-center gap-1 uppercase tracking-wider animate-in fade-in zoom-in">
-                <CheckCircle2 className="w-3 h-3" /> Alcançada!
+                <CheckCircle className="w-3 h-3" /> Alcançada!
               </span>
             )}
           </div>
