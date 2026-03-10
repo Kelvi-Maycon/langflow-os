@@ -19150,19 +19150,6 @@ var CirclePlay = createLucideIcon("circle-play", [["path", {
 	r: "10",
 	key: "1mglay"
 }]]);
-var CircleStop = createLucideIcon("circle-stop", [["circle", {
-	cx: "12",
-	cy: "12",
-	r: "10",
-	key: "1mglay"
-}], ["rect", {
-	x: "9",
-	y: "9",
-	width: "6",
-	height: "6",
-	rx: "1",
-	key: "1ssd4o"
-}]]);
 var CircleX = createLucideIcon("circle-x", [
 	["circle", {
 		cx: "12",
@@ -19781,20 +19768,6 @@ var Upload = createLucideIcon("upload", [
 	["path", {
 		d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4",
 		key: "ih7n3h"
-	}]
-]);
-var Volume2 = createLucideIcon("volume-2", [
-	["path", {
-		d: "M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z",
-		key: "uqj9uw"
-	}],
-	["path", {
-		d: "M16 9a5 5 0 0 1 0 6",
-		key: "1q6k2b"
-	}],
-	["path", {
-		d: "M19.364 18.364a9 9 0 0 0 0-12.728",
-		key: "ijwkga"
 	}]
 ]);
 var X = createLucideIcon("x", [["path", {
@@ -25968,7 +25941,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 				value,
 				getSnapshot
 			]);
-			useEffect$13(function() {
+			useEffect$12(function() {
 				checkIfSnapshotChanged(inst) && forceUpdate({ inst });
 				return subscribe$1(function() {
 					checkIfSnapshotChanged(inst) && forceUpdate({ inst });
@@ -25991,7 +25964,7 @@ var require_use_sync_external_store_shim_development = /* @__PURE__ */ __commonJ
 			return getSnapshot();
 		}
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-		var React$39 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$20 = React$39.useState, useEffect$13 = React$39.useEffect, useLayoutEffect$1 = React$39.useLayoutEffect, useDebugValue = React$39.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
+		var React$39 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is, useState$20 = React$39.useState, useEffect$12 = React$39.useEffect, useLayoutEffect$1 = React$39.useLayoutEffect, useDebugValue = React$39.useDebugValue, didWarnOld18Alpha = !1, didWarnUncachedGetSnapshot = !1, shim = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? useSyncExternalStore$1 : useSyncExternalStore$2;
 		exports.useSyncExternalStore = void 0 !== React$39.useSyncExternalStore ? React$39.useSyncExternalStore : shim;
 		"undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
@@ -53206,7 +53179,7 @@ var SelectSeparator = import_react.forwardRef(({ className, ...props }, ref) => 
 	...props
 }));
 SelectSeparator.displayName = Separator.displayName;
-function ReaderHeader({ isReadingMode, isPlayingTTS, aiModel, onToggleTTS, onModelChange }) {
+function ReaderHeader({ isReadingMode, aiModel, onModelChange }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 		className: "flex flex-col md:flex-row md:items-start justify-between gap-4 shrink-0",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
@@ -53215,18 +53188,9 @@ function ReaderHeader({ isReadingMode, isPlayingTTS, aiModel, onToggleTTS, onMod
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 			className: "text-muted-foreground mt-2 text-lg",
 			children: "Processe textos ou vídeos do YouTube e capture vocabulário em contexto."
-		})] }), isReadingMode && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		})] }), isReadingMode && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "flex flex-wrap items-center gap-2 shrink-0",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				onClick: onToggleTTS,
-				variant: "secondary",
-				size: "sm",
-				className: cn("h-9 gap-2 shadow-sm rounded-xl px-3 border border-border transition-all", isPlayingTTS && "bg-primary/10 text-primary border-primary/30 hover:bg-primary/20"),
-				children: [isPlayingTTS ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleStop, { className: "w-4 h-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Volume2, { className: "w-4 h-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "hidden sm:inline",
-					children: isPlayingTTS ? "Parar Áudio" : "Ouvir Texto"
-				})]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "flex items-center gap-2 bg-secondary/40 p-1.5 rounded-xl border border-border animate-fade-in shadow-sm shrink-0",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings2, { className: "w-4 h-4 text-primary ml-2" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 					value: aiModel || "gpt-4o-mini",
@@ -53253,7 +53217,7 @@ function ReaderHeader({ isReadingMode, isPlayingTTS, aiModel, onToggleTTS, onMod
 						})
 					] })]
 				})]
-			})]
+			})
 		})]
 	});
 }
@@ -53312,16 +53276,10 @@ function Reader() {
 	const [isReadingMode, setIsReadingMode] = (0, import_react.useState)(false);
 	const [isProcessingYt, setIsProcessingYt] = (0, import_react.useState)(false);
 	const [capturedWords, setCapturedWords] = (0, import_react.useState)([]);
-	const [isPlayingTTS, setIsPlayingTTS] = (0, import_react.useState)(false);
 	const [activeVideoId, setActiveVideoId] = (0, import_react.useState)(null);
 	const { settings, updateSettings, words: globalWords, updateWordStatus, addRecentVideo } = useStore();
 	const navigate = useNavigate();
 	const { toast: toast$2 } = useToast();
-	(0, import_react.useEffect)(() => {
-		return () => {
-			if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-		};
-	}, []);
 	const handleProcessText = () => {
 		const text = inputText.trim();
 		if (!text) return;
@@ -53357,31 +53315,11 @@ function Reader() {
 		}, 1500);
 	};
 	const handleLoadRecentVideo = (video) => {
-		if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-		setIsPlayingTTS(false);
 		setYtUrl(video.url);
 		setProcessedText(video.text);
 		setActiveVideoId(video.videoId);
 		setIsReadingMode(true);
 		setCapturedWords([]);
-	};
-	const handleTTS = () => {
-		if ("speechSynthesis" in window) if (window.speechSynthesis.speaking) {
-			window.speechSynthesis.cancel();
-			setIsPlayingTTS(false);
-		} else {
-			const utterance = new SpeechSynthesisUtterance(processedText);
-			utterance.lang = "en-US";
-			utterance.onend = () => setIsPlayingTTS(false);
-			utterance.onerror = () => setIsPlayingTTS(false);
-			window.speechSynthesis.speak(utterance);
-			setIsPlayingTTS(true);
-		}
-		else toast$2({
-			title: "Erro",
-			description: "Text-to-speech não é suportado neste navegador.",
-			variant: "destructive"
-		});
 	};
 	const handleCapture = (0, import_react.useCallback)((word, translation, sentence) => {
 		setCapturedWords((prev) => {
@@ -53404,9 +53342,7 @@ function Reader() {
 		className: "space-y-8 animate-fade-in pb-12",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReaderHeader, {
 			isReadingMode,
-			isPlayingTTS,
 			aiModel: settings.aiModel || "gpt-4o-mini",
-			onToggleTTS: handleTTS,
 			onModelChange: (v) => updateSettings({ aiModel: v })
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "grid grid-cols-1 xl:grid-cols-3 gap-8",
@@ -53433,8 +53369,6 @@ function Reader() {
 							setIsReadingMode(false);
 							setActiveVideoId(null);
 							setCapturedWords([]);
-							if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-							setIsPlayingTTS(false);
 						},
 						onNextPhase: handleNextPhase
 					})]
@@ -56068,4 +56002,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BxHGYNZE.js.map
+//# sourceMappingURL=index-CTU3tKmT.js.map
